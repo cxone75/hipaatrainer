@@ -1,0 +1,271 @@
+﻿Compliance Tracker Style Guide
+Objective
+The Compliance Tracker is a micro SaaS product targeting small healthcare practices (e.g., clinics, dental offices) for HIPAA and OSHA compliance. This style guide ensures a consistent, professional, and user-friendly visual and UX design that appeals to busy healthcare professionals (practice owners, office managers) who value simplicity, clarity, and trust. The product includes a web-based compliance dashboard, task management, training modules, risk assessments, documentation storage, regulatory alerts, and integrations. The design aligns with WCAG 2.1 accessibility standards, HIPAA/OSHA compliance, and responsive usability across devices.
+1. Color Palette
+The updated color palette conveys innovation, technology, and energy while maintaining professionalism and accessibility for healthcare applications. All colors meet WCAG 2.1 AA contrast requirements (contrast ratios ≥ 4.5:1 for text).
+* Primary Color: Deep Purple (#3A0CA3)
+   * Hex: #3A0CA3
+   * Use: Headers, primary buttons, navigation bar, active states.
+   * Justification: Deep purple symbolizes innovation and creativity, aligning with a forward-thinking healthcare tech brand. Contrast ratio with light gray (#E5E5E5): 4.7:1; with white (#FFFFFF): 4.9:1.
+* Secondary Color: Electric Blue (#4CC9F0)
+   * Hex: #4CC9F0
+   * Use: Secondary buttons, highlights, success messages.
+   * Justification: Electric blue evokes technology and trust, complementing the primary purple. Contrast ratio with dark BG (#1A1A1A): 5.3:1; with light gray: 4.8:1.
+* Accent Color: Magenta (#F72585)
+   * Hex: #F72585
+   * Use: Alerts, warnings, call-to-action badges (e.g., overdue tasks).
+   * Justification: Magenta adds vibrancy and energy, drawing attention to critical actions without being overly alarming. Contrast ratio with light gray: 4.6:1; with dark BG: 5.0:1.
+* Neutral Colors:
+   * Dark BG (#757575): Primary backgrounds, sidebars, modals.
+   * Light Gray (#F5F5F5): Secondary backgrounds, cards, table rows.
+   * White (#FFFFFF): Text on dark backgrounds, button text.
+   * Medium Gray (#B0BEC5): Disabled states, secondary text (contrast ratio with dark BG: 5.8:1).Neutral 
+   * Very Dark Grey 800 (#424242)
+   * * Error/Warning:
+   * Red (#D81B60): Error messages, critical alerts (contrast ratio with light gray: 5.2:1).
+   * Yellow (#FFCA28): Warning badges, caution icons (contrast ratio with dark BG: 4.5:1).
+Accessibility: Colors are colorblind-safe (tested for deuteranopia/protanopia). Contrast ratios ensure readability, with adjustments (e.g., using white text on deep purple for better contrast where needed). Light gray and white are used as background/text alternates to maintain accessibility.
+CSS Variables:
+:root {
+  --primary: #3A0CA3;
+  --secondary: #4CC9F0;
+  --accent: #F72585;
+  --neutral-dark: #1A1A1A;
+  --neutral-light: #E5E5E5;
+  --white: #FFFFFF;
+  --medium-gray: #B0BEC5;
+  --error: #D81B60;
+  --warning: #FFCA28;
+}
+
+
+2. Typography
+Typography prioritizes readability for non-technical users, using Google Fonts for accessibility and cross-platform consistency.
+* Primary Font: Roboto (Sans-serif)
+   * Use: Headings, body text, buttons.
+   * Justification: Clean, modern, and highly legible; widely used in professional applications. Excellent weight range for hierarchy.
+* Fallback Font: Arial (Sans-serif)
+   * Use: Ensures compatibility if Roboto fails to load.
+* Font Sizes (Web):
+   * H1: 32px, Bold (700), Line-height: 1.3 (41.6px)
+   * H2: 24px, Medium (500), Line-height: 1.4 (33.6px)
+   * H3: 20px, Regular (400), Line-height: 1.4 (28px)
+   * Body: 16px, Regular (400), Line-height: 1.5 (24px)
+   * Button: 16px, Medium (500), Line-height: 1.5 (24px)
+   * Caption: 14px, Regular (400), Line-height: 1.5 (21px)
+* Mobile Adjustments:
+   * H1: 28px, H2: 22px, H3: 18px, Body: 15px, Button: 15px, Caption: 13px.
+* Spacing: 8px baseline grid for margins/padding (multiples: 8px, 16px, 24px).
+CSS Typography:
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--white); /* Updated for dark BG */
+}
+
+
+h1 {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--white);
+}
+
+
+h2 {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+
+h3 {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+
+button {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--white);
+}
+
+
+@media (max-width: 768px) {
+  h1 { font-size: 28px; }
+  h2 { font-size: 22px; }
+  h3 { font-size: 18px; }
+  body, button { font-size: 15px; }
+}
+
+
+Accessibility: Minimum 16px body text for readability; high contrast (white on dark BG, dark text on light gray); scalable fonts for zoom (up to 200%).
+3. UI Components
+UI components are designed for simplicity, consistency, and accessibility, with clear states and HIPAA-compliant secure interactions. Styles have been updated to reflect the new color palette.
+Buttons
+* Primary Button:
+   * Background: #3A0CA3 (deep purple).
+   * Text: #FFFFFF, 16px, Roboto Medium.
+   * Padding: 12px 24px.
+   * Border: None, Border-radius: 4px.
+   * Hover: Background: #2A0877 (darker purple).
+   * Disabled: Background: #B0BEC5, Text: #FFFFFF, Cursor: not-allowed.
+   * ARIA: role="button", aria-label (e.g., “Submit form”).
+* Secondary Button:
+   * Background: #4CC9F0 (electric blue).
+   * Text: #1A1A1A, 16px, Roboto Medium.
+   * Same padding, radius as primary.
+   * Hover: Background: #35B6E0.
+   * Disabled: Same as primary.
+* Text Button:
+   * Background: Transparent.
+   * Text: #4CC9F0, 16px, Roboto Medium.
+   * Hover: Text: #35B6E0, Underline.
+   * Disabled: Text: #B0BEC5.
+CSS (Tailwind):
+.btn-primary {
+  @apply bg-purple-800 text-white px-6 py-3 rounded font-medium text-base;
+  transition: background-color 0.2s;
+}
+.btn-primary:hover { @apply bg-purple-900; }
+.btn-primary:disabled { @apply bg-gray-400 cursor-not-allowed; }
+
+
+.btn-secondary {
+  @apply bg-blue-400 text-gray-900 px-6 py-3 rounded font-medium text-base;
+}
+.btn-secondary:hover { @apply bg-blue-500; }
+.btn-secondary:disabled { @apply bg-gray-400 cursor-not-allowed; }
+
+
+.btn-text {
+  @apply text-blue-400 font-medium text-base;
+}
+.btn-text:hover { @apply text-blue-500 underline; }
+.btn-text:disabled { @apply text-gray-400 cursor-not-allowed; }
+
+
+Forms
+* Text Input:
+   * Border: 1px solid #B0BEC5, Border-radius: 4px.
+   * Padding: 12px.
+   * Background: #E5E5E5 (light gray).
+   * Text: #1A1A1A, 16px, Roboto Regular.
+   * Focus: Border: 2px solid #3A0CA3, Outline: none.
+   * Error: Border: 2px solid #D81B60.
+   * Label: Above input, 14px, Roboto Regular, #FFFFFF on dark BG.
+   * ARIA: aria-label, aria-describedby for errors.
+* Select/Dropdown:
+   * Same styling as text input, with chevron icon.
+   * Open: Shows list with #E5E5E5 background, #1A1A1A text.
+* Checkbox:
+   * 20x20px, Border: 1px solid #B0BEC5, Checkmark: #3A0CA3.
+   * Checked: Background: #3A0CA3, White checkmark.
+   * ARIA: role="checkbox", aria-checked.
+CSS (Tailwind):
+.input-text {
+  @apply border border-gray-400 rounded px-3 py-3 text-base text-gray-900 bg-gray-200;
+}
+.input-text:focus { @apply border-2 border-purple-800 outline-none; }
+.input-text.error { @apply border-2 border-red-700; }
+
+
+.select {
+  @apply border border-gray-400 rounded px-3 py-3 text-base text-gray-900 bg-gray-200 appearance-none;
+}
+.select:focus { @apply border-2 border-purple-800 outline-none; }
+
+
+.checkbox {
+  @apply w-5 h-5 border border-gray-400 rounded;
+}
+.checkbox:checked { @apply bg-purple-800 border-purple-800; }
+
+
+Modals
+* Container: Centered, #1A1A1A background, Border-radius: 8px, Max-width: 600px.
+* Overlay: #1A1A1A at 50% opacity.
+* Header: H2, 24px, Roboto Medium, #FFFFFF.
+* Body: Padding: 24px, #E5E5E5 text.
+* Footer: Buttons (e.g., “Cancel”, “Confirm”), right-aligned.
+* Close Button: Top-right, 24x24px, #E5E5E5 X icon.
+   * Hover: #FFFFFF.
+* ARIA: role="dialog", aria-labelledby for header, focus trap.
+CSS (Tailwind):
+.modal {
+  @apply bg-gray-900 text-gray-200 rounded-lg max-w-xl mx-auto p-6;
+}
+.modal-overlay {
+  @apply fixed inset-0 bg-gray-900 bg-opacity-50;
+}
+.modal-close {
+  @apply text-gray-200 hover:text-white;
+}
+
+
+Tables
+* Container: #E5E5E5 background, Border: 1px solid #B0BEC5.
+* Header: #1A1A1A background, #FFFFFF text, 16px, Roboto Medium.
+* Rows: Alternating #E5E5E5 and #D5D5D5, 16px, Roboto Regular.
+* Hover: Row background: #C5CAE9 (light purple tint).
+* Actions: Buttons/icons (e.g., “Edit”, “Delete”) in last column.
+* ARIA: role="grid", aria-sort for sortable columns.
+CSS (Tailwind):
+.table {
+  @apply w-full border border-gray-400 bg-gray-200;
+}
+.table th {
+  @apply bg-gray-900 text-white font-medium py-3 px-4;
+}
+.table tr:nth-child(even) { @apply bg-gray-300; }
+.table tr:hover { @apply bg-indigo-200; }
+
+
+Navigation Bar
+* Web Sidebar: Fixed, 250px wide, #1A1A1A background, Border-right: 1px solid #B0BEC5.
+   * Items: Icon (24x24px) + text, 16px, Roboto Medium, #E5E5E5.
+   * Active: Background: #3A0CA3, Text: #FFFFFF.
+   * Hover: Background: #2A2A2A.
+   * Collapse: Hamburger icon toggles width to 60px (icons only).
+* Mobile Tab Bar: Fixed bottom, #1A1A1A background, Border-top: 1px solid #B0BEC5.
+   * Items: Icon (24x24px), 12px caption, #E5E5E5.
+   * Active: Icon/Text: #3A0CA3.
+   * More Menu: Expands to list additional items.
+* ARIA: role="navigation", aria-current for active item.
+CSS (Tailwind):
+.sidebar {
+  @apply fixed w-64 bg-gray-900 border-r border-gray-400 h-full;
+}
+.sidebar-item {
+  @apply flex items-center px-4 py-3 text-gray-200;
+}
+.sidebar-item.active { @apply bg-purple-800 text-white; }
+.sidebar-item:hover { @apply bg-gray-800; }
+
+
+.tab-bar {
+  @apply fixed bottom-0 w-full bg-gray-900 border-t border-gray-400 flex;
+}
+.tab-item {
+  @apply flex-1 text-center py-2 text-gray-200;
+}
+.tab-item.active { @apply text-purple-800; }
+
+
+4. Layout Principles
+* Grid System: 12-column grid, 16px gutters, 8px baseline for spacing.
+   * Desktop: 1200px max-width, centered.
+   * Tablet: 768px–1024px, fluid grid.
+   * Mobile: 320px–767px, single-column stack.
+* Breakpoints:
+   * Mobile: ≤767px
+   * Tablet: 768px–1023px
+   * Desktop: ≥1024px
+* Responsive Rules:
+   * Desktop: Multi-column layouts (e.g., 3-column dashboard).
+   * Tablet: 2-column or stacked with larger fonts.
+   * Mobile: Single-column, larger tap targets (min
