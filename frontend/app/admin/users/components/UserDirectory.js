@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import UserStatistics from './UserStatistics';
 import QuickActions from './QuickActions';
