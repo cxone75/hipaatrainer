@@ -10,7 +10,7 @@ const rateLimit = require('./middleware/rateLimit');
 const auditLogMiddleware = require('./middleware/auditLog');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 5000;
 
 // Security middleware
 app.use(helmet());
@@ -28,6 +28,22 @@ app.use(rateLimit.apiLimiter);
 
 // Global audit logging
 app.use(auditLogMiddleware.logRequest());
+
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({
+    message: 'HIPAA Tracker API',
+    version: process.env.npm_package_version || '1.0.0',
+    timestamp: new Date().toISOString(),
+    endpoints: {
+      health: '/health',
+      api: '/api',
+      users: '/api/users',
+      roles: '/api/roles',
+      organizations: '/api/organizations'
+    }
+  });
+});
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -64,9 +80,9 @@ app.use((error, req, res, next) => {
 });
 
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 HIPAA Tracker backend server running on port ${PORT}`);
-  console.log(`📊 Health check available at http://localhost:${PORT}/health`);
+  console.log(`📊 Health check available at http://0.0.0.0:${PORT}/health`);
   console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
 });
 
