@@ -159,18 +159,7 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
               </svg>
               <span>Add User</span>
             </button>
-            <div className="flex items-center space-x-2">
-              <span className="text-sm text-gray-600">{users.length} users</span>
-              <select 
-                value={pageSize} 
-                onChange={(e) => setPageSize(Number(e.target.value))}
-                className="text-sm border border-gray-300 rounded px-2 py-1"
-              >
-                <option value={10}>10 per page</option>
-                <option value={25}>25 per page</option>
-                <option value={50}>50 per page</option>
-              </select>
-            </div>
+            <span className="text-sm text-gray-600">{users.length} users</span>
           </div>
         </div>
       </div>
@@ -336,8 +325,22 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
 
       {/* Pagination */}
       <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-        <div className="text-sm text-gray-700">
-          Showing 1 to {Math.min(pageSize, users.length)} of {users.length} users
+        <div className="flex items-center space-x-4">
+          <div className="text-sm text-gray-700">
+            Showing 1 to {Math.min(pageSize, users.length)} of {users.length} users
+          </div>
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-gray-600">Show:</span>
+            <select 
+              value={pageSize} 
+              onChange={(e) => setPageSize(Number(e.target.value))}
+              className="text-sm border border-gray-300 rounded px-2 py-1"
+            >
+              <option value={10}>10 per page</option>
+              <option value={25}>25 per page</option>
+              <option value={50}>50 per page</option>
+            </select>
+          </div>
         </div>
         <div className="flex items-center space-x-2">
           <button 
