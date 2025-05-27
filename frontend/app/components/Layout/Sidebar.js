@@ -116,7 +116,7 @@ export default function Sidebar({ collapsed = false, onToggleCollapse }) {
   };
 
   return (
-    <div className={`bg-gray-900 text-white ${isCollapsed ? 'w-16' : 'w-64'} transition-all duration-300 flex flex-col`}>
+    <div className={`bg-gray-900 text-white ${isCollapsed ? 'w-16' : 'w-64'} transition-all duration-300 flex flex-col h-full min-h-screen`}>
       {/* Header with Logo and Collapse Toggle */}
       <div className="p-4 border-b border-gray-700 flex items-center justify-between">
         <div className="flex items-center space-x-3">
