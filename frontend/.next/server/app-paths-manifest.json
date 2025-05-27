@@ -1,10 +1,4 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/regulatory/page": "app/regulatory/page.js",
-  "/policies/page": "app/policies/page.js",
-  "/audit/page": "app/audit/page.js",
-  "/risk-assessments/page": "app/risk-assessments/page.js",
-  "/training/page": "app/training/page.js",
-  "/admin/roles/page": "app/admin/roles/page.js",
-  "/admin/users/page": "app/admin/users/page.js"
+  "/admin/users/page": "app/admin/users/page.js",
+  "/dashboard/page": "app/dashboard/page.js"
 }
