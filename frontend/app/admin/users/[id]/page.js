@@ -1,7 +1,4 @@
-
 import MainLayout from '../../../components/Layout/MainLayout';
-import UserCard from '../components/UserCard';
-import RoleMatrix from '../components/RoleMatrix';
 import ActivityMonitor from '../components/ActivityMonitor';
 import Link from 'next/link';
 
@@ -75,7 +72,7 @@ export default function UserProfilePage({ params }) {
                     )}
                   </div>
                 </div>
-                
+
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                   <div className="space-y-3">
@@ -102,7 +99,7 @@ export default function UserProfilePage({ params }) {
                   </div>
                 </div>
               </div>
-              
+
               {/* Role History */}
               <div className="mt-6 pt-6 border-t border-gray-200">
                 <h3 className="text-md font-medium mb-3">Role History</h3>
@@ -118,11 +115,6 @@ export default function UserProfilePage({ params }) {
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* Role Assignment Matrix */}
-          <div className="lg:col-span-1">
-            <RoleMatrix userId={params.id} currentRoles={user.roles} />
           </div>
 
           {/* Activity Monitor - Full width on mobile, spans both columns on desktop */}
