@@ -158,6 +158,25 @@ export default function ProgressChart({ type, data, ...props }) {
     const labelWidth = 120;
     const chartWidth = svgWidth - labelWidth - 40;
 
+    const handleCategoryClick = (category) => {
+      switch(category.toLowerCase()) {
+        case 'training':
+          window.location.href = '/training';
+          break;
+        case 'risk assessment':
+          window.location.href = '/risk-assessments';
+          break;
+        case 'baas':
+          window.location.href = '/risk-assessments#baas';
+          break;
+        case 'policies':
+          window.location.href = '/policies';
+          break;
+        default:
+          break;
+      }
+    };
+
     return (
       <div className="space-y-4" {...props}>
         {data.map((item, index) => {
@@ -170,7 +189,18 @@ export default function ProgressChart({ type, data, ...props }) {
                 {item.category}
               </div>
               <div className="flex-1 relative">
-                <div className="w-full bg-gray-200 rounded-full h-6 relative overflow-hidden">
+                <div 
+                  className="w-full bg-gray-200 rounded-full h-6 relative overflow-hidden cursor-pointer hover:bg-gray-300 transition-colors duration-200"
+                  onClick={() => handleCategoryClick(item.category)}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`View ${item.category} details - ${percentage}% complete`}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      handleCategoryClick(item.category);
+                    }
+                  }}
+                >
                   <div
                     className={`h-full rounded-full transition-all duration-1000 ease-out ${
                       percentage >= 90 ? 'bg-green-500' :
