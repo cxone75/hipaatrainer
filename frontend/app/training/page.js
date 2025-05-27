@@ -3,11 +3,19 @@
 
 import { useState, useEffect } from 'react';
 import MainLayout from '../components/Layout/MainLayout';
+import EnrollUsersModal from './components/EnrollUsersModal';
 
 export default function TrainingCourses() {
   const [courses, setCourses] = useState([]);
   const [filter, setFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [showEnrollModal, setShowEnrollModal] = useState(false);
+  const [selectedCourseForEnrollment, setSelectedCourseForEnrollment] = useState(null);
+
+  const handleUserAssigned = (course) => {
+    setSelectedCourseForEnrollment(course.title);
+    setShowEnrollModal(true);
+  };
 
   useEffect(() => {
     // Sample courses data - replace with actual API call
@@ -211,40 +219,53 @@ export default function TrainingCourses() {
                   </p>
                 )}
 
-                {/* Action Button */}
-                <div className="flex space-x-2">
-                  {course.enrolled ? (
-                    <a
-                      href={`/training/${course.id}`}
-                      className="flex-1 bg-purple-800 text-white px-4 py-2 rounded-lg text-center font-medium hover:bg-purple-900 transition-colors"
-                    >
-                      {course.status === 'completed' ? 'Review Course' : 'Continue'}
-                    </a>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        // Enroll in course logic
-                        setCourses(prev => prev.map(c => 
-                          c.id === course.id ? { ...c, enrolled: true, status: 'in-progress' } : c
-                        ));
-                      }}
-                      className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-                    >
-                      Enroll Now
-                    </button>
-                  )}
+                {/* Action Buttons */}
+                <div className="space-y-2">
+                  <div className="flex space-x-2">
+                    {course.enrolled ? (
+                      <a
+                        href={`/training/${course.id}`}
+                        className="flex-1 bg-purple-800 text-white px-4 py-2 rounded-lg text-center font-medium hover:bg-purple-900 transition-colors"
+                      >
+                        {course.status === 'completed' ? 'Review Course' : 'Continue'}
+                      </a>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          // Enroll in course logic
+                          setCourses(prev => prev.map(c => 
+                            c.id === course.id ? { ...c, enrolled: true, status: 'in-progress' } : c
+                          ));
+                        }}
+                        className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                      >
+                        Enroll Now
+                      </button>
+                    )}
 
-                  {course.certificateEarned && (
-                    <a
-                      href={`/training/${course.id}#certificate`}
-                      className="px-4 py-2 border border-purple-800 text-purple-800 rounded-lg font-medium hover:bg-purple-50 transition-colors"
-                      title="View Certificate"
-                    >
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
-                      </svg>
-                    </a>
-                  )}
+                    {course.certificateEarned && (
+                      <a
+                        href={`/training/${course.id}#certificate`}
+                        className="px-4 py-2 border border-purple-800 text-purple-800 rounded-lg font-medium hover:bg-purple-50 transition-colors"
+                        title="View Certificate"
+                      >
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
+                        </svg>
+                      </a>
+                    )}
+                  </div>
+
+                  {/* User Assigned Button */}
+                  <button
+                    onClick={() => handleUserAssigned(course)}
+                    className="w-full bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-200 transition-colors flex items-center justify-center space-x-2"
+                  >
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M16 17v2H2v-2s0-4 7-4 7 4 7 4m-3.5-9.5A3.5 3.5 0 1 0 9 11a3.5 3.5 0 0 0 3.5-3.5M12.5 7a3.5 3.5 0 1 0 3.5 3.5A3.5 3.5 0 0 0 12.5 7M16.5 11a2.5 2.5 0 1 0 2.5 2.5A2.5 2.5 0 0 0 16.5 11" />
+                    </svg>
+                    <span>User Assigned</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -263,6 +284,13 @@ export default function TrainingCourses() {
             <p className="text-gray-600">Try adjusting your search or filter criteria.</p>
           </div>
         )}
+
+        {/* Enroll Users Modal */}
+        <EnrollUsersModal
+          isOpen={showEnrollModal}
+          onClose={() => setShowEnrollModal(false)}
+          selectedCourse={selectedCourseForEnrollment}
+        />
       </div>
     </MainLayout>
   );

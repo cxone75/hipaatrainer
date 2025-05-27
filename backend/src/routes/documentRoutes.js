@@ -1,4 +1,3 @@
-
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
@@ -28,7 +27,7 @@ const upload = multer({
 router.get('/', auth, async (req, res) => {
   try {
     const supabase = createClient();
-    
+
     const { data: documents, error } = await supabase
       .from('documents')
       .select('*')
@@ -63,13 +62,13 @@ router.post('/',
       }
 
       const { name, type, description } = req.body;
-      
+
       if (!name || !type) {
         return res.status(400).json({ error: 'Document name and type are required' });
       }
 
       const supabase = createClient();
-      
+
       // Generate unique filename
       const filename = `${Date.now()}-${req.file.originalname}`;
       const filePath = `documents/${req.user.organizationId}/${filename}`;
