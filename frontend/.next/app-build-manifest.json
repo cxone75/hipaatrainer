@@ -1,9 +1,9 @@
 {
   "pages": {
-    "/admin/users/page": [
+    "/admin/users/[id]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/admin/users/page.js"
+      "static/chunks/app/admin/users/[id]/page.js"
     ],
     "/layout": [
       "static/chunks/webpack.js",
@@ -11,30 +11,25 @@
       "static/css/css-app_globals_css-node_modules_next_font_google_target_css.css",
       "static/chunks/app/layout.js"
     ],
-    "/admin/roles/page": [
+    "/admin/users/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/admin/roles/page.js"
+      "static/chunks/app/admin/users/page.js"
     ],
     "/profile/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/profile/page.js"
     ],
-    "/admin/users/create/page": [
+    "/admin/roles/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/admin/users/create/page.js"
+      "static/chunks/app/admin/roles/page.js"
     ],
-    "/admin/users/bulk/page": [
+    "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/admin/users/bulk/page.js"
-    ],
-    "/admin/users/[id]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/admin/users/[id]/page.js"
+      "static/chunks/app/page.js"
     ],
     "/_not-found/page": [
       "static/chunks/webpack.js",
