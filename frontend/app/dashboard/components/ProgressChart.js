@@ -31,7 +31,12 @@ export default function ProgressChart({ type, data, ...props }) {
 
     const formatDate = (dateString) => {
       const date = new Date(dateString);
-      return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+      // Use UTC to ensure consistent rendering between server and client
+      return date.toLocaleDateString('en-US', { 
+        month: 'short', 
+        year: 'numeric',
+        timeZone: 'UTC'
+      });
     };
 
     const handleMouseMove = (e, point) => {

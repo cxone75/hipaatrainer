@@ -1,4 +1,3 @@
-
 export default function RoleMatrix() {
   const roles = ['Admin', 'Manager', 'User', 'Viewer'];
   const permissions = ['Read', 'Write', 'Delete', 'Admin'];
