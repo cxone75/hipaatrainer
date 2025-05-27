@@ -15,11 +15,6 @@ export default function UserDirectory() {
 
   return (
     <div className="space-y-6">
-      {/* Header Section */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">User Directory</h1>
-      </div>
-
       {/* Statistics Cards */}
       <UserStatistics />
 
