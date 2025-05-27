@@ -11,7 +11,7 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
   const [formData, setFormData] = useState({});
   const [availableRoles] = useState(['Admin', 'Manager', 'Instructor', 'Clinical Staff', 'User', 'Viewer']);
 
-  if (!isOpen || !user) return null;
+  if (!isOpen) return null;
 
   // Initialize form data when entering edit mode or when modal opens for new user
   const handleEditClick = () => {
@@ -42,7 +42,7 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
   };
 
   // Initialize form data when modal opens for new user creation
-  React.useEffect(() => {
+  useEffect(() => {
     if (isOpen && !user) {
       handleEditClick();
     }
@@ -381,7 +381,7 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
         {/* Footer */}
         <div className="flex justify-between items-center p-6 border-t border-gray-200 bg-gray-50">
           <div className="text-sm text-gray-500">
-            User ID: {user.id} • Created: January 15, 2022
+            {user ? `User ID: ${user.id} • Created: January 15, 2022` : 'New User'}
           </div>
           <div className="flex space-x-3">
             {isEditMode ? (
