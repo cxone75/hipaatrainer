@@ -290,7 +290,8 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      // Handle edit action
+                      setSelectedUser(user);
+                      setShowModal(true);
                     }}
                     className="text-purple-600 hover:text-purple-900 mr-3"
                   >
@@ -299,7 +300,8 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      // Handle view action
+                      setSelectedUser(user);
+                      setShowModal(true);
                     }}
                     className="text-gray-600 hover:text-gray-900"
                   >
