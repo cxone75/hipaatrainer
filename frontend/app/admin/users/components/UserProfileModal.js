@@ -69,17 +69,13 @@ export default function UserProfileModal({ user, isOpen, onClose, initialEditMod
   const handleSave = () => {
     // Handle save logic here - update user data
     console.log('Saving user data:', formData);
-    setIsEditMode(false);
     // In a real app, you would make an API call here
+    onClose();
   };
 
   const handleCancel = () => {
-    setIsEditMode(false);
     setFormData({});
-    // If there's no user (adding new user), close the modal
-    if (!user) {
-      onClose();
-    }
+    onClose();
   };
 
   const handleRoleToggle = (role) => {
