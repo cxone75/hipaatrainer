@@ -1,4 +1,6 @@
 {
+  "/policies/page": "app/policies/page.js",
+  "/profile/page": "app/profile/page.js",
   "/admin/users/page": "app/admin/users/page.js",
-  "/dashboard/page": "app/dashboard/page.js"
+  "/admin/users/[id]/page": "app/admin/users/[id]/page.js"
 }
