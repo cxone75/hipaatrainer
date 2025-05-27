@@ -86,13 +86,9 @@ export default function ProfileForm({ onFieldChange }) {
           {/* Photo Upload */}
           <div className="flex items-center space-x-4">
             <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
-              {profile.photo ? (
-                <img src={profile.photo} alt="Profile" className="w-full h-full object-cover" />
-              ) : (
-                <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-              )}
+              <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7 7z" />
+              </svg>
             </div>
             <div>
               <button
@@ -127,7 +123,6 @@ export default function ProfileForm({ onFieldChange }) {
                 onChange={(e) => handleInputChange('firstName', e.target.value)}
                 className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 required
-                aria-describedby="firstName-error"
               />
             </div>
             <div>
@@ -141,7 +136,6 @@ export default function ProfileForm({ onFieldChange }) {
                 onChange={(e) => handleInputChange('lastName', e.target.value)}
                 className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 required
-                aria-describedby="lastName-error"
               />
             </div>
           </div>
@@ -157,11 +151,7 @@ export default function ProfileForm({ onFieldChange }) {
               value={profile.phone}
               onChange={(e) => handleInputChange('phone', e.target.value)}
               className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              aria-describedby="phone-error"
             />
-            <div id="phone-error" className="text-red-500 text-sm mt-1" role="alert" aria-live="polite">
-              {/* Phone validation errors would appear here */}
-            </div>
           </div>
 
           {/* Email (Read-only) */}
@@ -175,11 +165,7 @@ export default function ProfileForm({ onFieldChange }) {
               value={profile.email}
               readOnly
               className="w-full p-2 border rounded bg-gray-50 text-gray-600 cursor-not-allowed"
-              aria-describedby="email-help"
             />
-            <p id="email-help" className="text-xs text-gray-500 mt-1">
-              Email cannot be changed. Contact support if needed.
-            </p>
           </div>
 
           {/* Organizations */}

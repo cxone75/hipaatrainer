@@ -78,12 +78,7 @@ export default function SecuritySettings({ onFieldChange }) {
     return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
-    const [lastLogin, setLastLogin] = useState('');
-
-  useEffect(() => {
-    // Set date on client side to avoid hydration mismatch
-    setLastLogin(new Date().toLocaleString());
-  }, []);
+  const [lastLogin] = useState('2025-01-01 10:30:00'); // Static date to avoid hydration issues
 
   return (
     <div className="bg-white p-6 rounded-lg shadow">
