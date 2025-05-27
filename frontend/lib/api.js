@@ -76,6 +76,20 @@ class ApiClient {
   async getOrganizations() {
     return this.request('/organizations');
   }
+
+  async switchOrganization(userId, organizationId) {
+    return this.request(`/users/${userId}/switch-org`, {
+      method: 'POST',
+      body: { organizationId },
+    });
+  }
+
+  async removeUserFromOrganization(userId, organizationId) {
+    return this.request(`/users/${userId}/remove-org`, {
+      method: 'DELETE',
+      body: { organizationId },
+    });
+  }
 }
 
 export const apiClient = new ApiClient();
