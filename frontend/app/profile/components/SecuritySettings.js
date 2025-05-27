@@ -1,7 +1,6 @@
-
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function SecuritySettings({ onFieldChange }) {
   const [mfaEnabled, setMfaEnabled] = useState(false);
@@ -79,11 +78,18 @@ export default function SecuritySettings({ onFieldChange }) {
     return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
+    const [lastLogin, setLastLogin] = useState('');
+
+  useEffect(() => {
+    // Set date on client side to avoid hydration mismatch
+    setLastLogin(new Date().toLocaleString());
+  }, []);
+
   return (
     <div className="bg-white p-6 rounded-lg shadow">
       <h3 className="text-lg font-semibold mb-4">Security Settings</h3>
       <div className="space-y-6">
-        
+
         {/* Password Change Section */}
         <div>
           <div className="flex items-center justify-between mb-2">
@@ -95,7 +101,7 @@ export default function SecuritySettings({ onFieldChange }) {
               {showPasswordChange ? 'Cancel' : 'Change Password'}
             </button>
           </div>
-          
+
           {showPasswordChange && (
             <form onSubmit={handlePasswordChange} className="space-y-3 mt-3">
               <input
@@ -131,7 +137,7 @@ export default function SecuritySettings({ onFieldChange }) {
             </form>
           )}
         </div>
-        
+
         {/* MFA Section */}
         <div>
           <h4 className="font-medium mb-2">Multi-Factor Authentication</h4>
@@ -154,7 +160,7 @@ export default function SecuritySettings({ onFieldChange }) {
             </label>
           </div>
         </div>
-        
+
         {/* Active Sessions */}
         <div>
           <h4 className="font-medium mb-3">Active Sessions</h4>
@@ -195,7 +201,7 @@ export default function SecuritySettings({ onFieldChange }) {
           <div className="space-y-2 text-sm">
             <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
               <div>
-                <span className="font-medium">Last login:</span> May 27, 2025 10:30 AM
+                <span className="font-medium">Last login:</span> {lastLogin}
                 <br />
                 <span className="text-gray-600">Chrome on Windows • New York, NY</span>
               </div>

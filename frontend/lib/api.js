@@ -139,3 +139,71 @@ class ApiClient {
 
 export const apiClient = new ApiClient();
 export default apiClient;
+class ApiClient {
+  constructor() {
+    this.baseURL = process.env.NODE_ENV === 'production' 
+      ? window.location.origin 
+      : 'http://localhost:8080';
+  }
+
+  async request(endpoint, options = {}) {
+    const url = `${this.baseURL}/api${endpoint}`;
+    
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+      ...options,
+    };
+
+    if (config.body && typeof config.body === 'object') {
+      config.body = JSON.stringify(config.body);
+    }
+
+    try {
+      const response = await fetch(url, config);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        return await response.json();
+      }
+      
+      return await response.text();
+    } catch (error) {
+      console.error('API request failed:', error);
+      throw error;
+    }
+  }
+
+  async get(endpoint, options = {}) {
+    return this.request(endpoint, { method: 'GET', ...options });
+  }
+
+  async post(endpoint, data, options = {}) {
+    return this.request(endpoint, { 
+      method: 'POST', 
+      body: data, 
+      ...options 
+    });
+  }
+
+  async put(endpoint, data, options = {}) {
+    return this.request(endpoint, { 
+      method: 'PUT', 
+      body: data, 
+      ...options 
+    });
+  }
+
+  async delete(endpoint, options = {}) {
+    return this.request(endpoint, { method: 'DELETE', ...options });
+  }
+}
+
+const apiClient = new ApiClient();
+export default apiClient;
