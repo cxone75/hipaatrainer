@@ -9,36 +9,12 @@ export default function TopNavigation() {
   return (
     <nav className="bg-gray-900 border-b border-gray-400 px-6 py-3">
       <div className="flex items-center justify-between">
-        {/* Left side - Organization Switcher */}
-        <div className="flex items-center space-x-6">
-          {/* Organization Switcher */}
-          <div className="relative">
-            <button
-              onClick={() => setShowOrgDropdown(!showOrgDropdown)}
-              className="flex items-center space-x-2 px-3 py-2 rounded bg-gray-800 hover:bg-gray-700 text-gray-200"
-            >
-              <span>Healthcare Clinic A</span>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            
-            {showOrgDropdown && (
-              <div className="absolute top-full left-0 mt-1 w-64 bg-gray-800 border border-gray-600 rounded shadow-lg z-50">
-                <div className="p-2">
-                  <div className="px-3 py-2 hover:bg-gray-700 rounded cursor-pointer text-gray-200">
-                    Healthcare Clinic A
-                  </div>
-                  <div className="px-3 py-2 hover:bg-gray-700 rounded cursor-pointer text-gray-200">
-                    Dental Practice B
-                  </div>
-                  <div className="px-3 py-2 hover:bg-gray-700 rounded cursor-pointer text-gray-200">
-                    Medical Center C
-                  </div>
-                </div>
-              </div>
-            )}
+        {/* Left side - Logo */}
+        <div className="flex items-center space-x-3">
+          <div className="w-8 h-8 bg-purple-800 rounded flex items-center justify-center">
+            <span className="text-white font-bold text-sm">HT</span>
           </div>
+          <span className="text-white font-medium text-lg">HIPAA Trainer</span>
         </div>
 
         {/* Center - Search Bar */}
@@ -55,8 +31,36 @@ export default function TopNavigation() {
           </div>
         </div>
 
-        {/* Right side - Notifications and User Menu */}
+        {/* Right side - Organization Switcher, Notifications and User Menu */}
         <div className="flex items-center space-x-4">
+          {/* Organization Switcher */}
+          <div className="relative">
+            <button
+              onClick={() => setShowOrgDropdown(!showOrgDropdown)}
+              className="flex items-center space-x-2 px-3 py-2 rounded bg-gray-800 hover:bg-gray-700 text-gray-200"
+            >
+              <span>Healthcare Clinic A</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            
+            {showOrgDropdown && (
+              <div className="absolute top-full right-0 mt-1 w-64 bg-gray-800 border border-gray-600 rounded shadow-lg z-50">
+                <div className="p-2">
+                  <div className="px-3 py-2 hover:bg-gray-700 rounded cursor-pointer text-gray-200">
+                    Healthcare Clinic A
+                  </div>
+                  <div className="px-3 py-2 hover:bg-gray-700 rounded cursor-pointer text-gray-200">
+                    Dental Practice B
+                  </div>
+                  <div className="px-3 py-2 hover:bg-gray-700 rounded cursor-pointer text-gray-200">
+                    Medical Center C
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
           {/* Notifications */}
           <div className="relative">
             <button

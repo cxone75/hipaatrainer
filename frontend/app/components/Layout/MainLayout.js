@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -15,32 +14,17 @@ export default function MainLayout({ children, breadcrumbItems = [] }) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-200 flex flex-col">
-      {/* Top Navigation */}
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       <TopNavigation />
-      
-      <div className="flex flex-1">
-        {/* Sidebar */}
-        <Sidebar 
-          collapsed={sidebarCollapsed} 
-          onToggleCollapse={handleToggleSidebar}
-        />
-        
-        {/* Main Content Area */}
-        <main className={`flex-1 transition-all duration-300 ${sidebarCollapsed ? 'ml-0' : 'ml-0'}`}>
-          <div className="p-6">
-            {/* Breadcrumb */}
-            <Breadcrumb items={breadcrumbItems} />
-            
-            {/* Page Content */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-300 min-h-96">
-              {children}
-            </div>
-          </div>
-        </main>
-      </div>
-      
-      {/* Footer */}
+      <Sidebar />
+      {breadcrumbItems && (
+        <div className="bg-white border-b border-gray-200 px-6 py-2">
+          <Breadcrumb items={breadcrumbItems} />
+        </div>
+      )}
+      <main className="flex-1 overflow-y-auto">
+        {children}
+      </main>
       <Footer />
     </div>
   );
