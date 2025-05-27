@@ -21,7 +21,7 @@ export default function Footer() {
 
         {/* Center - Last Updated */}
         <div className="text-gray-400 text-sm">
-          Last updated: {new Date().toLocaleDateString()} at {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          Last updated: <span suppressHydrationWarning>{new Date().toLocaleDateString()}</span> at <span suppressHydrationWarning>{new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
         </div>
 
         {/* Right side - Links */}
