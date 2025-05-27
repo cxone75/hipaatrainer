@@ -2,8 +2,12 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const { createClient } = require('../services/supabase');
-const auth = require('../middleware/auth');
-const rbac = require('../middleware/rbac');
+const authMiddleware = require('../middleware/auth');
+const rbacMiddleware = require('../middleware/rbac');
+
+// Extract the actual middleware functions
+const auth = authMiddleware.verifyToken ? authMiddleware.verifyToken.bind(authMiddleware) : authMiddleware;
+const rbac = rbacMiddleware.requireRole ? rbacMiddleware.requireRole.bind(rbacMiddleware) : rbacMiddleware;
 const auditLogMiddleware = require('../middleware/auditLog');
 
 const router = express.Router();
