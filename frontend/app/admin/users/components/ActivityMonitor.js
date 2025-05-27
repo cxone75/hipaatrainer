@@ -1,29 +1,6 @@
+'use client';
 
-<old_str>export default function ActivityMonitor() {
-  const activities = [
-    { user: 'John Doe', action: 'Logged in', timestamp: '2024-01-15 10:30 AM' },
-    { user: 'Jane Smith', action: 'Updated profile', timestamp: '2024-01-15 10:25 AM' },
-    { user: 'Bob Johnson', action: 'Created new user', timestamp: '2024-01-15 10:20 AM' },
-  ];
-
-  return (
-    <div className="bg-white p-6 rounded-lg shadow">
-      <h3 className="text-lg font-semibold mb-4">Recent Activity</h3>
-      <div className="space-y-3">
-        {activities.map((activity, index) => (
-          <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded">
-            <div>
-              <span className="font-medium">{activity.user}</span>
-              <span className="text-gray-600 ml-2">{activity.action}</span>
-            </div>
-            <span className="text-sm text-gray-500">{activity.timestamp}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}</old_str>
-<new_str>export default function ActivityMonitor({ userId }) {
+export default function ActivityMonitor({ userId }) {
   // Mock activity data - in real app, this would come from API based on userId
   const activities = [
     { 
@@ -164,13 +141,13 @@
           View All Activity
         </button>
       </div>
-      
+
       <div className="space-y-4">
         {activities.map((activity, index) => (
-          <div key={activity.id} className="flex items-start space-x-4">
+          <div key={activity.id} className="flex items-start space-x-4 relative">
             {/* Icon */}
             {getActivityIcon(activity.type)}
-            
+
             {/* Content */}
             <div className="flex-1 min-w-0">
               <div className="flex items-start justify-between">
@@ -196,15 +173,15 @@
                 </time>
               </div>
             </div>
-            
+
             {/* Connector line (except for last item) */}
             {index < activities.length - 1 && (
-              <div className="absolute left-10 top-12 w-px h-8 bg-gray-200 ml-4"></div>
+              <div className="absolute left-4 top-12 w-px h-8 bg-gray-200"></div>
             )}
           </div>
         ))}
       </div>
-      
+
       {activities.length === 0 && (
         <div className="text-center py-8">
           <svg className="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -215,4 +192,4 @@
       )}
     </div>
   );
-}</new_str>
+}
