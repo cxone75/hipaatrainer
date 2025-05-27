@@ -1,15 +1,15 @@
-
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function UpdateCard({ 
-  update, 
-  isExpanded, 
-  onExpand, 
-  onSetReminder, 
-  getImpactColor 
-}) {
+export default function UpdateCard({ update, onSetReminder, onViewDetails }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const [isSettingReminder, setIsSettingReminder] = useState(false);
 
   const handleSetReminder = async () => {
@@ -47,31 +47,31 @@ export default function UpdateCard({
                 {update.category}
               </span>
             </div>
-            
+
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
               {update.title}
             </h3>
-            
+
             <p className="text-gray-600 mb-3">
               {update.description}
             </p>
-            
+
             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
               <div className="flex items-center">
                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                Effective: {formatDate(update.effectiveDate)}
+                Effective: {isClient ? formatDate(update.effectiveDate) : 'Loading...'}
               </div>
               <div className="flex items-center">
                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                Updated: {formatDate(update.lastUpdated)}
+                Updated: {isClient ? formatDate(update.lastUpdated) : 'Loading...'}
               </div>
             </div>
           </div>
-          
+
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-2">
             <button
@@ -96,9 +96,9 @@ export default function UpdateCard({
                 </>
               )}
             </button>
-            
+
             <button
-              onClick={onExpand}
+              onClick={() => onViewDetails(update.id)}
               className="flex items-center justify-center px-4 py-2 bg-purple-800 text-white rounded-md text-sm font-medium hover:bg-purple-900"
               aria-expanded={isExpanded}
               aria-controls={`update-details-${update.id}`}

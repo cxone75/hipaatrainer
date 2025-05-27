@@ -1,6 +1,4 @@
-// API client for backend communication
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 class ApiClient {
   constructor() {
@@ -17,10 +15,6 @@ class ApiClient {
       },
       ...options,
     };
-
-    if (config.body && typeof config.body === 'object') {
-      config.body = JSON.stringify(config.body);
-    }
 
     try {
       const response = await fetch(url, config);
@@ -48,7 +42,7 @@ class ApiClient {
   async post(endpoint, data, options = {}) {
     return this.request(endpoint, { 
       method: 'POST', 
-      body: data, 
+      body: JSON.stringify(data),
       ...options 
     });
   }
@@ -56,7 +50,7 @@ class ApiClient {
   async put(endpoint, data, options = {}) {
     return this.request(endpoint, { 
       method: 'PUT', 
-      body: data, 
+      body: JSON.stringify(data),
       ...options 
     });
   }
@@ -78,14 +72,14 @@ class ApiClient {
   async createUser(userData) {
     return this.request('/users', {
       method: 'POST',
-      body: userData,
+      body: JSON.stringify(userData),
     });
   }
 
   async updateUser(id, userData) {
     return this.request(`/users/${id}`, {
       method: 'PUT',
-      body: userData,
+      body: JSON.stringify(userData),
     });
   }
 
@@ -103,7 +97,7 @@ class ApiClient {
   async createRole(roleData) {
     return this.request('/roles', {
       method: 'POST',
-      body: roleData,
+      body: JSON.stringify(roleData),
     });
   }
 
@@ -115,14 +109,14 @@ class ApiClient {
   async switchOrganization(userId, organizationId) {
     return this.request(`/users/${userId}/switch-org`, {
       method: 'POST',
-      body: { organizationId },
+      body: JSON.stringify({ organizationId }),
     });
   }
 
   async removeUserFromOrganization(userId, organizationId) {
     return this.request(`/users/${userId}/remove-org`, {
       method: 'DELETE',
-      body: { organizationId },
+      body: JSON.stringify({ organizationId }),
     });
   }
 
@@ -154,14 +148,14 @@ class ApiClient {
   async createCorrectiveAction(actionData) {
     return this.request('/corrective-actions', {
       method: 'POST',
-      body: actionData,
+      body: JSON.stringify(actionData),
     });
   }
 
   async updateCorrectiveAction(id, actionData) {
     return this.request(`/corrective-actions/${id}`, {
       method: 'PUT',
-      body: actionData,
+      body: JSON.stringify(actionData),
     });
   }
 
@@ -172,5 +166,5 @@ class ApiClient {
   }
 }
 
-export const apiClient = new ApiClient();
+const apiClient = new ApiClient();
 export default apiClient;

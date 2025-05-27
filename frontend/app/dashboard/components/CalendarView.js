@@ -1,11 +1,16 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function CalendarView({ events, onEventClick, onSendReminder }) {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const getEventStatusColor = (status) => {
     switch (status) {
@@ -106,10 +111,10 @@ export default function CalendarView({ events, onEventClick, onSendReminder }) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-semibold text-sm truncate">{event.title}</h3>
-                  <p className="text-xs mt-1">{formatDate(event.date)}</p>
+                  <p className="text-xs mt-1">{isClient ? formatDate(event.date) : event.date}</p>
                   <div className="mt-2 flex items-center justify-between">
                     <span className="text-xs font-medium">
-                      {daysUntil > 0 ? `${daysUntil} days` : daysUntil === 0 ? 'Today' : 'Overdue'}
+                      {isClient ? (daysUntil > 0 ? `${daysUntil} days` : daysUntil === 0 ? 'Today' : 'Overdue') : 'Loading...'}
                     </span>
                     <div className={`w-2 h-2 rounded-full ${
                       event.status === 'urgent' ? 'bg-red-500' :
@@ -148,7 +153,7 @@ export default function CalendarView({ events, onEventClick, onSendReminder }) {
             <div className="space-y-3">
               <div>
                 <span className="text-sm font-medium text-gray-600">Date:</span>
-                <span className="ml-2 text-sm text-gray-900">{formatDate(selectedEvent.date)}</span>
+                <span className="ml-2 text-sm text-gray-900">{isClient ? formatDate(selectedEvent.date) : selectedEvent.date}</span>
               </div>
               
               <div>

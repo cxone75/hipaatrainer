@@ -1,10 +1,14 @@
-
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function PolicyCard({ policy, selected, onSelect, onAttest }) {
   const [isViewing, setIsViewing] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -57,6 +61,9 @@ export default function PolicyCard({ policy, selected, onSelect, onAttest }) {
   };
 
   const formatDate = (dateString) => {
+    if (!isClient) {
+      return 'Loading date...'; // Or some placeholder
+    }
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
@@ -120,7 +127,7 @@ export default function PolicyCard({ policy, selected, onSelect, onAttest }) {
             <span className="text-gray-500">Last Updated:</span>
             <span className="text-gray-900">{formatDate(policy.lastUpdated)}</span>
           </div>
-          
+
           {policy.attestationDeadline && (
             <div className="flex justify-between text-sm">
               <span className="text-gray-500">Deadline:</span>
@@ -147,7 +154,7 @@ export default function PolicyCard({ policy, selected, onSelect, onAttest }) {
                 <span className="text-gray-500">Distributed To:</span>
                 <span className="text-gray-900">{policy.distributedTo} users</span>
               </div>
-              
+
               <div className="flex justify-between text-sm">
                 <span className="text-gray-500">Attestation Rate:</span>
                 <span className="text-gray-900">{policy.attestationRate}%</span>
