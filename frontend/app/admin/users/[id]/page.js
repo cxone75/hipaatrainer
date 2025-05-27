@@ -1,13 +1,5 @@
 
-<old_str>export default function UserProfilePage({ params }) {
-  return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">User Profile</h1>
-      <p>User ID: {params.id}</p>
-    </div>
-  );
-}</old_str>
-<new_str>import MainLayout from '../../../components/Layout/MainLayout';
+import MainLayout from '../../../components/Layout/MainLayout';
 import UserCard from '../components/UserCard';
 import RoleMatrix from '../components/RoleMatrix';
 import ActivityMonitor from '../components/ActivityMonitor';
@@ -141,4 +133,4 @@ export default function UserProfilePage({ params }) {
       </div>
     </MainLayout>
   );
-}</new_str>
+}
