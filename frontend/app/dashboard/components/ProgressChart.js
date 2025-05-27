@@ -13,10 +13,10 @@ export default function ProgressChart({ type, data, ...props }) {
     const minScore = Math.min(...data.map(d => d.score));
     const scoreRange = maxScore - minScore || 1;
     
-    const svgWidth = 400;
+    const svgWidth = 100; // Use percentage-based width
     const svgHeight = 200;
     const padding = 40;
-    const chartWidth = svgWidth - 2 * padding;
+    const chartWidth = 320; // Fixed chart area width for calculations
     const chartHeight = svgHeight - 2 * padding;
 
     const points = data.map((item, index) => {
@@ -49,8 +49,14 @@ export default function ProgressChart({ type, data, ...props }) {
     };
 
     return (
-      <div className="relative" {...props}>
-        <svg width={svgWidth} height={svgHeight} className="overflow-visible">
+      <div className="relative w-full" {...props}>
+        <svg 
+          width="100%" 
+          height={svgHeight} 
+          viewBox={`0 0 400 ${svgHeight}`}
+          className="overflow-hidden"
+          preserveAspectRatio="xMidYMid meet"
+        >
           {/* Grid lines */}
           {[0, 25, 50, 75, 100].map(score => {
             const y = padding + ((maxScore - score) / scoreRange) * chartHeight;
@@ -59,7 +65,7 @@ export default function ProgressChart({ type, data, ...props }) {
                 <line
                   x1={padding}
                   y1={y}
-                  x2={svgWidth - padding}
+                  x2={360}
                   y2={y}
                   stroke="#e5e7eb"
                   strokeWidth="1"
@@ -81,7 +87,7 @@ export default function ProgressChart({ type, data, ...props }) {
             <text
               key={index}
               x={point.x}
-              y={svgHeight - 10}
+              y={190}
               textAnchor="middle"
               className="text-xs fill-gray-500"
             >
