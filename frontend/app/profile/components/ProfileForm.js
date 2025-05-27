@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useRef } from 'react';
@@ -18,7 +17,7 @@ export default function ProfileForm({ onFieldChange }) {
     { id: '2', name: 'Dental Practice B', role: 'Manager' },
     { id: '3', name: 'Medical Center C', role: 'Staff' }
   ]);
-  
+
   const [currentOrg, setCurrentOrg] = useState('1');
   const [showRemoveModal, setShowRemoveModal] = useState(false);
   const [orgToRemove, setOrgToRemove] = useState(null);

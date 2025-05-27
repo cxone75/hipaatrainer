@@ -2,105 +2,81 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import UploadModal from './UploadModal';
+import DeleteModal from './DeleteModal';
 
 export default function DocumentList() {
   const [documents, setDocuments] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
   const [sortBy, setSortBy] = useState('name');
+  const [isLoading, setIsLoading] = useState(true);
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [documentToDelete, setDocumentToDelete] = useState(null);
+
+  const categories = ['all', 'Policy', 'BAA', 'Certificate', 'Audit Report', 'Training', 'Security', 'Privacy'];
 
   useEffect(() => {
-    // Sample documents data - replace with actual API call
+    fetchDocuments();
+  }, []);
+
+  const fetchDocuments = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch('/api/documents');
+      if (response.ok) {
+        const data = await response.json();
+        setDocuments(data);
+      } else {
+        console.error('Failed to fetch documents');
+        // Fallback to sample data if API fails
+        loadSampleDocuments();
+      }
+    } catch (error) {
+      console.error('Error fetching documents:', error);
+      // Fallback to sample data if API fails
+      loadSampleDocuments();
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const loadSampleDocuments = () => {
     const sampleDocuments = [
       {
         id: 'doc-001',
         name: 'HIPAA Risk Assessment Form',
-        category: 'Risk Assessment',
-        type: 'PDF',
-        size: '245 KB',
-        lastModified: '2024-01-15',
-        status: 'Current',
+        type: 'Risk Assessment',
+        file_size: 251658,
+        created_at: '2024-01-15T00:00:00Z',
+        status: 'active',
         description: 'Comprehensive risk assessment documentation for HIPAA compliance',
         storage_url: '/documents/hipaa-risk-assessment.pdf',
         version: '2.1',
-        reviewDate: '2024-07-15'
+        review_date: '2024-07-15'
       },
       {
         id: 'doc-002',
         name: 'Business Associate Agreements',
-        category: 'Legal',
-        type: 'PDF',
-        size: '1.2 MB',
-        lastModified: '2024-01-20',
-        status: 'Current',
+        type: 'BAA',
+        file_size: 1258291,
+        created_at: '2024-01-20T00:00:00Z',
+        status: 'active',
         description: 'Collection of signed BAAs with third-party vendors',
         storage_url: '/documents/baa-collection.pdf',
         version: '1.5',
-        reviewDate: '2024-06-01'
+        review_date: '2024-06-01'
       },
-      {
-        id: 'doc-003',
-        name: 'Security Incident Response Plan',
-        category: 'Security',
-        type: 'DOCX',
-        size: '892 KB',
-        lastModified: '2024-01-10',
-        status: 'Under Review',
-        description: 'Step-by-step procedures for handling security incidents',
-        storage_url: '/documents/incident-response-plan.docx',
-        version: '3.0',
-        reviewDate: '2024-05-15'
-      },
-      {
-        id: 'doc-004',
-        name: 'Employee Training Records',
-        category: 'Training',
-        type: 'XLSX',
-        size: '156 KB',
-        lastModified: '2024-01-25',
-        status: 'Current',
-        description: 'Training completion records and certificates',
-        storage_url: '/documents/training-records.xlsx',
-        version: '1.8',
-        reviewDate: '2024-08-01'
-      },
-      {
-        id: 'doc-005',
-        name: 'Data Backup and Recovery Procedures',
-        category: 'Operations',
-        type: 'PDF',
-        size: '678 KB',
-        lastModified: '2024-01-05',
-        status: 'Expired',
-        description: 'Backup procedures and disaster recovery protocols',
-        storage_url: '/documents/backup-procedures.pdf',
-        version: '2.3',
-        reviewDate: '2024-01-01'
-      },
-      {
-        id: 'doc-006',
-        name: 'Privacy Impact Assessment',
-        category: 'Privacy',
-        type: 'PDF',
-        size: '334 KB',
-        lastModified: '2024-01-12',
-        status: 'Current',
-        description: 'Assessment of privacy risks for new systems',
-        storage_url: '/documents/privacy-impact-assessment.pdf',
-        version: '1.2',
-        reviewDate: '2024-09-12'
-      }
     ];
     setDocuments(sampleDocuments);
-  }, []);
-
-  const categories = ['all', 'Risk Assessment', 'Legal', 'Security', 'Training', 'Operations', 'Privacy'];
+  };
 
   const filteredDocuments = documents
     .filter(doc => {
       const matchesSearch = doc.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        doc.description.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory = filterCategory === 'all' || doc.category === filterCategory;
+        doc.description?.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = filterCategory === 'all' || doc.type === filterCategory;
       return matchesSearch && matchesCategory;
     })
     .sort((a, b) => {
@@ -108,9 +84,9 @@ export default function DocumentList() {
         case 'name':
           return a.name.localeCompare(b.name);
         case 'date':
-          return new Date(b.lastModified) - new Date(a.lastModified);
+          return new Date(b.created_at) - new Date(a.created_at);
         case 'size':
-          return parseFloat(b.size) - parseFloat(a.size);
+          return (b.file_size || 0) - (a.file_size || 0);
         default:
           return 0;
       }
@@ -118,49 +94,80 @@ export default function DocumentList() {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'Current': return 'bg-green-100 text-green-800';
-      case 'Under Review': return 'bg-yellow-100 text-yellow-800';
-      case 'Expired': return 'bg-red-100 text-red-800';
+      case 'active': return 'bg-green-100 text-green-800';
+      case 'under_review': return 'bg-yellow-100 text-yellow-800';
+      case 'expired': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getFileIcon = (type) => {
-    switch (type) {
-      case 'PDF':
-        return (
-          <svg className="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
-          </svg>
-        );
-      case 'DOCX':
-        return (
-          <svg className="w-8 h-8 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
-          </svg>
-        );
-      case 'XLSX':
-        return (
-          <svg className="w-8 h-8 text-green-500" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
-          </svg>
-        );
-      default:
-        return (
-          <svg className="w-8 h-8 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
-          </svg>
-        );
+    return (
+      <svg className="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
+      </svg>
+    );
+  };
+
+  const formatFileSize = (bytes) => {
+    if (!bytes) return 'Unknown';
+    const units = ['B', 'KB', 'MB', 'GB'];
+    let size = bytes;
+    let unitIndex = 0;
+    
+    while (size >= 1024 && unitIndex < units.length - 1) {
+      size /= 1024;
+      unitIndex++;
     }
+    
+    return `${size.toFixed(unitIndex > 0 ? 1 : 0)} ${units[unitIndex]}`;
   };
 
   const handleViewDocument = (doc) => {
-    // Open document in new tab/window
     window.open(doc.storage_url, '_blank');
   };
 
+  const handleUploadSuccess = (newDocument) => {
+    setDocuments(prev => [newDocument, ...prev]);
+  };
+
+  const handleDeleteClick = (doc) => {
+    setDocumentToDelete(doc);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteSuccess = (documentId) => {
+    setDocuments(prev => prev.filter(doc => doc.id !== documentId));
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center py-12">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-800"></div>
+        <span className="ml-2 text-gray-600">Loading documents...</span>
+      </div>
+    );
+  }
+
   return (
     <div>
+      {/* Header with Upload Button */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+        <div>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Document Repository</h2>
+          <p className="text-gray-600">Manage your compliance documents and audit preparation materials.</p>
+        </div>
+        <button
+          onClick={() => setIsUploadModalOpen(true)}
+          className="mt-4 md:mt-0 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center space-x-2"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+          </svg>
+          <span>Upload Document</span>
+        </button>
+      </div>
+
       {/* Filters and Search */}
       <div className="flex flex-col md:flex-row gap-4 mb-6">
         <div className="flex-1">
@@ -200,25 +207,12 @@ export default function DocumentList() {
       </div>
 
       {/* Document List */}
-      <div 
-        className="space-y-4" 
-        aria-label="Document List"
-        role="list"
-      >
+      <div className="space-y-4" aria-label="Document List" role="list">
         {filteredDocuments.map((doc) => (
           <div
             key={doc.id}
-            className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-800 focus:ring-offset-2"
-            onClick={() => handleViewDocument(doc)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                handleViewDocument(doc);
-              }
-            }}
-            tabIndex={0}
+            className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
             role="listitem"
-            aria-label={`View document: ${doc.name}`}
           >
             <div className="flex items-start space-x-4">
               {/* File Icon */}
@@ -233,7 +227,7 @@ export default function DocumentList() {
                     {doc.name}
                   </h3>
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(doc.status)}`}>
-                    {doc.status}
+                    {doc.status === 'active' ? 'Current' : doc.status}
                   </span>
                 </div>
 
@@ -241,45 +235,50 @@ export default function DocumentList() {
                   {doc.description}
                 </p>
 
-                <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+                <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-3">
                   <span className="flex items-center">
                     <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                     </svg>
-                    {doc.category}
+                    {doc.type}
                   </span>
                   <span className="flex items-center">
                     <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    {new Date(doc.lastModified).toLocaleDateString()}
+                    {new Date(doc.created_at).toLocaleDateString()}
                   </span>
                   <span className="flex items-center">
                     <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
                     </svg>
-                    {doc.size}
+                    {formatFileSize(doc.file_size)}
                   </span>
-                  <span className="flex items-center">
-                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    v{doc.version}
-                  </span>
-                  <span className="flex items-center">
-                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a4 4 0 118 0v4m-4 12v-2m-6 2h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
-                    </svg>
-                    Review: {new Date(doc.reviewDate).toLocaleDateString()}
-                  </span>
+                  {doc.version && (
+                    <span className="flex items-center">
+                      <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      v{doc.version}
+                    </span>
+                  )}
                 </div>
-              </div>
 
-              {/* Action Arrow */}
-              <div className="flex-shrink-0">
-                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+                {/* Action Buttons */}
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => handleViewDocument(doc)}
+                    className="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    View
+                  </button>
+                  <button
+                    onClick={() => handleDeleteClick(doc)}
+                    className="px-3 py-1 text-sm bg-red-100 text-red-700 rounded hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -295,9 +294,29 @@ export default function DocumentList() {
             </svg>
           </div>
           <h3 className="text-lg font-medium text-gray-900 mb-2">No documents found</h3>
-          <p className="text-gray-600">Try adjusting your search or filter criteria.</p>
+          <p className="text-gray-600 mb-4">Try adjusting your search or filter criteria, or upload your first document.</p>
+          <button
+            onClick={() => setIsUploadModalOpen(true)}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Upload Document
+          </button>
         </div>
       )}
+
+      {/* Modals */}
+      <UploadModal
+        isOpen={isUploadModalOpen}
+        onClose={() => setIsUploadModalOpen(false)}
+        onUpload={handleUploadSuccess}
+      />
+
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onDelete={handleDeleteSuccess}
+        document={documentToDelete}
+      />
     </div>
   );
 }

@@ -6,6 +6,7 @@ require('dotenv').config();
 const userRoutes = require('./routes/userRoutes');
 const roleRoutes = require('./routes/roleRoutes');
 const orgRoutes = require('./routes/orgRoutes');
+const documentRoutes = require('./routes/documentRoutes');
 const rateLimit = require('./middleware/rateLimit');
 const auditLogMiddleware = require('./middleware/auditLog');
 
@@ -58,6 +59,7 @@ app.get('/health', (req, res) => {
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/organizations', orgRoutes);
+app.use('/api/documents', documentRoutes);
 
 // 404 handler
 app.use('*', (req, res) => {

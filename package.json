@@ -5,6 +5,7 @@
     "dev:backend": "cd backend && npm start"
   },
   "dependencies": {
-    "concurrently": "^9.1.2"
+    "concurrently": "^9.1.2",
+    "multer": "^2.0.0"
   }
 }
