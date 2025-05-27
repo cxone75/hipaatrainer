@@ -295,7 +295,7 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
                     )}
                   </div>
                 </form>
-              ) : (
+              ) : user ? (
                 /* View Mode */
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-4">
@@ -346,10 +346,15 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
                     </div>
                   </div>
                 </div>
+              ) : (
+                /* No User Selected */
+                <div className="text-center py-8">
+                  <p className="text-gray-500">No user data available</p>
+                </div>
               )}
 
               {/* Additional Information - Only show in view mode */}
-              {!isEditMode && (
+              {!isEditMode && user && (
                 <div className="pt-6 border-t border-gray-200">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Additional Information</h3>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -371,7 +376,7 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
             </div>
           )}
 
-          {activeTab === 'activity' && (
+          {activeTab === 'activity' && user && (
             <div>
               <ActivityMonitor userId={user.id} isModal={true} />
             </div>
