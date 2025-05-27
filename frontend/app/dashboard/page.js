@@ -83,8 +83,8 @@ export default function ComplianceDashboard() {
   };
 
   const handleCalendarEventClick = (event) => {
-    // This would open a modal with event details
-    alert(`Event: ${event.title}\nDate: ${event.date}\nDescription: ${event.description}`);
+    // Event click handler - could be expanded to show details in a modal
+    console.log('Event clicked:', event);
   };
 
   const handleSendReminder = async (eventId) => {
