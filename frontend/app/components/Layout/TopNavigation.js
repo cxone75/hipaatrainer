@@ -9,15 +9,8 @@ export default function TopNavigation() {
   return (
     <nav className="bg-gray-900 border-b border-gray-400 px-6 py-3">
       <div className="flex items-center justify-between">
-        {/* Left side - Logo and Organization Switcher */}
+        {/* Left side - Organization Switcher */}
         <div className="flex items-center space-x-6">
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-purple-800 rounded flex items-center justify-center">
-              <span className="text-white font-bold text-sm">HT</span>
-            </div>
-            <span className="text-white font-medium text-lg">HIPAA Trainer</span>
-          </div>
-
           {/* Organization Switcher */}
           <div className="relative">
             <button
