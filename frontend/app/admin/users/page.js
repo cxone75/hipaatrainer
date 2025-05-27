@@ -31,14 +31,6 @@ export default function UsersPage() {
             <h1 className="text-3xl font-bold text-gray-900">User Management</h1>
             <p className="text-gray-600 mt-2">View and manage user accounts and permissions</p>
           </div>
-          <div className="flex space-x-3">
-            <button 
-              onClick={handleAddUser}
-              className="bg-purple-800 text-white px-6 py-3 rounded font-medium hover:bg-purple-900 transition-colors"
-            >
-              Add User
-            </button>
-          </div>
         </div>
         <UserDirectory />
         
