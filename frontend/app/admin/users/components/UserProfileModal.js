@@ -10,6 +10,7 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
   const [activeTab, setActiveTab] = useState('profile');
   const [isEditMode, setIsEditMode] = useState(false);
   const [formData, setFormData] = useState({});
+  const [availableRoles] = useState(['Admin', 'Manager', 'Instructor', 'Clinical Staff', 'User', 'Viewer']);
 
   if (!isOpen || !user) return null;
 
@@ -21,10 +22,11 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
       email: user.email,
       department: user.department,
       location: user.location,
-      roles: user.roles,
+      roles: [...user.roles],
       status: user.status || 'active'
     });
     setIsEditMode(true);
+    setActiveTab('profile');
   };
 
   const handleInputChange = (e) => {
@@ -45,6 +47,15 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
   const handleCancel = () => {
     setIsEditMode(false);
     setFormData({});
+  };
+
+  const handleRoleToggle = (role) => {
+    setFormData(prev => ({
+      ...prev,
+      roles: prev.roles.includes(role)
+        ? prev.roles.filter(r => r !== role)
+        : [...prev.roles, role]
+    }));
   };
 
   const formatDate = (date) => {
@@ -111,16 +122,18 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
             >
               Profile
             </button>
-            <button
-              onClick={() => setActiveTab('activity')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                activeTab === 'activity'
-                  ? 'border-purple-500 text-purple-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              Activity
-            </button>
+            {!isEditMode && (
+              <button
+                onClick={() => setActiveTab('activity')}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'activity'
+                    ? 'border-purple-500 text-purple-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Activity
+              </button>
+            )}
           </nav>
         </div>
 
@@ -215,6 +228,39 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
                         <option value="suspended">Suspended</option>
                       </select>
                     </div>
+                  </div>
+
+                  {/* Role Management */}
+                  <div className="mt-6 pt-6 border-t border-gray-200">
+                    <label className="block text-sm font-medium text-gray-700 mb-4">
+                      Roles & Permissions
+                    </label>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                      {availableRoles.map((role) => (
+                        <label
+                          key={role}
+                          className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={formData.roles?.includes(role) || false}
+                            onChange={() => handleRoleToggle(role)}
+                            className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                          />
+                          <span className="text-sm font-medium text-gray-700">{role}</span>
+                        </label>
+                      ))}
+                    </div>
+                    {formData.roles?.length > 0 && (
+                      <div className="mt-4">
+                        <p className="text-sm text-gray-600 mb-2">Selected roles:</p>
+                        <div className="flex flex-wrap gap-2">
+                          {formData.roles.map((role, index) => (
+                            <RoleBadge key={index} role={role} />
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </form>
               ) : (
