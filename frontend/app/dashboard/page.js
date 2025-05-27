@@ -72,7 +72,7 @@ export default function ComplianceDashboard() {
         window.location.href = '/risk-assessments?filter=pending';
         break;
       case 'baas':
-        window.location.href = '/baas?filter=expiring';
+        window.location.href = '/risk-assessments#baas';
         break;
       case 'policies':
         window.location.href = '/policies?filter=review';
