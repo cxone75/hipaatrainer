@@ -16,13 +16,8 @@ export default function UserDirectory() {
   return (
     <div className="space-y-6">
       {/* Header Section */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">User Directory</h1>
-        </div>
-        <div className="flex-1 max-w-md">
-          <UserSearch />
-        </div>
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900">User Directory</h1>
       </div>
 
       {/* Statistics Cards */}
