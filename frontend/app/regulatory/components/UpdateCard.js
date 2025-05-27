@@ -12,6 +12,19 @@ export default function UpdateCard({ update, onSetReminder, onViewDetails }) {
 
   const [isSettingReminder, setIsSettingReminder] = useState(false);
 
+  const getImpactColor = (impact) => {
+    switch (impact.toLowerCase()) {
+      case 'high':
+        return 'text-red-600 bg-red-100';
+      case 'medium':
+        return 'text-yellow-600 bg-yellow-100';
+      case 'low':
+        return 'text-green-600 bg-green-100';
+      default:
+        return 'text-gray-600 bg-gray-100';
+    }
+  };
+
   const handleSetReminder = async () => {
     setIsSettingReminder(true);
     try {
