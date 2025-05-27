@@ -5,11 +5,14 @@ import { useState } from 'react';
 import UserAvatar from '../../../components/UserAvatar';
 import RoleBadge from '../../../components/RoleBadge';
 import StatusIndicator from '../../../components/StatusIndicator';
+import UserProfileModal from './UserProfileModal';
 
 export default function UserTable({ selectedUsers = [], onSelectionChange }) {
   const [sortConfig, setSortConfig] = useState({ key: 'name', direction: 'asc' });
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   // Mock data with all required columns
   const users = [
@@ -95,7 +98,14 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
   };
 
   const handleRowClick = (userId) => {
-    window.location.href = `/admin/users/${userId}`;
+    const user = users.find(u => u.id === userId);
+    setSelectedUser(user);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedUser(null);
   };
 
   const formatLastLogin = (loginDate) => {
@@ -325,6 +335,13 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
           </button>
         </div>
       </div>
+
+      {/* User Profile Modal */}
+      <UserProfileModal
+        user={selectedUser}
+        isOpen={showModal}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-export default function ActivityMonitor({ userId }) {
+export default function ActivityMonitor({ userId, isModal }) {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -152,15 +152,17 @@ export default function ActivityMonitor({ userId }) {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow border">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold">Activity Timeline</h3>
-        <button className="text-purple-600 hover:text-purple-800 text-sm font-medium">
-          View All Activity
-        </button>
+    <div className={isModal ? "bg-transparent" : "bg-white rounded-lg shadow border"}>
+      <div className={isModal ? "px-0 py-4" : "px-6 py-4 border-b border-gray-200"}>
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-lg font-semibold">Activity Timeline</h3>
+          <button className="text-purple-600 hover:text-purple-800 text-sm font-medium">
+            View All Activity
+          </button>
+        </div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-4 px-6">
         {activities.map((activity, index) => (
           <div key={activity.id} className="flex items-start space-x-4 relative">
             {/* Icon */}
