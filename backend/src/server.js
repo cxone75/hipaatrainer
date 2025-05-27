@@ -11,7 +11,9 @@ const rateLimit = require('./middleware/rateLimit');
 const auditLogMiddleware = require('./middleware/auditLog');
 
 const app = express();
-const PORT = process.env.PORT || 5001;
+
+// Trust proxy for rate limiting in hosted environments
+app.set('trust proxy', 1);
 
 // Security middleware
 app.use(helmet());
@@ -29,6 +31,8 @@ app.use(rateLimit.apiLimiter);
 
 // Global audit logging
 app.use(auditLogMiddleware.logRequest());
+
+const PORT = process.env.PORT || 5001;
 
 // Root endpoint
 app.get('/', (req, res) => {
@@ -72,7 +76,7 @@ app.use('*', (req, res) => {
 // Global error handler
 app.use((error, req, res, next) => {
   console.error('Global error handler:', error);
-  
+
   res.status(error.status || 500).json({
     error: process.env.NODE_ENV === 'production' 
       ? 'Internal server error' 

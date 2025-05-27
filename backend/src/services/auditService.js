@@ -44,7 +44,7 @@ class AuditService {
 
       if (error) {
         console.error('Failed to create audit log:', error);
-        throw new Error(`Audit logging failed: ${error.message}`);
+        throw new Error(`Audit logging failed: ${error.message || 'Database connection error'}`);
       }
 
       return data;

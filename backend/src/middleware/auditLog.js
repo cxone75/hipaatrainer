@@ -48,7 +48,15 @@ class AuditLogMiddleware {
             },
           };
 
-          await auditService.log(auditData);
+          try {
+            // Only log if we have a valid database connection
+            if (auditData.userId || auditData.organizationId) {
+              await auditService.log(auditData);
+            }
+          } catch (error) {
+            console.error('Audit logging failed:', error);
+            // Don't fail the request if audit logging fails
+          }
         } catch (error) {
           console.error('Audit logging error:', error);
           // Don't fail the request if audit logging fails

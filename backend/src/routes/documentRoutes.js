@@ -5,9 +5,9 @@ const { createClient } = require('../services/supabase');
 const authMiddleware = require('../middleware/auth');
 const rbacMiddleware = require('../middleware/rbac');
 
-// Extract the actual middleware functions
-const auth = authMiddleware.verifyToken ? authMiddleware.verifyToken.bind(authMiddleware) : authMiddleware;
-const rbac = rbacMiddleware.requireRole ? rbacMiddleware.requireRole.bind(rbacMiddleware) : rbacMiddleware;
+// Use the middleware functions directly
+const auth = authMiddleware.verifyToken.bind(authMiddleware);
+const rbac = rbacMiddleware.requireRole;
 const auditLogMiddleware = require('../middleware/auditLog');
 
 const router = express.Router();
