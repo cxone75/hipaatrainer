@@ -66,6 +66,10 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
   const handleCancel = () => {
     setIsEditMode(false);
     setFormData({});
+    // If there's no user (adding new user), close the modal
+    if (!user) {
+      onClose();
+    }
   };
 
   const handleRoleToggle = (role) => {
