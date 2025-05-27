@@ -11,10 +11,10 @@
       "static/css/css-app_globals_css-node_modules_next_font_google_target_css.css",
       "static/chunks/app/layout.js"
     ],
-    "/training/page": [
+    "/audit/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/training/page.js"
+      "static/chunks/app/audit/page.js"
     ],
     "/risk-assessments/page": [
       "static/chunks/webpack.js",
