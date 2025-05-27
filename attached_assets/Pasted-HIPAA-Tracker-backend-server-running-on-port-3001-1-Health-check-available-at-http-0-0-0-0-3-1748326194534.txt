@@ -1,0 +1,44 @@
+HIPAA Tracker backend server running on port 3001
+[1] 📊 Health check available at http://0.0.0.0:3001/health
+[1] 🔧 Environment: development
+[0]   ▲ Next.js 14.2.0
+[0]   - Local:        http://localhost:3000
+[0] 
+[0]  ✓ Starting...
+[1] ValidationError: The 'X-Forwarded-For' header is set but the Express 'trust proxy' setting is false (default). This could indicate a misconfiguration which would prevent express-rate-limit from accurately identifying users. See https://express-rate-limit.github.io/ERR_ERL_UNEXPECTED_X_FORWARDED_FOR/ for more information.
+[1]     at _Validations.<anonymous> (/home/runner/workspace/backend/node_modules/express-rate-limit/dist/index.cjs:180:15)
+[1]     at _Validations.wrap (/home/runner/workspace/backend/node_modules/express-rate-limit/dist/index.cjs:313:18)
+[1]     at _Validations.xForwardedForHeader (/home/runner/workspace/backend/node_modules/express-rate-limit/dist/index.cjs:178:10)
+[1]     at Object.keyGenerator (/home/runner/workspace/backend/node_modules/express-rate-limit/dist/index.cjs:542:19)
+[1]     at /home/runner/workspace/backend/node_modules/express-rate-limit/dist/index.cjs:595:32
+[1]     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[1]     at async /home/runner/workspace/backend/node_modules/express-rate-limit/dist/index.cjs:576:5 {
+[1]   code: 'ERR_ERL_UNEXPECTED_X_FORWARDED_FOR',
+[1]   help: 'https://express-rate-limit.github.io/ERR_ERL_UNEXPECTED_X_FORWARDED_FOR/'
+[1] }
+[1] Failed to create audit log: {}
+[1] Audit service error: Error: Audit logging failed: undefined
+[1]     at AuditService.log (/home/runner/workspace/backend/src/services/auditService.js:47:15)
+[1]     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[1]     at async ServerResponse.<anonymous> (/home/runner/workspace/backend/src/middleware/auditLog.js:51:11)
+[1] Audit logging error: {
+[1]   error: 'Audit logging failed: undefined',
+[1]   stack: 'Error: Audit logging failed: undefined\n' +
+[1]     '    at AuditService.log (/home/runner/workspace/backend/src/services/auditService.js:47:15)\n' +
+[1]     '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n' +
+[1]     '    at async ServerResponse.<anonymous> (/home/runner/workspace/backend/src/middleware/auditLog.js:51:11)',
+[1]   originalData: {
+[1]     userId: undefined,
+[1]     action: 'VIEW',
+[1]     resource: 'unknown',
+[1]     resourceId: undefined,
+[1]     ipAddress: '172.31.128.9',
+[1]     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36',
+[1]     method: 'GET',
+[1]     url: '/',
+[1]     statusCode: 200,
+[1]     organizationId: undefined,
+[1]     details: {}
+[1]   },
+[1]   timestamp: '2025-05-27T06:09:31.909Z'
+[1] }
