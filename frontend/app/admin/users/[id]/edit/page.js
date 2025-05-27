@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import MainLayout from '../../../components/Layout/MainLayout';
+import MainLayout from '../../../../components/Layout/MainLayout';
 
 export default function EditUserPage({ params }) {
   const [isClient, setIsClient] = useState(false);
