@@ -13,6 +13,7 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
   const [pageSize, setPageSize] = useState(10);
   const [selectedUser, setSelectedUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [modalEditMode, setModalEditMode] = useState(false);
 
   // Mock data with all required columns
   const users = [
@@ -100,12 +101,14 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
   const handleRowClick = (userId) => {
     const user = users.find(u => u.id === userId);
     setSelectedUser(user);
+    setModalEditMode(false);
     setShowModal(true);
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
     setSelectedUser(null);
+    setModalEditMode(false);
   };
 
   const formatLastLogin = (loginDate) => {
@@ -291,6 +294,7 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
                     onClick={(e) => {
                       e.stopPropagation();
                       setSelectedUser(user);
+                      setModalEditMode(true);
                       setShowModal(true);
                     }}
                     className="text-purple-600 hover:text-purple-900 mr-3"
@@ -301,6 +305,7 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
                     onClick={(e) => {
                       e.stopPropagation();
                       setSelectedUser(user);
+                      setModalEditMode(false);
                       setShowModal(true);
                     }}
                     className="text-gray-600 hover:text-gray-900"
@@ -343,6 +348,7 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
         user={selectedUser}
         isOpen={showModal}
         onClose={handleCloseModal}
+        initialEditMode={modalEditMode}
       />
     </div>
   );

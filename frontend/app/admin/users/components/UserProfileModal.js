@@ -5,7 +5,7 @@ import UserAvatar from '../../../components/UserAvatar';
 import RoleBadge from '../../../components/RoleBadge';
 import ActivityMonitor from './ActivityMonitor';
 
-export default function UserProfileModal({ user, isOpen, onClose }) {
+export default function UserProfileModal({ user, isOpen, onClose, initialEditMode = false }) {
   const [activeTab, setActiveTab] = useState('profile');
   const [isEditMode, setIsEditMode] = useState(false);
   const [formData, setFormData] = useState({});
@@ -39,12 +39,22 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
     setActiveTab('profile');
   };
 
-  // Initialize form data when modal opens for new user creation
+  // Initialize form data when modal opens for new user creation or when edit mode is requested
   useEffect(() => {
-    if (isOpen && !user) {
-      handleEditClick();
+    if (isOpen) {
+      if (!user) {
+        // New user creation - always start in edit mode
+        handleEditClick();
+      } else if (initialEditMode) {
+        // Existing user - start in edit mode if requested
+        handleEditClick();
+      } else {
+        // Existing user - start in view mode
+        setIsEditMode(false);
+        setActiveTab('profile');
+      }
     }
-  }, [isOpen, user]);
+  }, [isOpen, user, initialEditMode]);
 
   if (!isOpen) return null;
 
