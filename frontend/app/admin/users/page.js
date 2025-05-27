@@ -1,13 +1,27 @@
 
+'use client';
+
+import { useState } from 'react';
 import MainLayout from '../../components/Layout/MainLayout';
 import UserDirectory from './components/UserDirectory';
+import UserProfileModal from './components/UserProfileModal';
 
 export default function UsersPage() {
+  const [showAddUserModal, setShowAddUserModal] = useState(false);
+  
   const breadcrumbItems = [
     { label: 'Dashboard', href: '/' },
     { label: 'Administration', href: '/admin' },
     { label: 'User Management' }
   ];
+
+  const handleAddUser = () => {
+    setShowAddUserModal(true);
+  };
+
+  const handleCloseAddUserModal = () => {
+    setShowAddUserModal(false);
+  };
 
   return (
     <MainLayout breadcrumbItems={breadcrumbItems}>
@@ -18,15 +32,23 @@ export default function UsersPage() {
             <p className="text-gray-600 mt-2">View and manage user accounts and permissions</p>
           </div>
           <div className="flex space-x-3">
-            <button className="bg-blue-400 text-gray-900 px-6 py-3 rounded font-medium hover:bg-blue-500 transition-colors">
-              Bulk Import
-            </button>
-            <button className="bg-purple-800 text-white px-6 py-3 rounded font-medium hover:bg-purple-900 transition-colors">
+            <button 
+              onClick={handleAddUser}
+              className="bg-purple-800 text-white px-6 py-3 rounded font-medium hover:bg-purple-900 transition-colors"
+            >
               Add User
             </button>
           </div>
         </div>
         <UserDirectory />
+        
+        {/* Add User Modal */}
+        <UserProfileModal
+          user={null}
+          isOpen={showAddUserModal}
+          onClose={handleCloseAddUserModal}
+          isEditMode={true}
+        />
       </div>
     </MainLayout>
   );

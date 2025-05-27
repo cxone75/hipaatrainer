@@ -8,10 +8,20 @@ import UserSearch from './UserSearch';
 import AdvancedSearchPanel from './AdvancedSearchPanel';
 import UserTable from './UserTable';
 import BulkActions from './BulkActions';
+import UserProfileModal from './UserProfileModal';
 
 export default function UserDirectory() {
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const [showAddUserModal, setShowAddUserModal] = useState(false);
+
+  const handleAddUser = () => {
+    setShowAddUserModal(true);
+  };
+
+  const handleCloseAddUserModal = () => {
+    setShowAddUserModal(false);
+  };
 
   return (
     <div className="space-y-6">
@@ -29,19 +39,7 @@ export default function UserDirectory() {
       <UserStatistics />
       
       {/* Quick Actions */}
-      <QuickActions />
-      
-      {/* Bulk Actions */}
-      {selectedUsers.length > 0 && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-blue-900">
-              {selectedUsers.length} user{selectedUsers.length > 1 ? 's' : ''} selected
-            </span>
-            <BulkActions selectedUsers={selectedUsers} />
-          </div>
-        </div>
-      )}
+      <QuickActions onAddUser={handleAddUser} />
 
       {/* Advanced Search Panel */}
       <AdvancedSearchPanel 
@@ -148,6 +146,14 @@ export default function UserDirectory() {
           {showAdvancedSearch ? 'Hide Filters' : 'Show Filters'}
         </button>
       </div>
+
+      {/* Add User Modal */}
+      <UserProfileModal
+        user={null}
+        isOpen={showAddUserModal}
+        onClose={handleCloseAddUserModal}
+        isEditMode={true}
+      />
     </div>
   );
 }

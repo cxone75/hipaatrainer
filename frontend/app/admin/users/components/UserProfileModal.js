@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -93,13 +92,26 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-purple-50 to-blue-50">
           <div className="flex items-center space-x-4">
-            <UserAvatar name={user.name} src={user.avatar} size="lg" />
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900">
-                {isEditMode ? 'Edit User' : user.name}
-              </h2>
-              <p className="text-gray-600">{user.email}</p>
-            </div>
+            {user ? (
+              <>
+                <UserAvatar 
+                  name={user.name} 
+                  src={user.avatar}
+                  size="lg"
+                />
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    {isEditMode ? 'Edit User' : user.name}
+                  </h2>
+                  <p className="text-gray-600">{user.email}</p>
+                </div>
+              </>
+            ) : (
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">Add New User</h2>
+                <p className="text-gray-600">Create a new user account</p>
+              </div>
+            )}
           </div>
           <button
             onClick={onClose}
@@ -364,7 +376,7 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
                   onClick={handleSave}
                   className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
                 >
-                  Save Changes
+                  {user ? 'Save Changes' : 'Create User'}
                 </button>
               </>
             ) : (
