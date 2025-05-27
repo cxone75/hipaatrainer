@@ -11,8 +11,6 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
   const [formData, setFormData] = useState({});
   const [availableRoles] = useState(['Admin', 'Manager', 'Instructor', 'Clinical Staff', 'User', 'Viewer']);
 
-  if (!isOpen) return null;
-
   // Initialize form data when entering edit mode or when modal opens for new user
   const handleEditClick = () => {
     if (user) {
@@ -47,6 +45,8 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
       handleEditClick();
     }
   }, [isOpen, user]);
+
+  if (!isOpen) return null;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
