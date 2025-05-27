@@ -77,11 +77,7 @@ export default function ProfileForm({ onFieldChange }) {
     <>
       <div className="bg-white p-6 rounded-lg shadow">
         <h3 className="text-lg font-semibold mb-4">Personal Information</h3>
-        <form 
-          className="space-y-4"
-          aria-label="Profile Form"
-          onSubmit={(e) => e.preventDefault()}
-        >
+        <div className="space-y-4">
           {/* Photo Upload */}
           <div className="flex items-center space-x-4">
             <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
@@ -205,7 +201,7 @@ export default function ProfileForm({ onFieldChange }) {
               ))}
             </div>
           </div>
-        </form>
+        </div>
       </div>
 
       {/* Remove Organization Modal */}
