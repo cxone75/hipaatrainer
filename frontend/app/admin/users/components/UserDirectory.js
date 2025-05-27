@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -6,41 +7,41 @@ import QuickActions from './QuickActions';
 import UserSearch from './UserSearch';
 import AdvancedSearchPanel from './AdvancedSearchPanel';
 import UserTable from './UserTable';
-import RecentUsers from './RecentUsers';
+import BulkActions from './BulkActions';
 
 export default function UserDirectory() {
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
+  const [selectedUsers, setSelectedUsers] = useState([]);
 
   return (
     <div className="space-y-6">
+      {/* Header Section */}
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">User Directory</h1>
+        </div>
+        <div className="flex-1 max-w-md">
+          <UserSearch />
+        </div>
+      </div>
+
       {/* Statistics Cards */}
       <UserStatistics />
       
       {/* Quick Actions */}
       <QuickActions />
       
-      {/* Search Bar with Advanced Search Toggle */}
-      <div className="flex items-center space-x-4">
-        <div className="flex-1">
-          <UserSearch />
+      {/* Bulk Actions */}
+      {selectedUsers.length > 0 && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium text-blue-900">
+              {selectedUsers.length} user{selectedUsers.length > 1 ? 's' : ''} selected
+            </span>
+            <BulkActions selectedUsers={selectedUsers} />
+          </div>
         </div>
-        <button
-          onClick={() => setShowAdvancedSearch(!showAdvancedSearch)}
-          className={`px-4 py-2 text-sm font-medium rounded-lg border transition-colors ${
-            showAdvancedSearch 
-              ? 'bg-purple-800 text-white border-purple-800' 
-              : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-          }`}
-        >
-          Advanced Search
-        </button>
-        <button className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-50 transition-colors flex items-center space-x-2">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
-          <span>Export</span>
-        </button>
-      </div>
+      )}
 
       {/* Advanced Search Panel */}
       <AdvancedSearchPanel 
@@ -48,17 +49,104 @@ export default function UserDirectory() {
         onClose={() => setShowAdvancedSearch(false)} 
       />
 
-      {/* Main Content Area */}
+      {/* Main Content Area with Sidebar Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {/* User Table - Takes up 3 columns */}
-        <div className="lg:col-span-3">
-          <UserTable />
+        {/* Sidebar - Desktop Filters */}
+        <div className="lg:col-span-1 space-y-4">
+          <div className="bg-white rounded-lg shadow border p-4">
+            <h3 className="text-lg font-semibold mb-4">Filters</h3>
+            
+            {/* Role Filter */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2" aria-label="Filter by Role">
+                Role
+              </label>
+              <select className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <option>All Roles</option>
+                <option>Admin</option>
+                <option>Manager</option>
+                <option>Instructor</option>
+                <option>Clinical Staff</option>
+                <option>User</option>
+                <option>Viewer</option>
+              </select>
+            </div>
+
+            {/* Department Filter */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Department
+              </label>
+              <select className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <option>All Departments</option>
+                <option>Clinical</option>
+                <option>Administration</option>
+                <option>IT</option>
+                <option>HR</option>
+                <option>Finance</option>
+                <option>Nursing</option>
+              </select>
+            </div>
+
+            {/* Location Filter */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Location
+              </label>
+              <select className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <option>All Locations</option>
+                <option>Main Campus</option>
+                <option>North Clinic</option>
+                <option>South Clinic</option>
+                <option>Remote</option>
+              </select>
+            </div>
+
+            {/* Status Filter */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Compliance Status
+              </label>
+              <select className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <option>All Status</option>
+                <option>Compliant</option>
+                <option>Overdue</option>
+                <option>Pending</option>
+                <option>Not Started</option>
+              </select>
+            </div>
+
+            <button className="w-full bg-purple-800 text-white py-2 px-4 rounded-lg font-medium hover:bg-purple-900 transition-colors">
+              Apply Filters
+            </button>
+            
+            <button className="w-full mt-2 bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-lg font-medium hover:bg-gray-50 transition-colors">
+              Clear Filters
+            </button>
+          </div>
         </div>
         
-        {/* Recent Users Sidebar - Takes up 1 column */}
-        <div className="lg:col-span-1">
-          <RecentUsers />
+        {/* User Table - Takes up 3 columns */}
+        <div className="lg:col-span-3">
+          <UserTable 
+            selectedUsers={selectedUsers}
+            onSelectionChange={setSelectedUsers}
+          />
         </div>
+      </div>
+
+      {/* Mobile Filters Dropdown */}
+      <div className="lg:hidden">
+        <button
+          onClick={() => setShowAdvancedSearch(!showAdvancedSearch)}
+          className={`w-full px-4 py-3 text-sm font-medium rounded-lg border transition-colors ${
+            showAdvancedSearch 
+              ? 'bg-purple-800 text-white border-purple-800' 
+              : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+          }`}
+        >
+          {showAdvancedSearch ? 'Hide Filters' : 'Show Filters'}
+        </button>
       </div>
     </div>
   );
