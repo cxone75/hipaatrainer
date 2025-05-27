@@ -4,10 +4,9 @@
 import { useState } from 'react';
 import TopNavigation from './TopNavigation';
 import Sidebar from './Sidebar';
-import Breadcrumb from './Breadcrumb';
 import Footer from './Footer';
 
-export default function MainLayout({ children, breadcrumbItems = [] }) {
+export default function MainLayout({ children }) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const handleToggleSidebar = () => {
@@ -30,9 +29,6 @@ export default function MainLayout({ children, breadcrumbItems = [] }) {
         {/* Main Content Area */}
         <main className="flex-1">
           <div className="p-6">
-            {/* Breadcrumb */}
-            <Breadcrumb items={breadcrumbItems} />
-            
             {/* Page Content */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-300 min-h-96">
               {children}
