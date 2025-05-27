@@ -1,0 +1,47 @@
+4.1 Organization User Management System
+4.1.1 User Directory Dashboard (/admin/users)
+Layout:
+Header: "User Directory" (H1, 24px), search bar (UserSearch.js).
+Main Section:
+Table (UserDirectory.js): Columns for Name, Email, Roles, Department, Location, Compliance Status, Last Login.
+Status Indicators: Green (compliant), Red (overdue), Yellow (pending).
+Bulk Actions: Checkbox selection, "Bulk Actions" dropdown (BulkActions.js) with options (e.g., Assign Role, Export CSV).
+Sidebar (Desktop): Filters for Role, Department, Location, Status (UserSearch.js).
+Mobile: Filters collapse into a dropdown menu.
+Interactions:
+Search: Type to filter users (e.g., "clinical" → shows clinical department users).
+Click user row → Navigate to profile (/admin/users/[id]).
+Bulk Actions: Select users, choose "Assign Role" → Modal with role selection (RoleMatrix.js).
+Accessibility:
+Table: aria-label="User Directory Table", keyboard-navigable rows.
+Filters: aria-label="Filter by Role", dropdown focusable.
+4.1.2 User Profile (/admin/users/[id])
+Layout:
+Header: User name (H1, 24px), "Edit" button (frontend/app/admin/users/[id]/edit/page.js).
+Main Section:
+Profile Card (UserCard.js): Photo (100x100px, default avatar if none), Name, Email, Contact Info, Role History.
+Role Assignment Matrix (RoleMatrix.js): Grid showing roles (org_admin, staff), toggle to add/remove roles.
+Activity Monitor (ActivityMonitor.js): Timeline of actions (e.g., "Logged in: 2025-05-26").
+Mobile: Stacked layout (Photo → Info → Roles → Activity).
+Interactions:
+Edit Profile: Click "Edit" → Navigate to edit page.
+Role Toggle: Check/uncheck roles → Confirmation modal for sensitive changes.
+Archive User: "Archive" button → Confirmation modal, soft delete (/api/users/:id).
+Accessibility:
+Photo: alt="User Photo".
+Role Matrix: aria-label="Role Assignment Grid", keyboard-navigable toggles.
+4.1.3 Self-Service Profile (/profile)
+Layout:
+Header: "My Profile" (H1, 24px), "Save Changes" button.
+Main Section:
+Form (ProfileForm.js): Fields for Photo (upload), First Name, Last Name, Phone, Email (read-only).
+Organizations: Dropdown to switch (frontend/lib/api.js → /api/users/:id/switch-org).
+Security Settings (SecuritySettings.js): Toggle MFA, view active sessions.
+Mobile: Stacked form fields, collapsible sections.
+Interactions:
+Update Profile: Edit fields, click "Save Changes" → Approval workflow if sensitive (/api/users/:id).
+Switch Organization: Select new organization → Dashboard reloads with new context.
+Remove Organization: "Remove" button → Confirmation modal (/api/users/:id/remove-org).
+Accessibility:
+Form: aria-label="Profile Form", error messages (e.g., "Phone number invalid").
+Dropdown: aria-label="Switch Organization", keyboard-navigable.
