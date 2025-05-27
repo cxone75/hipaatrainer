@@ -8,13 +8,6 @@ import CalendarView from './components/CalendarView';
 import ProgressChart from './components/ProgressChart';
 
 export default function ComplianceDashboard() {
-  const [showReminderModal, setShowReminderModal] = useState(false);
-  const [reminderModalData, setReminderModalData] = useState({
-    type: 'success', // 'success' or 'error'
-    message: '',
-    title: ''
-  });
-  
   const [complianceData, setComplianceData] = useState({
     score: 85,
     tasks: {
@@ -90,8 +83,8 @@ export default function ComplianceDashboard() {
   };
 
   const handleCalendarEventClick = (event) => {
-    // Event click handler - could be expanded to show details in a modal
-    console.log('Event clicked:', event);
+    // This would open a modal with event details
+    alert(`Event: ${event.title}\nDate: ${event.date}\nDescription: ${event.description}`);
   };
 
   const handleSendReminder = async (eventId) => {
@@ -105,27 +98,14 @@ export default function ComplianceDashboard() {
       });
       
       if (response.ok) {
-        setReminderModalData({
-          type: 'success',
-          title: 'Success',
-          message: 'Reminder sent successfully!'
-        });
+        alert('Reminder sent successfully!');
       } else {
-        setReminderModalData({
-          type: 'error',
-          title: 'Error',
-          message: 'Failed to send reminder. Please try again.'
-        });
+        alert('Failed to send reminder');
       }
     } catch (error) {
       console.error('Error sending reminder:', error);
-      setReminderModalData({
-        type: 'error',
-        title: 'Error',
-        message: 'Error sending reminder. Please check your connection and try again.'
-      });
+      alert('Error sending reminder');
     }
-    setShowReminderModal(true);
   };
 
   return (
@@ -200,43 +180,6 @@ export default function ComplianceDashboard() {
             </div>
           </div>
         </div>
-
-        {/* Reminder Modal */}
-        {showReminderModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
-              <div className="flex items-center mb-4">
-                {reminderModalData.type === 'success' ? (
-                  <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                    <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                ) : (
-                  <div className="flex-shrink-0 w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mr-3">
-                    <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </div>
-                )}
-                <h3 className="text-lg font-semibold text-gray-900">{reminderModalData.title}</h3>
-              </div>
-              <p className="text-gray-600 mb-6">{reminderModalData.message}</p>
-              <div className="flex justify-end">
-                <button
-                  onClick={() => setShowReminderModal(false)}
-                  className={`px-4 py-2 rounded font-medium ${
-                    reminderModalData.type === 'success'
-                      ? 'bg-green-600 text-white hover:bg-green-700'
-                      : 'bg-red-600 text-white hover:bg-red-700'
-                  }`}
-                >
-                  OK
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </MainLayout>
   );
