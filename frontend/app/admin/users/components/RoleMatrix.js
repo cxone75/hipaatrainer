@@ -1,6 +1,25 @@
+
+'use client';
+
 export default function RoleMatrix() {
   const roles = ['Admin', 'Manager', 'User', 'Viewer'];
   const permissions = ['Read', 'Write', 'Delete', 'Admin'];
+
+  function getPermissionStatus(role, permission) {
+    // Mock permission logic
+    const permissionsMap = {
+      'Admin': ['Read', 'Write', 'Delete', 'Admin'],
+      'Manager': ['Read', 'Write', 'Delete'],
+      'User': ['Read', 'Write'],
+      'Viewer': ['Read']
+    };
+    return permissionsMap[role]?.includes(permission) || false;
+  }
+
+  function togglePermission(role, permission) {
+    console.log(`Toggling ${permission} for ${role}`);
+    // Implement permission toggle logic
+  }
 
   return (
     <div className="bg-white rounded-lg shadow p-6">
@@ -41,20 +60,4 @@ export default function RoleMatrix() {
       </div>
     </div>
   );
-
-  function getPermissionStatus(role, permission) {
-    // Mock permission logic
-    const permissions = {
-      'Admin': ['Read', 'Write', 'Delete', 'Admin'],
-      'Manager': ['Read', 'Write', 'Delete'],
-      'User': ['Read', 'Write'],
-      'Viewer': ['Read']
-    };
-    return permissions[role]?.includes(permission) || false;
-  }
-
-  function togglePermission(role, permission) {
-    console.log(`Toggling ${permission} for ${role}`);
-    // Implement permission toggle logic
-  }
 }

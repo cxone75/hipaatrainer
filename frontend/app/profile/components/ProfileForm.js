@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import apiClient from '../../../lib/api';
+import apiClient from '../../lib/api';
 
 export default function ProfileForm({ onFieldChange }) {
   const [profile, setProfile] = useState({
