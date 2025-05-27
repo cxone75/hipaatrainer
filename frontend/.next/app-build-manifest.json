@@ -1,9 +1,9 @@
 {
   "pages": {
-    "/risk-assessments/page": [
+    "/audit/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/risk-assessments/page.js"
+      "static/chunks/app/audit/page.js"
     ],
     "/layout": [
       "static/chunks/webpack.js",
@@ -11,20 +11,30 @@
       "static/css/css-app_globals_css-node_modules_next_font_google_target_css.css",
       "static/chunks/app/layout.js"
     ],
-    "/audit/page": [
+    "/dashboard/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/audit/page.js"
+      "static/chunks/app/dashboard/page.js"
     ],
-    "/page": [
+    "/admin/users/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
+      "static/chunks/app/admin/users/page.js"
     ],
-    "/_not-found/page": [
+    "/admin/roles/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/_not-found/page.js"
+      "static/chunks/app/admin/roles/page.js"
+    ],
+    "/training/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/training/page.js"
+    ],
+    "/training/[id]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/training/[id]/page.js"
     ]
   }
 }
