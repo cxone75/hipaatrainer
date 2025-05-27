@@ -1,5 +1,7 @@
 {
   "/admin/users/page": "app/admin/users/page.js",
-  "/regulatory/page": "app/regulatory/page.js",
-  "/admin/users/create/page": "app/admin/users/create/page.js"
+  "/admin/roles/page": "app/admin/roles/page.js",
+  "/profile/page": "app/profile/page.js",
+  "/admin/users/create/page": "app/admin/users/create/page.js",
+  "/admin/users/bulk/page": "app/admin/users/bulk/page.js"
 }
