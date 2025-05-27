@@ -1,6 +1,13 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+
 export default function ActivityMonitor({ userId }) {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   // Mock activity data - in real app, this would come from API based on userId
   const activities = [
     { 
@@ -53,7 +60,18 @@ export default function ActivityMonitor({ userId }) {
     }
   ];
 
-  const getActivityIcon = (type) => {
+  const formatDate = (dateString) => {
+    if (!isClient) return 'Loading...';
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+  };
+
+  const getTypeIcon = (type) => {
     switch (type) {
       case 'auth':
         return (
@@ -163,14 +181,9 @@ export default function ActivityMonitor({ userId }) {
                     <span>IP: {activity.ipAddress}</span>
                   </div>
                 </div>
-                <time className="text-xs text-gray-500 whitespace-nowrap">
-                  {new Date(activity.timestamp).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })}
-                </time>
+                <div className="text-xs text-gray-500">
+                  {formatDate(activity.timestamp)}
+                </div>
               </div>
             </div>
 
