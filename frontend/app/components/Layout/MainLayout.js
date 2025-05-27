@@ -15,19 +15,20 @@ export default function MainLayout({ children, breadcrumbItems = [] }) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-200 flex flex-col">
-      {/* Top Navigation */}
-      <TopNavigation />
+    <div className="min-h-screen bg-gray-200 flex">
+      {/* Sidebar - Full Height */}
+      <Sidebar 
+        collapsed={sidebarCollapsed} 
+        onToggleCollapse={handleToggleSidebar}
+      />
       
-      <div className="flex flex-1">
-        {/* Sidebar */}
-        <Sidebar 
-          collapsed={sidebarCollapsed} 
-          onToggleCollapse={handleToggleSidebar}
-        />
+      {/* Right Side - Header + Main Content + Footer */}
+      <div className="flex-1 flex flex-col">
+        {/* Top Navigation */}
+        <TopNavigation />
         
         {/* Main Content Area */}
-        <main className={`flex-1 transition-all duration-300 ${sidebarCollapsed ? 'ml-0' : 'ml-0'}`}>
+        <main className="flex-1">
           <div className="p-6">
             {/* Breadcrumb */}
             <Breadcrumb items={breadcrumbItems} />
@@ -38,10 +39,10 @@ export default function MainLayout({ children, breadcrumbItems = [] }) {
             </div>
           </div>
         </main>
+        
+        {/* Footer */}
+        <Footer />
       </div>
-      
-      {/* Footer */}
-      <Footer />
     </div>
   );
 }
