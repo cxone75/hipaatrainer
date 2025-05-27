@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MainLayout from '../components/Layout/MainLayout';
 import SRAGuide from './components/SRAGuide';
 import VulnerabilityList from './components/VulnerabilityList';
@@ -16,6 +16,14 @@ export default function RiskAssessmentPage() {
     remediationPlan: [],
     baas: []
   });
+
+  // Handle hash navigation for direct linking to tabs
+  useEffect(() => {
+    const hash = window.location.hash.slice(1); // Remove the # symbol
+    if (hash === 'baas' || hash === 'baa') {
+      setActiveTab('baas');
+    }
+  }, []);
 
   const breadcrumbItems = [
     { label: 'Dashboard', href: '/' },
