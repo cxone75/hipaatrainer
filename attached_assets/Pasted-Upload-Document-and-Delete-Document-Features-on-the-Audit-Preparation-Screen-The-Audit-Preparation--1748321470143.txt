@@ -1,0 +1,49 @@
+Upload Document and Delete Document Features on the Audit Preparation Screen
+The Audit Preparation Screen (/audit, rendered by frontend/app/audit/page.js) is a centralized hub for audit readiness, featuring a Centralized Document Repository where users can manage compliance-related documents (e.g., policies, BAAs, training certificates). The Upload Document and Delete Document features are integral to this repository, allowing users to add new documents and remove unnecessary ones, ensuring all required documentation is available for audits while maintaining HIPAA compliance (e.g., §164.308(a)(8) for evaluation). These features were briefly mentioned in the prior response under the "Centralized Document Repository" section, but I’ll now provide a detailed explanation of their functionality, user interactions, and implementation.
+
+1. Upload Document Feature
+1.1 Functionality
+Purpose: Allows users (typically org_admin or compliance_manager) to upload compliance-related documents (e.g., policies, BAAs, training certificates, prior audit reports) to the centralized repository, ensuring all necessary documentation is available for audits.
+File Requirements:
+Accepted Format: PDF only (ensures compatibility and security).
+Maximum Size: 5MB (balances storage constraints with practical needs for small dental offices).
+Security:
+Files are uploaded to Supabase Storage with AES-256 encryption.
+Automated virus scanning is performed using Supabase’s built-in security features.
+Access is restricted via Supabase Row-Level Security (RLS), ensuring only authorized users (org_admin, compliance_manager) can upload and view documents.
+Metadata: The system stores metadata about the uploaded document, including name, type, upload date, and storage URL.
+1.2 User Interactions
+Location: On the Audit Preparation Screen (/audit), within the Document Repository section (DocumentList.js).
+Button: An "Upload Document" button (blue, #007BFF, 48px height, 120px width) is displayed above the document list.
+Upload Process:
+User clicks "Upload Document" → A modal opens with a form.
+Form Fields:
+Document Name: Text input (e.g., "Privacy Policy 2025").
+Document Type: Dropdown (options: "Policy", "BAA", "Certificate", "Audit Report").
+File: File input (accepts PDF, max 5MB).
+User selects a PDF file → The system validates the file (format, size).
+User clicks "Upload" → File is uploaded to Supabase Storage, metadata is stored in the documents table, and an audit log entry is created.
+Success message: "Document uploaded successfully!" → Document appears in the list.
+Error Handling:
+If the file is not a PDF or exceeds 5MB: Error message in red ("Please upload a PDF file under 5MB").
+If upload fails (e.g., network error): Error message ("Failed to upload document. Please try again.") and logged in audit_logs.
+Mobile Support: Modal is full-screen on smartphones (320px width), with touch-friendly inputs (e.g., 48px height for buttons).
+
+
+2. Delete Document Feature
+2.1 Functionality
+Purpose: Allows users to remove unnecessary or outdated documents from the repository, ensuring only relevant documentation is retained for audits.
+Security:
+Only authorized users (org_admin, compliance_manager) can delete documents, enforced by Supabase RLS.
+Deletion is logged in audit_logs for traceability (7-year retention per HIPAA requirements).
+The file is removed from Supabase Storage, and the metadata record is deleted from the documents table.
+Confirmation: A confirmation modal ensures accidental deletions are avoided.
+2.2 User Interactions
+Location: In the Document Repository section (DocumentList.js), each document item has a "Delete" button (red, #FF0000, 48px height, 120px width).
+Delete Process:
+User clicks "Delete" → A confirmation modal appears: "Are you sure you want to delete this document? This action cannot be undone."
+User clicks "Confirm" → The document is removed from Supabase Storage and the documents table (/api/documents/:id), an audit log entry is created.
+Success message: "Document deleted successfully!" → Document is removed from the list.
+Error Handling:
+If deletion fails (e.g., network error): Error message ("Failed to delete document. Please try again.") and logged in audit_logs.
+Mobile Support: Modal is full-screen on smartphones (320px width), with touch-friendly buttons (e.g., 48px height).
