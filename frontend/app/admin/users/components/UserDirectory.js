@@ -3,7 +3,6 @@
 
 import { useState } from 'react';
 import UserStatistics from './UserStatistics';
-import QuickActions from './QuickActions';
 import UserSearch from './UserSearch';
 import AdvancedSearchPanel from './AdvancedSearchPanel';
 import UserTable from './UserTable';
@@ -13,15 +12,6 @@ import UserProfileModal from './UserProfileModal';
 export default function UserDirectory() {
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState([]);
-  const [showAddUserModal, setShowAddUserModal] = useState(false);
-
-  const handleAddUser = () => {
-    setShowAddUserModal(true);
-  };
-
-  const handleCloseAddUserModal = () => {
-    setShowAddUserModal(false);
-  };
 
   return (
     <div className="space-y-6">
@@ -37,9 +27,6 @@ export default function UserDirectory() {
 
       {/* Statistics Cards */}
       <UserStatistics />
-      
-      {/* Quick Actions */}
-      <QuickActions onAddUser={handleAddUser} />
 
       {/* Advanced Search Panel */}
       <AdvancedSearchPanel 
@@ -147,13 +134,6 @@ export default function UserDirectory() {
         </button>
       </div>
 
-      {/* Add User Modal */}
-      <UserProfileModal
-        user={null}
-        isOpen={showAddUserModal}
-        onClose={handleCloseAddUserModal}
-        isEditMode={true}
-      />
-    </div>
+      </div>
   );
 }

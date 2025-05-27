@@ -145,17 +145,32 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
       <div className="px-6 py-4 border-b border-gray-200">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold text-gray-900">Users</h3>
-          <div className="flex items-center space-x-2">
-            <span className="text-sm text-gray-600">{users.length} users</span>
-            <select 
-              value={pageSize} 
-              onChange={(e) => setPageSize(Number(e.target.value))}
-              className="text-sm border border-gray-300 rounded px-2 py-1"
+          <div className="flex items-center space-x-4">
+            <button 
+              onClick={() => {
+                setSelectedUser(null);
+                setModalEditMode(true);
+                setShowModal(true);
+              }}
+              className="bg-purple-800 text-white px-4 py-2 rounded-lg font-medium hover:bg-purple-900 transition-colors flex items-center space-x-2"
             >
-              <option value={10}>10 per page</option>
-              <option value={25}>25 per page</option>
-              <option value={50}>50 per page</option>
-            </select>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              <span>Add User</span>
+            </button>
+            <div className="flex items-center space-x-2">
+              <span className="text-sm text-gray-600">{users.length} users</span>
+              <select 
+                value={pageSize} 
+                onChange={(e) => setPageSize(Number(e.target.value))}
+                className="text-sm border border-gray-300 rounded px-2 py-1"
+              >
+                <option value={10}>10 per page</option>
+                <option value={25}>25 per page</option>
+                <option value={50}>50 per page</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
