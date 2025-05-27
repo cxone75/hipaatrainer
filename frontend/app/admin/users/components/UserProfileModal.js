@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import UserAvatar from '../../../components/UserAvatar';
 import RoleBadge from '../../../components/RoleBadge';
 import ActivityMonitor from './ActivityMonitor';
@@ -13,20 +13,40 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
 
   if (!isOpen || !user) return null;
 
-  // Initialize form data when entering edit mode
+  // Initialize form data when entering edit mode or when modal opens for new user
   const handleEditClick = () => {
-    setFormData({
-      firstName: user.name.split(' ')[0] || '',
-      lastName: user.name.split(' ').slice(1).join(' ') || '',
-      email: user.email,
-      department: user.department,
-      location: user.location,
-      roles: [...user.roles],
-      status: user.status || 'active'
-    });
+    if (user) {
+      setFormData({
+        firstName: user.name.split(' ')[0] || '',
+        lastName: user.name.split(' ').slice(1).join(' ') || '',
+        email: user.email,
+        department: user.department,
+        location: user.location,
+        roles: [...user.roles],
+        status: user.status || 'active'
+      });
+    } else {
+      // Initialize empty form for new user
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        department: '',
+        location: '',
+        roles: [],
+        status: 'active'
+      });
+    }
     setIsEditMode(true);
     setActiveTab('profile');
   };
+
+  // Initialize form data when modal opens for new user creation
+  React.useEffect(() => {
+    if (isOpen && !user) {
+      handleEditClick();
+    }
+  }, [isOpen, user]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -164,7 +184,7 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
                       <input
                         type="text"
                         name="firstName"
-                        value={formData.firstName}
+                        value={formData.firstName || ''}
                         onChange={handleInputChange}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                         required
@@ -178,7 +198,7 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
                       <input
                         type="text"
                         name="lastName"
-                        value={formData.lastName}
+                        value={formData.lastName || ''}
                         onChange={handleInputChange}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                         required
@@ -192,7 +212,7 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
                       <input
                         type="email"
                         name="email"
-                        value={formData.email}
+                        value={formData.email || ''}
                         onChange={handleInputChange}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                         required
@@ -206,7 +226,7 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
                       <input
                         type="text"
                         name="department"
-                        value={formData.department}
+                        value={formData.department || ''}
                         onChange={handleInputChange}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                       />
@@ -219,7 +239,7 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
                       <input
                         type="text"
                         name="location"
-                        value={formData.location}
+                        value={formData.location || ''}
                         onChange={handleInputChange}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                       />
@@ -231,7 +251,7 @@ export default function UserProfileModal({ user, isOpen, onClose }) {
                       </label>
                       <select
                         name="status"
-                        value={formData.status}
+                        value={formData.status || 'active'}
                         onChange={handleInputChange}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                       >
