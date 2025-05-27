@@ -144,28 +144,28 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
   return (
     <div className="bg-white rounded-lg shadow border">
       <div className="px-6 py-4 border-b border-gray-200">
-        <div className="flex flex-col space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-gray-900">Users</h3>
-            <div className="flex items-center space-x-4">
-              <button 
-                onClick={() => {
-                  setSelectedUser(null);
-                  setModalEditMode(true);
-                  setShowModal(true);
-                }}
-                className="bg-purple-800 text-white px-4 py-2 rounded-lg font-medium hover:bg-purple-900 transition-colors flex items-center space-x-2"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-                <span>Add User</span>
-              </button>
-              <span className="text-sm text-gray-600">{users.length} users</span>
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0 lg:space-x-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between lg:justify-start space-y-4 sm:space-y-0 sm:space-x-4 lg:space-x-6 flex-1">
+            <h3 className="text-lg font-semibold text-gray-900 whitespace-nowrap">Users</h3>
+            <div className="flex-1 max-w-md lg:max-w-lg">
+              <UserSearch />
             </div>
           </div>
-          <div className="flex-1">
-            <UserSearch />
+          <div className="flex items-center space-x-4 lg:flex-shrink-0">
+            <button 
+              onClick={() => {
+                setSelectedUser(null);
+                setModalEditMode(true);
+                setShowModal(true);
+              }}
+              className="bg-purple-800 text-white px-4 py-2 rounded-lg font-medium hover:bg-purple-900 transition-colors flex items-center space-x-2"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              <span>Add User</span>
+            </button>
+            <span className="text-sm text-gray-600 whitespace-nowrap">{users.length} users</span>
           </div>
         </div>
       </div>
