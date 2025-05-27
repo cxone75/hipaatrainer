@@ -1,1 +1,10 @@
-{}
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/admin/users/page": "app/admin/users/page.js",
+  "/training/page": "app/training/page.js",
+  "/profile/page": "app/profile/page.js",
+  "/risk-assessments/page": "app/risk-assessments/page.js",
+  "/policies/page": "app/policies/page.js",
+  "/regulatory/page": "app/regulatory/page.js"
+}
