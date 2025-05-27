@@ -2,6 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import CorrectiveActionModal from './CorrectiveActionModal';
 
 export default function CorrectiveActions() {
   const [actions, setActions] = useState([]);
@@ -148,6 +149,20 @@ export default function CorrectiveActions() {
     ));
   };
 
+  const handleSaveAction = async (newAction) => {
+    try {
+      // Here you would typically make an API call to save the action
+      // For now, we'll just add it to the local state
+      setActions(prev => [newAction, ...prev]);
+      
+      // TODO: Add audit log entry
+      console.log('New corrective action added:', newAction);
+    } catch (error) {
+      console.error('Error saving corrective action:', error);
+      throw error;
+    }
+  };
+
   return (
     <div>
       {/* Filters */}
@@ -180,12 +195,12 @@ export default function CorrectiveActions() {
         <div className="md:ml-auto">
           <button
             onClick={() => setShowAddForm(true)}
-            className="bg-purple-800 text-white px-4 py-2 rounded-lg font-medium hover:bg-purple-900 flex items-center space-x-2"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 flex items-center space-x-2 h-12"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>
-            <span>Add Action</span>
+            <span>Add Corrective Action</span>
           </button>
         </div>
       </div>
@@ -364,6 +379,13 @@ export default function CorrectiveActions() {
           <p className="text-gray-600">Try adjusting your filter criteria or add a new action.</p>
         </div>
       )}
+
+      {/* Corrective Action Modal */}
+      <CorrectiveActionModal
+        isOpen={showAddForm}
+        onClose={() => setShowAddForm(false)}
+        onSave={handleSaveAction}
+      />
     </div>
   );
 }

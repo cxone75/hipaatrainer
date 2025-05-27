@@ -90,6 +90,51 @@ class ApiClient {
       body: { organizationId },
     });
   }
+
+  // Document endpoints
+  async getDocuments() {
+    return this.request('/documents');
+  }
+
+  async uploadDocument(formData) {
+    return this.request('/documents', {
+      method: 'POST',
+      headers: {}, // Don't set Content-Type for FormData
+      body: formData,
+    });
+  }
+
+  async deleteDocument(id) {
+    return this.request(`/documents/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  // Corrective Actions endpoints
+  async getCorrectiveActions(params = {}) {
+    const queryString = new URLSearchParams(params).toString();
+    return this.request(`/corrective-actions?${queryString}`);
+  }
+
+  async createCorrectiveAction(actionData) {
+    return this.request('/corrective-actions', {
+      method: 'POST',
+      body: actionData,
+    });
+  }
+
+  async updateCorrectiveAction(id, actionData) {
+    return this.request(`/corrective-actions/${id}`, {
+      method: 'PUT',
+      body: actionData,
+    });
+  }
+
+  async deleteCorrectiveAction(id) {
+    return this.request(`/corrective-actions/${id}`, {
+      method: 'DELETE',
+    });
+  }
 }
 
 export const apiClient = new ApiClient();
