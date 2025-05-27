@@ -117,20 +117,28 @@ export default function Sidebar({ collapsed = false, onToggleCollapse }) {
 
   return (
     <div className={`bg-gray-900 text-white ${isCollapsed ? 'w-16' : 'w-64'} transition-all duration-300 flex flex-col`}>
-      {/* Collapse Toggle */}
-      <div className="p-4 border-b border-gray-700">
+      {/* Header with Logo and Collapse Toggle */}
+      <div className="p-4 border-b border-gray-700 flex items-center justify-between">
+        <div className="flex items-center space-x-3">
+          <div className="w-8 h-8 bg-purple-800 rounded flex items-center justify-center">
+            <span className="text-white font-bold text-sm">HT</span>
+          </div>
+          {!isCollapsed && (
+            <span className="text-white font-medium text-lg">HIPAA Trainer</span>
+          )}
+        </div>
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="w-full flex items-center justify-center hover:bg-gray-800 p-2 rounded"
+          className="hover:bg-gray-800 p-2 rounded transition-colors"
           aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
           <svg
-            className={`w-5 h-5 transform transition-transform ${isCollapsed ? 'rotate-180' : ''}`}
+            className="w-5 h-5"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
       </div>
