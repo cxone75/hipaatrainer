@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 
-export default function UserSearch({ onSearch, onClear }) {
+export default function UserSearch() {
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -36,10 +36,8 @@ export default function UserSearch({ onSearch, onClear }) {
   };
 
   const handleSearch = () => {
-    // Emit search event to parent component
-    if (typeof onSearch === 'function') {
-      onSearch(searchQuery);
-    }
+    // Handle search functionality
+    console.log('Searching for:', searchQuery);
     setShowSuggestions(false);
   };
 
@@ -104,9 +102,6 @@ export default function UserSearch({ onSearch, onClear }) {
             onClick={() => {
               setSearchQuery('');
               setShowSuggestions(false);
-              if (typeof onClear === 'function') {
-                onClear();
-              }
             }}
             className="text-purple-800 hover:text-purple-900 font-medium"
           >

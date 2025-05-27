@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -5,7 +6,6 @@ import UserAvatar from '../../../components/UserAvatar';
 import RoleBadge from '../../../components/RoleBadge';
 import StatusIndicator from '../../../components/StatusIndicator';
 import UserProfileModal from './UserProfileModal';
-import UserSearch from './UserSearch'; // Import UserSearch component
 
 export default function UserTable({ selectedUsers = [], onSelectionChange }) {
   const [sortConfig, setSortConfig] = useState({ key: 'name', direction: 'asc' });
@@ -13,9 +13,6 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
   const [pageSize, setPageSize] = useState(10);
   const [selectedUser, setSelectedUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(''); // Add search query state
-  const [filteredUsers, setFilteredUsers] = useState([]); // Add filtered users state
-
 
   // Mock data with all required columns
   const users = [
@@ -76,19 +73,6 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
     }
   ];
 
-  // Filter users based on search query
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-    const filtered = users.filter(user =>
-      user.name.toLowerCase().includes(query.toLowerCase()) ||
-      user.email.toLowerCase().includes(query.toLowerCase()) ||
-      user.department.toLowerCase().includes(query.toLowerCase())
-    );
-    setFilteredUsers(filtered);
-    setCurrentPage(1); // Reset to first page on new search
-  };
-
-
   const handleSort = (key) => {
     let direction = 'asc';
     if (sortConfig.key === key && sortConfig.direction === 'asc') {
@@ -99,8 +83,7 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
 
   const handleSelectAll = (checked) => {
     if (checked) {
-      const allUserIds = filteredUsers.map(user => user.id);
-      onSelectionChange(allUserIds);
+      onSelectionChange(users.map(user => user.id));
     } else {
       onSelectionChange([]);
     }
@@ -130,7 +113,7 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
     const now = new Date();
     const diffTime = Math.abs(now - date);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
+    
     if (diffDays === 1) return 'Yesterday';
     if (diffDays < 7) return `${diffDays} days ago`;
     return date.toLocaleDateString();
@@ -154,25 +137,6 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
     }
   };
 
-  // Sort filtered users
-  const sortedUsers = [...filteredUsers].sort((a, b) => {
-    const aValue = a[sortConfig.key];
-    const bValue = b[sortConfig.key];
-
-    if (aValue < bValue) {
-      return sortConfig.direction === 'asc' ? -1 : 1;
-    }
-    if (aValue > bValue) {
-      return sortConfig.direction === 'asc' ? 1 : -1;
-    }
-    return 0;
-  });
-
-  // Pagination
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
-  const paginatedUsers = sortedUsers.slice(startIndex, endIndex);
-
   return (
     <div className="bg-white rounded-lg shadow border">
       <div className="px-6 py-4 border-b border-gray-200">
@@ -191,7 +155,6 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
             </select>
           </div>
         </div>
-        <UserSearch onSearch={handleSearch} />
       </div>
 
       <div className="overflow-x-auto">
@@ -205,7 +168,7 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
               <th className="px-6 py-3 text-left">
                 <input
                   type="checkbox"
-                  checked={selectedUsers.length === filteredUsers.length}
+                  checked={selectedUsers.length === users.length}
                   onChange={(e) => handleSelectAll(e.target.checked)}
                   className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                   aria-label="Select all users"
@@ -263,7 +226,7 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {paginatedUsers.map((user) => (
+            {users.map((user) => (
               <tr 
                 key={user.id}
                 className="hover:bg-gray-50 cursor-pointer"
@@ -352,23 +315,21 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
       {/* Pagination */}
       <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
         <div className="text-sm text-gray-700">
-          Showing 1 to {Math.min(pageSize, filteredUsers.length)} of {filteredUsers.length} users
+          Showing 1 to {Math.min(pageSize, users.length)} of {users.length} users
         </div>
         <div className="flex items-center space-x-2">
           <button 
             className="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50 disabled:opacity-50"
             disabled={currentPage === 1}
-            onClick={() => setCurrentPage(currentPage - 1)}
           >
             Previous
           </button>
           <span className="px-3 py-1 text-sm">
-            Page {currentPage} of {Math.ceil(filteredUsers.length / pageSize)}
+            Page {currentPage} of {Math.ceil(users.length / pageSize)}
           </span>
           <button 
             className="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50 disabled:opacity-50"
-            disabled={currentPage >= Math.ceil(filteredUsers.length / pageSize)}
-            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={currentPage >= Math.ceil(users.length / pageSize)}
           >
             Next
           </button>

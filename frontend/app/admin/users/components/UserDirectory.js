@@ -14,13 +14,6 @@ export default function UserDirectory() {
   const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [showAddUserModal, setShowAddUserModal] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filters, setFilters] = useState({
-    role: '',
-    department: '',
-    location: '',
-    status: ''
-  });
 
   const handleAddUser = () => {
     setShowAddUserModal(true);
@@ -28,35 +21,6 @@ export default function UserDirectory() {
 
   const handleCloseAddUserModal = () => {
     setShowAddUserModal(false);
-  };
-
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-  };
-
-  const handleClearSearch = () => {
-    setSearchQuery('');
-  };
-
-  const handleFilterChange = (filterType, value) => {
-    setFilters(prev => ({
-      ...prev,
-      [filterType]: value
-    }));
-  };
-
-  const handleApplyFilters = () => {
-    // Filters are applied automatically when state changes
-    console.log('Applied filters:', filters);
-  };
-
-  const handleClearFilters = () => {
-    setFilters({
-      role: '',
-      department: '',
-      location: '',
-      status: ''
-    });
   };
 
   return (
@@ -67,7 +31,7 @@ export default function UserDirectory() {
           <h1 className="text-2xl font-bold text-gray-900">User Directory</h1>
         </div>
         <div className="flex-1 max-w-md">
-          <UserSearch onSearch={handleSearch} onClear={handleClearSearch} />
+          <UserSearch />
         </div>
       </div>
 
@@ -95,18 +59,14 @@ export default function UserDirectory() {
               <label className="block text-sm font-medium text-gray-700 mb-2" aria-label="Filter by Role">
                 Role
               </label>
-              <select 
-                value={filters.role} 
-                onChange={(e) => handleFilterChange('role', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              >
-                <option value="">All Roles</option>
-                <option value="Admin">Admin</option>
-                <option value="Manager">Manager</option>
-                <option value="Instructor">Instructor</option>
-                <option value="Clinical Staff">Clinical Staff</option>
-                <option value="User">User</option>
-                <option value="Viewer">Viewer</option>
+              <select className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <option>All Roles</option>
+                <option>Admin</option>
+                <option>Manager</option>
+                <option>Instructor</option>
+                <option>Clinical Staff</option>
+                <option>User</option>
+                <option>Viewer</option>
               </select>
             </div>
 
@@ -115,18 +75,14 @@ export default function UserDirectory() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Department
               </label>
-              <select 
-                value={filters.department} 
-                onChange={(e) => handleFilterChange('department', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              >
-                <option value="">All Departments</option>
-                <option value="Clinical">Clinical</option>
-                <option value="Administration">Administration</option>
-                <option value="IT">IT</option>
-                <option value="HR">HR</option>
-                <option value="Finance">Finance</option>
-                <option value="Nursing">Nursing</option>
+              <select className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <option>All Departments</option>
+                <option>Clinical</option>
+                <option>Administration</option>
+                <option>IT</option>
+                <option>HR</option>
+                <option>Finance</option>
+                <option>Nursing</option>
               </select>
             </div>
 
@@ -135,16 +91,12 @@ export default function UserDirectory() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Location
               </label>
-              <select 
-                value={filters.location} 
-                onChange={(e) => handleFilterChange('location', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              >
-                <option value="">All Locations</option>
-                <option value="Main Campus">Main Campus</option>
-                <option value="North Clinic">North Clinic</option>
-                <option value="South Clinic">South Clinic</option>
-                <option value="Remote">Remote</option>
+              <select className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <option>All Locations</option>
+                <option>Main Campus</option>
+                <option>North Clinic</option>
+                <option>South Clinic</option>
+                <option>Remote</option>
               </select>
             </div>
 
@@ -153,30 +105,20 @@ export default function UserDirectory() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Compliance Status
               </label>
-              <select 
-                value={filters.status} 
-                onChange={(e) => handleFilterChange('status', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              >
-                <option value="">All Status</option>
-                <option value="Compliant">Compliant</option>
-                <option value="Overdue">Overdue</option>
-                <option value="Pending">Pending</option>
-                <option value="Not Started">Not Started</option>
+              <select className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                <option>All Status</option>
+                <option>Compliant</option>
+                <option>Overdue</option>
+                <option>Pending</option>
+                <option>Not Started</option>
               </select>
             </div>
 
-            <button 
-              onClick={handleApplyFilters}
-              className="w-full bg-purple-800 text-white py-2 px-4 rounded-lg font-medium hover:bg-purple-900 transition-colors"
-            >
+            <button className="w-full bg-purple-800 text-white py-2 px-4 rounded-lg font-medium hover:bg-purple-900 transition-colors">
               Apply Filters
             </button>
             
-            <button 
-              onClick={handleClearFilters}
-              className="w-full mt-2 bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-lg font-medium hover:bg-gray-50 transition-colors"
-            >
+            <button className="w-full mt-2 bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-lg font-medium hover:bg-gray-50 transition-colors">
               Clear Filters
             </button>
           </div>
@@ -187,8 +129,6 @@ export default function UserDirectory() {
           <UserTable 
             selectedUsers={selectedUsers}
             onSelectionChange={setSelectedUsers}
-            searchQuery={searchQuery}
-            filters={filters}
           />
         </div>
       </div>
