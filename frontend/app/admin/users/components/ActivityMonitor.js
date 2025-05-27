@@ -164,7 +164,7 @@ export default function ActivityMonitor({ userId }) {
         {activities.map((activity, index) => (
           <div key={activity.id} className="flex items-start space-x-4 relative">
             {/* Icon */}
-            {getActivityIcon(activity.type)}
+            {getTypeIcon(activity.type)}
 
             {/* Content */}
             <div className="flex-1 min-w-0">
