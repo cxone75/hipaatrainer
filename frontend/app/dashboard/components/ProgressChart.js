@@ -49,10 +49,10 @@ export default function ProgressChart({ type, data, ...props }) {
     };
 
     return (
-      <div className="relative w-full h-full min-h-[200px]" {...props}>
+      <div className="relative w-full" {...props}>
         <svg 
           width="100%" 
-          height="100%" 
+          height={svgHeight} 
           viewBox={`0 0 400 ${svgHeight}`}
           className="overflow-hidden"
           preserveAspectRatio="xMidYMid meet"

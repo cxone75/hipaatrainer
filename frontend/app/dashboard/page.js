@@ -180,15 +180,13 @@ export default function ComplianceDashboard() {
           {/* Bottom Row - Progress Charts */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Trends Chart */}
-            <div className="bg-white rounded-lg shadow border p-6 flex flex-col">
+            <div className="bg-white rounded-lg shadow border p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Compliance Trends</h2>
-              <div className="flex-1 min-h-[200px]">
-                <ProgressChart
-                  type="line"
-                  data={complianceData.trends}
-                  aria-label="Compliance Trends Chart"
-                />
-              </div>
+              <ProgressChart
+                type="line"
+                data={complianceData.trends}
+                aria-label="Compliance Trends Chart"
+              />
             </div>
             
             {/* Category Progress */}
