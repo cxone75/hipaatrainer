@@ -1,8 +1,6 @@
-
 'use client';
 
 import { useState, useRef } from 'react';
-import apiClient from '../../../lib/api';
 
 export default function ProfileForm({ onFieldChange }) {
   const [profile, setProfile] = useState({
@@ -18,7 +16,7 @@ export default function ProfileForm({ onFieldChange }) {
     { id: '2', name: 'Dental Practice B', role: 'Manager' },
     { id: '3', name: 'Medical Center C', role: 'Staff' }
   ]);
-  
+
   const [currentOrg, setCurrentOrg] = useState('1');
   const [showRemoveModal, setShowRemoveModal] = useState(false);
   const [orgToRemove, setOrgToRemove] = useState(null);
@@ -42,44 +40,44 @@ export default function ProfileForm({ onFieldChange }) {
   };
 
   const handleOrgSwitch = async (orgId) => {
-    try {
-      await apiClient.request(`/users/current/switch-org`, {
-        method: 'POST',
-        body: { organizationId: orgId }
-      });
-      setCurrentOrg(orgId);
-      // Reload dashboard with new context
-      window.location.href = '/';
-    } catch (error) {
-      console.error('Error switching organization:', error);
-      alert('Failed to switch organization');
-    }
+    // try {
+    //   await apiClient.request(`/users/current/switch-org`, {
+    //     method: 'POST',
+    //     body: { organizationId: orgId }
+    //   });
+    setCurrentOrg(orgId);
+    // Reload dashboard with new context
+    // window.location.href = '/';
+    // } catch (error) {
+    //   console.error('Error switching organization:', error);
+    //   alert('Failed to switch organization');
+    // }
   };
 
   const handleRemoveOrg = async (orgId) => {
-    try {
-      await apiClient.request(`/users/current/remove-org`, {
-        method: 'DELETE',
-        body: { organizationId: orgId }
-      });
-      setOrganizations(prev => prev.filter(org => org.id !== orgId));
-      setShowRemoveModal(false);
-      setOrgToRemove(null);
-      if (currentOrg === orgId && organizations.length > 1) {
-        const remainingOrgs = organizations.filter(org => org.id !== orgId);
-        handleOrgSwitch(remainingOrgs[0].id);
-      }
-    } catch (error) {
-      console.error('Error removing organization:', error);
-      alert('Failed to remove organization');
+    // try {
+    //   await apiClient.request(`/users/current/remove-org`, {
+    //     method: 'DELETE',
+    //     body: { organizationId: orgId }
+    //   });
+    setOrganizations(prev => prev.filter(org => org.id !== orgId));
+    setShowRemoveModal(false);
+    setOrgToRemove(null);
+    if (currentOrg === orgId && organizations.length > 1) {
+      const remainingOrgs = organizations.filter(org => org.id !== orgId);
+      handleOrgSwitch(remainingOrgs[0].id);
     }
+    // } catch (error) {
+    //   console.error('Error removing organization:', error);
+    //   alert('Failed to remove organization');
+    // }
   };
 
   return (
     <>
       <div className="bg-white p-6 rounded-lg shadow">
         <h3 className="text-lg font-semibold mb-4">Personal Information</h3>
-        <form 
+        <form
           className="space-y-4"
           aria-label="Profile Form"
           onSubmit={(e) => e.preventDefault()}
@@ -230,7 +228,7 @@ export default function ProfileForm({ onFieldChange }) {
           <div className="bg-white p-6 rounded-lg max-w-md w-full mx-4">
             <h3 className="text-lg font-semibold mb-4">Remove Organization</h3>
             <p className="text-gray-600 mb-6">
-              Are you sure you want to remove "{orgToRemove.name}" from your profile? 
+              Are you sure you want to remove "{orgToRemove.name}" from your profile?
               This action cannot be undone.
             </p>
             <div className="flex space-x-3">
