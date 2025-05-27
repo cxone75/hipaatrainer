@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import apiClient from '../../../lib/api';
 
 export default function ProfileForm({ onFieldChange }) {
   const [profile, setProfile] = useState({
@@ -42,10 +41,10 @@ export default function ProfileForm({ onFieldChange }) {
 
   const handleOrgSwitch = async (orgId) => {
     try {
-      await apiClient.request(`/users/current/switch-org`, {
-        method: 'POST',
-        body: { organizationId: orgId }
-      });
+      // await apiClient.request(`/users/current/switch-org`, {
+      //   method: 'POST',
+      //   body: { organizationId: orgId }
+      // });
       setCurrentOrg(orgId);
       // Reload dashboard with new context
       window.location.href = '/';
@@ -57,10 +56,10 @@ export default function ProfileForm({ onFieldChange }) {
 
   const handleRemoveOrg = async (orgId) => {
     try {
-      await apiClient.request(`/users/current/remove-org`, {
-        method: 'DELETE',
-        body: { organizationId: orgId }
-      });
+      // await apiClient.request(`/users/current/remove-org`, {
+      //   method: 'DELETE',
+      //   body: { organizationId: orgId }
+      // });
       setOrganizations(prev => prev.filter(org => org.id !== orgId));
       setShowRemoveModal(false);
       setOrgToRemove(null);

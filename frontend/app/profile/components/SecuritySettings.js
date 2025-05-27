@@ -16,21 +16,21 @@ export default function SecuritySettings({ onFieldChange }) {
       id: '1',
       device: 'Chrome on Windows',
       location: 'New York, NY',
-      lastActive: '2025-05-27T10:30:00Z',
+      lastActive: 'May 27, 2025 10:30 AM',
       current: true
     },
     {
       id: '2',
       device: 'Safari on iPhone',
       location: 'New York, NY',
-      lastActive: '2025-05-26T16:45:00Z',
+      lastActive: 'May 26, 2025 4:45 PM',
       current: false
     },
     {
       id: '3',
       device: 'Chrome on Mac',
       location: 'Boston, MA',
-      lastActive: '2025-05-25T14:20:00Z',
+      lastActive: 'May 25, 2025 2:20 PM',
       current: false
     }
   ]);
@@ -73,12 +73,7 @@ export default function SecuritySettings({ onFieldChange }) {
     }
   };
 
-  const formatLastActive = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  };
-
-  const [lastLogin] = useState('2025-01-01 10:30:00'); // Static date to avoid hydration issues
+  const [lastLogin] = useState('May 27, 2025 10:30 AM'); // Static date to avoid hydration issues
 
   return (
     <div className="bg-white p-6 rounded-lg shadow">
@@ -173,7 +168,7 @@ export default function SecuritySettings({ onFieldChange }) {
                   </div>
                   <p className="text-sm text-gray-600">{session.location}</p>
                   <p className="text-xs text-gray-500">
-                    Last active: {formatLastActive(session.lastActive)}
+                    Last active: {session.lastActive}
                   </p>
                 </div>
                 {!session.current && (
