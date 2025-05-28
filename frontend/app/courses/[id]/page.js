@@ -254,14 +254,6 @@ export default function CoursePage() {
           {/* Course Header */}
           <div className="p-6 border-b border-gray-200">
             <h1 className="text-xl font-bold text-purple-800 mb-2">{course.title}</h1>
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => setShowQuiz(true)}
-                className="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors"
-              >
-                Quiz
-              </button>
-            </div>
           </div>
 
           {/* Lessons List */}
@@ -288,8 +280,23 @@ export default function CoursePage() {
                       {completedLessons.includes(lesson.id) ? '✓' : lesson.id}
                     </div>
                     <div className="flex-1">
-                      <div className="text-sm font-medium text-gray-900">{lesson.title}</div>
-                      <div className="text-xs text-gray-500">{lesson.duration}</div>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="text-sm font-medium text-gray-900">{lesson.title}</div>
+                          <div className="text-xs text-gray-500">{lesson.duration}</div>
+                        </div>
+                        {index === 0 && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setShowQuiz(true);
+                            }}
+                            className="bg-blue-500 text-white px-3 py-1 rounded text-xs font-medium hover:bg-blue-600 transition-colors"
+                          >
+                            Quiz
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
