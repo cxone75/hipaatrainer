@@ -35,6 +35,9 @@ export default function SecuritySettings({ onFieldChange }) {
     }
   ]);
 
+  const [lastLogin] = useState('May 27, 2025 10:30 AM'); // Static date to avoid hydration issues
+  const [showLoginHistory, setShowLoginHistory] = useState(false);
+
   const handleMfaToggle = async () => {
     try {
       // Simulate API call
@@ -73,7 +76,29 @@ export default function SecuritySettings({ onFieldChange }) {
     }
   };
 
-  const [lastLogin] = useState('May 27, 2025 10:30 AM'); // Static date to avoid hydration issues
+  const loginHistory = [
+    {
+      id: '1',
+      date: 'May 27, 2025 10:30 AM',
+      device: 'Chrome on Windows',
+      location: 'New York, NY',
+      status: 'Success'
+    },
+    {
+      id: '2',
+      date: 'May 26, 2025 4:45 PM',
+      device: 'Safari on iPhone',
+      location: 'New York, NY',
+      status: 'Success'
+    },
+    {
+      id: '3',
+      date: 'May 25, 2025 2:20 PM',
+      device: 'Chrome on Mac',
+      location: 'Boston, MA',
+      status: 'Success'
+    }
+  ];
 
   return (
     <div className="bg-white p-6 rounded-lg shadow">
@@ -206,11 +231,42 @@ export default function SecuritySettings({ onFieldChange }) {
               <span className="text-green-600 font-medium">Success</span>
             </div>
           </div>
-          <button className="text-purple-600 hover:text-purple-800 text-sm mt-2">
+          <button
+            onClick={() => setShowLoginHistory(true)}
+            className="text-purple-600 hover:text-purple-800 text-sm mt-2"
+          >
             View full login history
           </button>
         </div>
       </div>
+
+      {/* Login History Modal */}
+      {showLoginHistory && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div className="mt-3 text-center">
+              <h3 className="text-lg leading-6 font-medium text-gray-900">Login History</h3>
+              <div className="mt-2">
+                {loginHistory.map((log) => (
+                  <div key={log.id} className="py-2 border-b">
+                    <p className="text-sm text-gray-500">
+                      {log.date} - {log.device} - {log.location} - {log.status}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <div className="items-center px-4 py-3">
+                <button
+                  onClick={() => setShowLoginHistory(false)}
+                  className="px-4 py-2 bg-purple-600 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
