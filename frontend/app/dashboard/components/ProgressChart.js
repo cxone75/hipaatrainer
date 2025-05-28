@@ -101,11 +101,27 @@ export default function ProgressChart({ type, data, ...props }) {
           <path
             d={pathData}
             fill="none"
-            stroke="#7c3aed"
+            stroke="#8b5cf6"
             strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
+            filter="url(#glow)"
           />
+
+          {/* Gradient definition */}
+          <defs>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+              <feMerge> 
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+            <linearGradient id="pointGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#a855f7"/>
+              <stop offset="100%" stopColor="#7c3aed"/>
+            </linearGradient>
+          </defs>
 
           {/* Data points */}
           {points.map((point, index) => (
@@ -113,11 +129,11 @@ export default function ProgressChart({ type, data, ...props }) {
               key={index}
               cx={point.x}
               cy={point.y}
-              r="4"
-              fill="#7c3aed"
+              r="5"
+              fill="url(#pointGradient)"
               stroke="white"
-              strokeWidth="1.5"
-              className="cursor-pointer hover:r-8 transition-all duration-200"
+              strokeWidth="2"
+              className="cursor-pointer hover:r-6 transition-all duration-200 drop-shadow-sm"
               onMouseEnter={(e) => handleMouseMove(e, point)}
               onMouseLeave={() => setHoveredItem(null)}
               onMouseMove={(e) => handleMouseMove(e, point)}
@@ -192,7 +208,7 @@ export default function ProgressChart({ type, data, ...props }) {
               </div>
               <div className="flex-1 relative">
                 <div 
-                  className="w-full bg-gray-200 rounded-full h-4 relative overflow-hidden cursor-pointer hover:bg-gray-300 transition-colors duration-200"
+                  className="w-full bg-gradient-to-r from-gray-100 to-gray-200 rounded-full h-4 relative overflow-hidden cursor-pointer hover:from-gray-200 hover:to-gray-300 transition-all duration-200 shadow-inner"
                   onClick={() => handleCategoryClick(item.category)}
                   role="button"
                   tabIndex={0}
@@ -204,9 +220,10 @@ export default function ProgressChart({ type, data, ...props }) {
                   }}
                 >
                   <div
-                    className={`h-full rounded-full transition-all duration-1000 ease-out ${
-                      percentage >= 90 ? 'bg-green-500' :
-                      percentage >= 70 ? 'bg-yellow-500' : 'bg-red-500'
+                    className={`h-full rounded-full transition-all duration-1000 ease-out shadow-sm ${
+                      percentage >= 90 ? 'bg-gradient-to-r from-green-400 to-green-500' :
+                      percentage >= 70 ? 'bg-gradient-to-r from-purple-400 to-purple-500' : 
+                      'bg-gradient-to-r from-red-400 to-red-500'
                     }`}
                     style={{ width: `${percentage}%` }}
                   />
