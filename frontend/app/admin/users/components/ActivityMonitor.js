@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 
 export default function ActivityMonitor({ userId, isModal }) {
   const [isClient, setIsClient] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [activitiesPerPage] = useState(5);
 
   useEffect(() => {
     setIsClient(true);
@@ -151,19 +153,34 @@ export default function ActivityMonitor({ userId, isModal }) {
     }
   };
 
+  // Calculate pagination
+  const indexOfLastActivity = currentPage * activitiesPerPage;
+  const indexOfFirstActivity = indexOfLastActivity - activitiesPerPage;
+  const currentActivities = activities.slice(indexOfFirstActivity, indexOfLastActivity);
+  const totalPages = Math.ceil(activities.length / activitiesPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   return (
     <div className={isModal ? "bg-transparent" : "bg-white rounded-lg shadow border"}>
       <div className={isModal ? "px-0 py-4" : "px-6 py-4 border-b border-gray-200"}>
-        <div className="flex items-center justify-between mb-6">
+        <div className="mb-6">
           <h3 className="text-lg font-semibold">Activity Timeline</h3>
-          <button className="text-purple-600 hover:text-purple-800 text-sm font-medium">
-            View All Activity
-          </button>
         </div>
       </div>
 
       <div className="space-y-4 px-6">
-        {activities.map((activity, index) => (
+        {currentActivities.map((activity, index) => (
           <div key={activity.id} className="flex items-start space-x-4 relative">
             {/* Icon */}
             {getTypeIcon(activity.type)}
@@ -190,12 +207,40 @@ export default function ActivityMonitor({ userId, isModal }) {
             </div>
 
             {/* Connector line (except for last item) */}
-            {index < activities.length - 1 && (
+            {index < currentActivities.length - 1 && (
               <div className="absolute left-4 top-12 w-px h-8 bg-gray-200"></div>
             )}
           </div>
         ))}
       </div>
+
+      {/* Pagination Controls */}
+      {activities.length > activitiesPerPage && (
+        <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+          <div className="text-sm text-gray-700">
+            Showing {indexOfFirstActivity + 1} to {Math.min(indexOfLastActivity, activities.length)} of {activities.length} activities
+          </div>
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={handlePrevPage}
+              disabled={currentPage === 1}
+              className="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Previous
+            </button>
+            <span className="px-3 py-1 text-sm">
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages}
+              className="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
 
       {activities.length === 0 && (
         <div className="text-center py-8">
