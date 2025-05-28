@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function ProfileForm({ onFieldChange }) {
+  const [isClient, setIsClient] = useState(false);
   const [profile, setProfile] = useState({
     firstName: 'John',
     lastName: 'Doe',
@@ -24,6 +25,10 @@ export default function ProfileForm({ onFieldChange }) {
   const [showEditOrgModal, setShowEditOrgModal] = useState(false);
   const [orgToEdit, setOrgToEdit] = useState(null);
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const handleInputChange = (field, value) => {
     setProfile(prev => ({ ...prev, [field]: value }));
@@ -118,6 +123,21 @@ export default function ProfileForm({ onFieldChange }) {
       alert('Failed to update organization');
     }
   };
+
+  if (!isClient) {
+    return (
+      <div className="bg-white p-6 rounded-lg shadow">
+        <h3 className="text-lg font-semibold mb-4">Personal Information</h3>
+        <div className="animate-pulse space-y-4">
+          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="h-10 bg-gray-200 rounded"></div>
+            <div className="h-10 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
