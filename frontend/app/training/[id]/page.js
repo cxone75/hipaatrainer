@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -403,7 +402,7 @@ export default function TrainingCourse() {
                               e.stopPropagation();
                               setShowQuiz(true);
                             }}
-                            className="bg-blue-500 text-white px-3 py-1 rounded text-xs font-medium hover:bg-blue-600 transition-colors"
+                            className="bg-secondary text-white px-3 py-1 rounded text-xs font-medium hover:bg-blue-600 transition-colors"
                           >
                             Quiz
                           </button>
@@ -491,7 +490,7 @@ export default function TrainingCourse() {
               <div className="flex items-center space-x-4">
                 <button
                   onClick={() => handleLessonComplete(currentLessonData.id)}
-                  className="bg-green-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors"
+                  className="bg-success text-white px-6 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors"
                 >
                   Mark as Complete
                 </button>
@@ -550,8 +549,8 @@ export default function TrainingCourse() {
                         <div
                           key={index}
                           className={`w-3 h-3 rounded-full ${
-                            index === currentQuestion ? 'bg-purple-600' : 
-                            index < currentQuestion ? 'bg-green-500' : 'bg-gray-300'
+                            index === currentQuestion ? 'bg-primary' : 
+                            index < currentQuestion ? 'bg-success' : 'bg-gray-300'
                           }`}
                         />
                       ))}
@@ -660,14 +659,14 @@ export default function TrainingCourse() {
                         <button 
                           onClick={handleSubmitAnswer}
                           disabled={selectedAnswer === null}
-                          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="px-6 py-2 bg-secondary text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           Submit Answer
                         </button>
                       ) : (
                         <button 
                           onClick={handleNextQuestion}
-                          className="flex items-center space-x-2 px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                          className="flex items-center space-x-2 px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-800 transition-colors"
                         >
                           <span>{currentQuestion === quizData.questions.length - 1 ? 'Finish Quiz' : 'Next'}</span>
                           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -720,7 +719,7 @@ export default function TrainingCourse() {
                   <div className="flex justify-center space-x-4">
                     <button
                       onClick={resetQuiz}
-                      className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                      className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-blue-800 transition-colors"
                     >
                       Retake Quiz
                     </button>
