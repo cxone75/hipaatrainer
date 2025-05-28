@@ -18,10 +18,10 @@ export default function CoursePage() {
     const loadCourse = async () => {
       try {
         const courseData = {
-          'hipaa-awareness': {
-            id: 'hipaa-awareness',
-            title: 'HIPAA AWARENESS',
-            description: 'Comprehensive HIPAA training course',
+          'hipaa-fundamentals': {
+            id: 'hipaa-fundamentals',
+            title: 'HIPAA FUNDAMENTALS',
+            description: 'Essential HIPAA compliance training for healthcare professionals',
             lessons: [
               {
                 id: 1,
@@ -76,6 +76,106 @@ export default function CoursePage() {
               available: false,
               questions: 25,
               timeLimit: '45 minutes'
+            }
+          },
+          'osha-safety': {
+            id: 'osha-safety',
+            title: 'OSHA WORKPLACE SAFETY',
+            description: 'Comprehensive workplace safety training',
+            lessons: [
+              {
+                id: 1,
+                title: 'Introduction to OSHA',
+                duration: '15:30',
+                videoUrl: 'https://player.vimeo.com/video/123456789',
+                content: 'Understanding OSHA regulations and workplace safety.',
+                completed: false
+              },
+              {
+                id: 2,
+                title: 'Hazard Identification',
+                duration: '14:45',
+                videoUrl: 'https://player.vimeo.com/video/123456790',
+                content: 'Learning to identify workplace hazards.',
+                completed: false
+              }
+            ],
+            finalExam: {
+              available: false,
+              questions: 20,
+              timeLimit: '30 minutes'
+            }
+          },
+          'advanced-privacy': {
+            id: 'advanced-privacy',
+            title: 'ADVANCED PRIVACY PRACTICES',
+            description: 'Advanced training on privacy practices and data protection',
+            lessons: [
+              {
+                id: 1,
+                title: 'Privacy Frameworks',
+                duration: '20:00',
+                videoUrl: 'https://player.vimeo.com/video/123456789',
+                content: 'Understanding advanced privacy frameworks.',
+                completed: false
+              },
+              {
+                id: 2,
+                title: 'Data Protection Strategies',
+                duration: '25:30',
+                videoUrl: 'https://player.vimeo.com/video/123456790',
+                content: 'Implementing data protection strategies.',
+                completed: false
+              },
+              {
+                id: 3,
+                title: 'Compliance Monitoring',
+                duration: '14:30',
+                videoUrl: 'https://player.vimeo.com/video/123456791',
+                content: 'Monitoring compliance with privacy regulations.',
+                completed: false
+              }
+            ],
+            finalExam: {
+              available: false,
+              questions: 30,
+              timeLimit: '60 minutes'
+            }
+          },
+          'incident-response': {
+            id: 'incident-response',
+            title: 'INCIDENT RESPONSE PROTOCOL',
+            description: 'Learn how to properly respond to security incidents',
+            lessons: [
+              {
+                id: 1,
+                title: 'Incident Identification',
+                duration: '12:45',
+                videoUrl: 'https://player.vimeo.com/video/123456789',
+                content: 'How to identify security incidents.',
+                completed: false
+              },
+              {
+                id: 2,
+                title: 'Response Procedures',
+                duration: '18:30',
+                videoUrl: 'https://player.vimeo.com/video/123456790',
+                content: 'Step-by-step incident response procedures.',
+                completed: false
+              },
+              {
+                id: 3,
+                title: 'Documentation and Reporting',
+                duration: '8:45',
+                videoUrl: 'https://player.vimeo.com/video/123456791',
+                content: 'Proper documentation and reporting of incidents.',
+                completed: false
+              }
+            ],
+            finalExam: {
+              available: false,
+              questions: 25,
+              timeLimit: '40 minutes'
             }
           }
         };
