@@ -9,6 +9,8 @@ export default function CorrectiveActions() {
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterPriority, setFilterPriority] = useState('all');
   const [showAddForm, setShowAddForm] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [selectedAction, setSelectedAction] = useState(null);
 
   useEffect(() => {
     // Sample corrective actions data - replace with actual API call
@@ -353,8 +355,8 @@ export default function CorrectiveActions() {
                     <button
                       className="text-purple-800 hover:text-purple-900 text-sm font-medium"
                       onClick={() => {
-                        // View details functionality
-                        console.log('View details for action:', action.id);
+                        setSelectedAction(action);
+                        setShowDetailsModal(true);
                       }}
                     >
                       View Details
@@ -386,6 +388,182 @@ export default function CorrectiveActions() {
         onClose={() => setShowAddForm(false)}
         onSave={handleSaveAction}
       />
+
+      {/* Details Modal */}
+      {showDetailsModal && selectedAction && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">{selectedAction.title}</h2>
+                <div className="flex items-center space-x-3 mt-2">
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(selectedAction.status)}`}>
+                    {selectedAction.status}
+                  </span>
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${getPriorityColor(selectedAction.priority)}`}>
+                    {selectedAction.priority} Priority
+                  </span>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  setShowDetailsModal(false);
+                  setSelectedAction(null);
+                }}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Left Column */}
+                <div className="space-y-6">
+                  {/* Description */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Description</h3>
+                    <p className="text-gray-700">{selectedAction.description}</p>
+                  </div>
+
+                  {/* Assignment Details */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Assignment</h3>
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Assigned to:</span>
+                        <span className="font-medium text-gray-900">{selectedAction.assignedTo}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Email:</span>
+                        <span className="text-gray-900">{selectedAction.assignedToEmail}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Category:</span>
+                        <span className="text-gray-900">{selectedAction.category}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Timeline */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Timeline</h3>
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Created:</span>
+                        <span className="text-gray-900">{new Date(selectedAction.createdDate).toLocaleDateString()}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Due Date:</span>
+                        <span className={isOverdue(selectedAction.dueDate, selectedAction.status) ? 'text-red-600 font-medium' : 'text-gray-900'}>
+                          {new Date(selectedAction.dueDate).toLocaleDateString()}
+                        </span>
+                      </div>
+                      {selectedAction.completionDate && (
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Completed:</span>
+                          <span className="text-green-600 font-medium">{new Date(selectedAction.completionDate).toLocaleDateString()}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Column */}
+                <div className="space-y-6">
+                  {/* Progress */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Progress</h3>
+                    <div className="space-y-3">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Completion</span>
+                        <span className="font-medium">{selectedAction.progress}%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-3">
+                        <div
+                          className="bg-purple-800 h-3 rounded-full transition-all duration-300"
+                          style={{ width: `${selectedAction.progress}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Impact */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Impact Analysis</h3>
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Risk Reduction:</span>
+                        <span className="text-green-600 font-medium">{selectedAction.riskReduction}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Estimated Cost:</span>
+                        <span className="text-gray-900">{selectedAction.estimatedCost}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Compliance */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Compliance Requirements</h3>
+                    <div className="space-y-2">
+                      {selectedAction.compliance.map((requirement, index) => (
+                        <div key={index} className="flex items-center space-x-2">
+                          <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <span className="text-sm text-gray-700">{requirement}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Notes */}
+                  {selectedAction.notes && (
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3">Notes</h3>
+                      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        <p className="text-yellow-800 text-sm">{selectedAction.notes}</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="flex justify-between items-center p-6 border-t border-gray-200 bg-gray-50">
+              <div className="text-sm text-gray-500">
+                Action ID: {selectedAction.id}
+              </div>
+              <div className="space-x-3">
+                <button
+                  onClick={() => {
+                    setShowDetailsModal(false);
+                    setSelectedAction(null);
+                  }}
+                  className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+                >
+                  Close
+                </button>
+                <button
+                  onClick={() => {
+                    // Edit functionality would go here
+                    alert('Edit functionality would be implemented here');
+                  }}
+                  className="px-4 py-2 bg-purple-800 text-white rounded-lg hover:bg-purple-900"
+                >
+                  Edit Action
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
