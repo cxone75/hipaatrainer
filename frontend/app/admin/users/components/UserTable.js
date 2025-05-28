@@ -124,10 +124,10 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
 
   const getComplianceStatusColor = (status) => {
     switch (status) {
-      case 'compliant': return 'text-green-600 bg-green-100';
-      case 'overdue': return 'text-red-600 bg-red-100';
-      case 'pending': return 'text-yellow-600 bg-yellow-100';
-      default: return 'text-gray-600 bg-gray-100';
+      case 'compliant': return 'text-success bg-green-100';
+      case 'overdue': return 'text-alert bg-red-100';
+      case 'pending': return 'text-warning bg-yellow-100';
+      default: return 'text-muted bg-gray-100';
     }
   };
 
@@ -157,7 +157,7 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
                 setModalEditMode(true);
                 setShowModal(true);
               }}
-              className="bg-purple-800 text-white px-4 py-2 rounded-lg font-medium hover:bg-purple-900 transition-colors flex items-center space-x-2"
+              className="bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-800 transition-colors flex items-center space-x-2"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -306,7 +306,7 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
                       setModalEditMode(true);
                       setShowModal(true);
                     }}
-                    className="text-purple-600 hover:text-purple-900 mr-3"
+                    className="text-primary hover:text-blue-800 mr-3"
                   >
                     Edit
                   </button>
@@ -317,7 +317,7 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
                       setModalEditMode(false);
                       setShowModal(true);
                     }}
-                    className="text-gray-600 hover:text-gray-900"
+                    className="text-muted hover:text-dark"
                   >
                     View
                   </button>

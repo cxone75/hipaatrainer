@@ -196,7 +196,7 @@ export default function UserProfileModal({ user, isOpen, onClose, initialEditMod
                         name="firstName"
                         value={formData.firstName || ''}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full px-3 py-2 border border-light rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                         required
                       />
                     </div>
@@ -210,7 +210,7 @@ export default function UserProfileModal({ user, isOpen, onClose, initialEditMod
                         name="lastName"
                         value={formData.lastName || ''}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full px-3 py-2 border border-light rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                         required
                       />
                     </div>
@@ -224,7 +224,7 @@ export default function UserProfileModal({ user, isOpen, onClose, initialEditMod
                         name="email"
                         value={formData.email || ''}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full px-3 py-2 border border-light rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                         required
                       />
                     </div>
@@ -238,7 +238,7 @@ export default function UserProfileModal({ user, isOpen, onClose, initialEditMod
                         name="department"
                         value={formData.department || ''}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full px-3 py-2 border border-light rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                       />
                     </div>
 
@@ -251,7 +251,7 @@ export default function UserProfileModal({ user, isOpen, onClose, initialEditMod
                         name="location"
                         value={formData.location || ''}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full px-3 py-2 border border-light rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                       />
                     </div>
 
@@ -263,7 +263,7 @@ export default function UserProfileModal({ user, isOpen, onClose, initialEditMod
                         name="status"
                         value={formData.status || 'active'}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        className="w-full px-3 py-2 border border-light rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                       >
                         <option value="active">Active</option>
                         <option value="inactive">Inactive</option>
@@ -409,7 +409,7 @@ export default function UserProfileModal({ user, isOpen, onClose, initialEditMod
                 </button>
                 <button
                   onClick={handleSave}
-                  className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                  className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-800 transition-colors"
                 >
                   {user ? 'Save Changes' : 'Create User'}
                 </button>
@@ -418,7 +418,7 @@ export default function UserProfileModal({ user, isOpen, onClose, initialEditMod
               <>
                 <button
                   onClick={handleEditClick}
-                  className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                  className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-800 transition-colors"
                 >
                   Edit User
                 </button>

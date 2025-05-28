@@ -90,11 +90,11 @@ export default function UserDirectory() {
               </select>
             </div>
 
-            <button className="w-full bg-purple-800 text-white py-2 px-4 rounded-lg font-medium hover:bg-purple-900 transition-colors">
+            <button className="w-full bg-primary text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-800 transition-colors">
               Apply Filters
             </button>
 
-            <button className="w-full mt-2 bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-lg font-medium hover:bg-gray-50 transition-colors">
+            <button className="w-full mt-2 bg-white border border-light text-dark py-2 px-4 rounded-lg font-medium hover:bg-gray-50 transition-colors">
               Clear Filters
             </button>
           </div>
@@ -115,8 +115,8 @@ export default function UserDirectory() {
           onClick={() => setShowAdvancedSearch(!showAdvancedSearch)}
           className={`w-full px-4 py-3 text-sm font-medium rounded-lg border transition-colors ${
             showAdvancedSearch 
-              ? 'bg-purple-800 text-white border-purple-800' 
-              : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+              ? 'bg-primary text-white border-primary' 
+              : 'bg-white text-dark border-light hover:bg-gray-50'
           }`}
         >
           {showAdvancedSearch ? 'Hide Filters' : 'Show Filters'}
