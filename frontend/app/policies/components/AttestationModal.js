@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -239,7 +240,7 @@ export default function AttestationModal({ policy, onClose, onAttest }) {
             <button
               onClick={handleAttest}
               disabled={!agreement || isAttesting}
-              className="px-4 py-2 bg-primary text-white rounded hover:bg-secondary disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+              className="px-4 py-2 bg-purple-800 text-white rounded-md text-sm font-medium hover:bg-purple-900 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
             >
               {isAttesting ? (
                 <>

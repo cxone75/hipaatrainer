@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -154,7 +155,7 @@ export default function CalendarView({ events, onEventClick, onSendReminder }) {
                 <span className="text-sm font-medium text-gray-600">Date:</span>
                 <span className="ml-2 text-sm text-gray-900">{isClient ? formatDate(selectedEvent.date) : selectedEvent.date}</span>
               </div>
-
+              
               <div>
                 <span className="text-sm font-medium text-gray-600">Status:</span>
                 <span className={`ml-2 inline-flex px-2 py-1 text-xs font-semibold rounded-full ${

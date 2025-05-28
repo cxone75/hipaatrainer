@@ -116,7 +116,7 @@ export default function AuditPreparation() {
             <button
               onClick={handleGenerateReport}
               disabled={isGeneratingReport}
-              className="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-800 transition-colors flex items-center space-x-2"
+              className="bg-purple-800 text-white px-6 py-3 rounded-lg font-medium hover:bg-purple-900 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
             >
               {isGeneratingReport ? (
                 <>
@@ -146,7 +146,7 @@ export default function AuditPreparation() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap flex items-center space-x-2 ${
                   activeTab === tab.id
-                    ? 'border-primary text-primary'
+                    ? 'border-purple-800 text-purple-800'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
                 aria-selected={activeTab === tab.id}
@@ -275,7 +275,7 @@ export default function AuditPreparation() {
                   </button>
                   <button
                     onClick={() => setAlertModal({ isOpen: true, title: 'Info', message: 'Export functionality would be implemented here', type: 'info' })}
-                    className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-800"
+                    className="px-4 py-2 bg-purple-800 text-white rounded-lg hover:bg-purple-900"
                   >
                     Export PDF
                   </button>

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -155,7 +156,7 @@ export default function CorrectiveActions() {
       // Here you would typically make an API call to save the action
       // For now, we'll just add it to the local state
       setActions(prev => [newAction, ...prev]);
-
+      
       // TODO: Add audit log entry
       console.log('New corrective action added:', newAction);
     } catch (error) {
@@ -196,7 +197,7 @@ export default function CorrectiveActions() {
         <div className="md:ml-auto">
           <button
             onClick={() => setShowAddForm(true)}
-            className="bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-800 transition-colors flex items-center space-x-2 h-12"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 flex items-center space-x-2 h-12"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

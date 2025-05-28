@@ -134,7 +134,7 @@ export default function TrainingCourses() {
               placeholder="Search courses..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-800 focus:border-transparent"
             />
           </div>
           <div className="flex gap-2 overflow-x-auto">
@@ -144,7 +144,7 @@ export default function TrainingCourses() {
                 onClick={() => setFilter(filterOption)}
                 className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-colors ${
                   filter === filterOption
-                    ? 'bg-primary text-white'
+                    ? 'bg-purple-800 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -205,7 +205,7 @@ export default function TrainingCourses() {
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
                       <div
-                        className="bg-primary h-2 rounded-full transition-all duration-300"
+                        className="bg-purple-800 h-2 rounded-full transition-all duration-300"
                         style={{ width: `${course.progress}%` }}
                       ></div>
                     </div>
@@ -225,7 +225,7 @@ export default function TrainingCourses() {
                     {course.enrolled ? (
                       <a
                         href={`/training/${course.id}`}
-                        className="flex-1 bg-primary text-white px-4 py-2 rounded-lg text-center font-medium hover:bg-blue-800 transition-colors"
+                        className="flex-1 bg-purple-800 text-white px-4 py-2 rounded-lg text-center font-medium hover:bg-purple-900 transition-colors"
                       >
                         {course.status === 'completed' ? 'Review Course' : 'Continue'}
                       </a>
@@ -237,7 +237,7 @@ export default function TrainingCourses() {
                             c.id === course.id ? { ...c, enrolled: true, status: 'in-progress' } : c
                           ));
                         }}
-                        className="flex-1 bg-secondary text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition-colors"
+                        className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
                       >
                         Enroll Now
                       </button>
@@ -246,7 +246,7 @@ export default function TrainingCourses() {
                     {course.certificateEarned && (
                       <a
                         href={`/training/${course.id}#certificate`}
-                        className="px-4 py-2 border border-primary text-primary rounded-lg font-medium hover:bg-blue-50 transition-colors"
+                        className="px-4 py-2 border border-purple-800 text-purple-800 rounded-lg font-medium hover:bg-purple-50 transition-colors"
                         title="View Certificate"
                       >
                         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">

@@ -33,7 +33,7 @@ export default function TopNavigation() {
           <div className="relative">
             <button
               onClick={() => setShowOrgDropdown(!showOrgDropdown)}
-              className="flex items-center space-x-2 px-3 py-2 rounded bg-gray-800 hover:bg-gray-700 text-white border border-light"
+              className="flex items-center space-x-2 px-3 py-2 rounded bg-gray-800 hover:bg-gray-700 text-gray-200"
             >
               <span>{currentOrg}</span>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -42,14 +42,14 @@ export default function TopNavigation() {
             </button>
             
             {showOrgDropdown && (
-              <div className="absolute top-full left-0 mt-1 w-64 bg-gray-800 border border-light rounded shadow-lg z-50">
+              <div className="absolute top-full left-0 mt-1 w-64 bg-gray-800 border border-gray-600 rounded shadow-lg z-50">
                 <div className="p-2">
                   {organizations.map((org) => (
                     <div
                       key={org}
                       onClick={() => handleOrgSwitch(org)}
-                      className={`px-3 py-2 hover:bg-primary rounded cursor-pointer text-white flex items-center justify-between ${
-                        currentOrg === org ? 'bg-primary' : ''
+                      className={`px-3 py-2 hover:bg-gray-700 rounded cursor-pointer text-gray-200 flex items-center justify-between ${
+                        currentOrg === org ? 'bg-gray-700' : ''
                       }`}
                     >
                       <span>{org}</span>
@@ -80,7 +80,7 @@ export default function TopNavigation() {
             <input
               type="text"
               placeholder="Search users, roles, or documents..."
-              className="w-full px-4 py-2 pl-10 bg-gray-800 border border-light rounded text-white placeholder-gray-400 focus:outline-none focus:border-primary"
+              className="w-full px-4 py-2 pl-10 bg-gray-800 border border-gray-600 rounded text-gray-200 placeholder-gray-400 focus:outline-none focus:border-purple-800"
             />
             <svg className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -103,17 +103,17 @@ export default function TopNavigation() {
             </button>
 
             {showNotifications && (
-              <div className="absolute top-full right-0 mt-1 w-80 bg-gray-800 border border-light rounded shadow-lg z-50">
+              <div className="absolute top-full right-0 mt-1 w-80 bg-gray-800 border border-gray-600 rounded shadow-lg z-50">
                 <div className="p-4">
                   <h3 className="text-white font-medium mb-3">Notifications</h3>
                   <div className="space-y-3">
-                    <div className="p-3 bg-gray-700 rounded border border-light">
-                      <p className="text-white text-sm">New user registration pending approval</p>
-                      <p className="text-muted text-xs mt-1">2 minutes ago</p>
+                    <div className="p-3 bg-gray-700 rounded">
+                      <p className="text-gray-200 text-sm">New user registration pending approval</p>
+                      <p className="text-gray-400 text-xs mt-1">2 minutes ago</p>
                     </div>
-                    <div className="p-3 bg-gray-700 rounded border border-light">
-                      <p className="text-white text-sm">Compliance training due for 5 users</p>
-                      <p className="text-muted text-xs mt-1">1 hour ago</p>
+                    <div className="p-3 bg-gray-700 rounded">
+                      <p className="text-gray-200 text-sm">Compliance training due for 5 users</p>
+                      <p className="text-gray-400 text-xs mt-1">1 hour ago</p>
                     </div>
                   </div>
                 </div>
@@ -133,9 +133,9 @@ export default function TopNavigation() {
           <div className="relative">
             <button
               onClick={() => setShowUserMenu(!showUserMenu)}
-              className="flex items-center space-x-2 text-white hover:text-accent"
+              className="flex items-center space-x-2 text-gray-200 hover:text-white"
             >
-              <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-medium text-sm">
+              <div className="w-8 h-8 bg-blue-400 text-gray-900 rounded-full flex items-center justify-center font-medium text-sm">
                 SW
               </div>
               <span>Scott Wi</span>
@@ -145,13 +145,13 @@ export default function TopNavigation() {
             </button>
 
             {showUserMenu && (
-              <div className="absolute top-full right-0 mt-1 w-48 bg-gray-800 border border-light rounded shadow-lg z-50">
+              <div className="absolute top-full right-0 mt-1 w-48 bg-gray-800 border border-gray-600 rounded shadow-lg z-50">
                 <div className="p-2">
-                  <a href="/profile" className="block px-3 py-2 hover:bg-primary rounded text-white">Profile</a>
-                  <a href="/subscription" className="block px-3 py-2 hover:bg-primary rounded text-white">Subscription</a>
-                  <a href="/settings" className="block px-3 py-2 hover:bg-primary rounded text-white">Settings</a>
-                  <hr className="my-2 border-light" />
-                  <button className="block w-full text-left px-3 py-2 hover:bg-primary rounded text-white">Sign Out</button>
+                  <a href="/profile" className="block px-3 py-2 hover:bg-gray-700 rounded text-gray-200">Profile</a>
+                  <a href="/subscription" className="block px-3 py-2 hover:bg-gray-700 rounded text-gray-200">Subscription</a>
+                  <a href="/settings" className="block px-3 py-2 hover:bg-gray-700 rounded text-gray-200">Settings</a>
+                  <hr className="my-2 border-gray-600" />
+                  <button className="block w-full text-left px-3 py-2 hover:bg-gray-700 rounded text-gray-200">Sign Out</button>
                 </div>
               </div>
             )}

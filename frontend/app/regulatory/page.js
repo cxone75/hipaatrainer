@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -190,7 +191,7 @@ export default function RegulatoryUpdates() {
             </label>
             <select
               id="category-filter"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option value="">All Categories</option>
               <option value="security-rule">Security Rule</option>
@@ -205,7 +206,7 @@ export default function RegulatoryUpdates() {
             </label>
             <select
               id="impact-filter"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option value="">All Impacts</option>
               <option value="high">High</option>

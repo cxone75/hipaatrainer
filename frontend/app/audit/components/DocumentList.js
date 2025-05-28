@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -101,19 +102,11 @@ export default function DocumentList() {
   };
 
   const getFileIcon = (type) => {
-    switch (type) {
-      case 'pdf': return 'text-alert bg-red-100';
-      case 'doc':
-      case 'docx': return 'text-primary bg-blue-100';
-      case 'xls':
-      case 'xlsx': return 'text-success bg-green-100';
-      default:
-        return (
-          <svg className="w-8 h-8 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
-          </svg>
-        );
-    }
+    return (
+      <svg className="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
+      </svg>
+    );
   };
 
   const formatFileSize = (bytes) => {
@@ -121,12 +114,12 @@ export default function DocumentList() {
     const units = ['B', 'KB', 'MB', 'GB'];
     let size = bytes;
     let unitIndex = 0;
-
+    
     while (size >= 1024 && unitIndex < units.length - 1) {
       size /= 1024;
       unitIndex++;
     }
-
+    
     return `${size.toFixed(unitIndex > 0 ? 1 : 0)} ${units[unitIndex]}`;
   };
 

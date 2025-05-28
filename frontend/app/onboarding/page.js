@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -41,7 +42,7 @@ export default function OnboardingPage() {
 
   const validateForm = () => {
     const newErrors = {};
-
+    
     if (!formData.organizationName.trim()) {
       newErrors.organizationName = 'Organization name is required';
     }
@@ -66,11 +67,11 @@ export default function OnboardingPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     if (!validateForm()) return;
 
     setIsSubmitting(true);
-
+    
     try {
       // Mock API call - replace with actual API endpoint
       // const response = await fetch('/api/onboarding', {
@@ -78,17 +79,17 @@ export default function OnboardingPage() {
       //   headers: { 'Content-Type': 'application/json' },
       //   body: JSON.stringify(formData)
       // });
-
+      
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
-
+      
       // Store onboarding completion in localStorage
       localStorage.setItem('onboardingCompleted', 'true');
       localStorage.setItem('organizationData', JSON.stringify({
         name: formData.organizationName,
         type: formData.organizationType
       }));
-
+      
       // Redirect to dashboard
       router.push('/dashboard');
     } catch (error) {
@@ -119,7 +120,7 @@ export default function OnboardingPage() {
             {/* Organization Information Section */}
             <div>
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Organization Information</h2>
-
+              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -165,7 +166,7 @@ export default function OnboardingPage() {
             {/* Personal Information Section */}
             <div className="border-t pt-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Your Information</h2>
-
+              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -241,7 +242,7 @@ export default function OnboardingPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-800 transition-colors"
+                className="w-full bg-purple-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-purple-700 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 {isSubmitting ? (
                   <div className="flex items-center justify-center">

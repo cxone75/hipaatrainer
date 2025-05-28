@@ -62,7 +62,7 @@ export default function UserSearch() {
             onChange={(e) => handleSearchChange(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Search by name, email, department, or role..."
-            className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             aria-label="Search users"
           />
           
@@ -88,7 +88,7 @@ export default function UserSearch() {
         
         <button 
           onClick={handleSearch}
-          className="bg-primary text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-800 transition-colors"
+          className="bg-purple-800 text-white px-6 py-2 rounded-lg font-medium hover:bg-purple-900 transition-colors"
         >
           Search
         </button>
@@ -103,7 +103,7 @@ export default function UserSearch() {
               setSearchQuery('');
               setShowSuggestions(false);
             }}
-            className="text-primary hover:text-blue-800 font-medium"
+            className="text-purple-800 hover:text-purple-900 font-medium"
           >
             Clear search
           </button>

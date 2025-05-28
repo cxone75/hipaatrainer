@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -213,7 +214,7 @@ export default function MockAudit() {
             <button
               onClick={runMockAudit}
               disabled={isRunning}
-              className="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-3 mx-auto"
+              className="bg-purple-800 text-white px-8 py-4 rounded-lg font-medium hover:bg-purple-900 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-3 mx-auto"
             >
               {isRunning ? (
                 <>
@@ -296,7 +297,7 @@ export default function MockAudit() {
                 <div className="flex justify-between text-sm text-gray-600 mb-4">
                   <span>{category.passedChecks} of {category.totalChecks} checks passed</span>
                 </div>
-
+                
                 {category.issues.length > 0 && (
                   <div>
                     <h5 className="font-medium text-gray-900 mb-3">Issues Found</h5>

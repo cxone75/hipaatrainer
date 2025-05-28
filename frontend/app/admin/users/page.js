@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -7,7 +8,7 @@ import UserProfileModal from './components/UserProfileModal';
 
 export default function UsersPage() {
   const [showAddUserModal, setShowAddUserModal] = useState(false);
-
+  
   const breadcrumbItems = [
     { label: 'Dashboard', href: '/' },
     { label: 'Administration', href: '/admin' },
@@ -32,7 +33,7 @@ export default function UsersPage() {
           </div>
         </div>
         <UserDirectory />
-
+        
         {/* Add User Modal */}
         <UserProfileModal
           user={null}

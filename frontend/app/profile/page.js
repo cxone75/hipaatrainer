@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -43,7 +44,7 @@ export default function ProfilePage() {
           <button
             onClick={handleSaveChanges}
             disabled={!hasChanges || saving}
-            className="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-purple-800 text-white px-6 py-3 rounded font-medium hover:bg-purple-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {saving ? 'Saving...' : 'Save Changes'}
           </button>

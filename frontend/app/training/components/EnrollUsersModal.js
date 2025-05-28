@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -209,7 +210,7 @@ export default function EnrollUsersModal({ isOpen, onClose, selectedCourse }) {
           <button
             onClick={handleEnroll}
             disabled={selectedUsers.length === 0}
-            className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-800 focus:ring-2 focus:ring-purple-800 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-6 py-2 bg-purple-800 text-white rounded-lg hover:bg-purple-900 focus:ring-2 focus:ring-purple-800 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Enroll
           </button>

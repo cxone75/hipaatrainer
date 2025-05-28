@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -150,7 +151,7 @@ export default function SettingsPage() {
                   <select
                     value={settings.automaticCourseAssignment.course}
                     onChange={(e) => handleSettingChange('automaticCourseAssignment', 'course', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-800 focus:border-transparent"
                   >
                     <option value="">Select a course</option>
                     {courseOptions.map(option => (
@@ -163,7 +164,7 @@ export default function SettingsPage() {
                   <select
                     value={settings.automaticCourseAssignment.frequency}
                     onChange={(e) => handleSettingChange('automaticCourseAssignment', 'frequency', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-800 focus:border-transparent"
                   >
                     <option value="">Select frequency</option>
                     {frequencyOptions.map(option => (
@@ -176,7 +177,7 @@ export default function SettingsPage() {
                   <select
                     value={settings.automaticCourseAssignment.dueDate}
                     onChange={(e) => handleSettingChange('automaticCourseAssignment', 'dueDate', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-800 focus:border-transparent"
                   >
                     <option value="">Select due date</option>
                     {dueDateOptions.map(option => (
@@ -214,7 +215,7 @@ export default function SettingsPage() {
                     id="completion-email"
                     checked={settings.notifyOnCompletion.email}
                     onChange={(e) => handleSettingChange('notifyOnCompletion', 'email', e.target.checked)}
-                    className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                    className="h-4 w-4 text-purple-800 focus:ring-purple-800 border-gray-300 rounded"
                   />
                   <label htmlFor="completion-email" className="ml-2 text-sm text-gray-700">By Email</label>
                 </div>
@@ -224,7 +225,7 @@ export default function SettingsPage() {
                     id="completion-sms"
                     checked={settings.notifyOnCompletion.sms}
                     onChange={(e) => handleSettingChange('notifyOnCompletion', 'sms', e.target.checked)}
-                    className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                    className="h-4 w-4 text-purple-800 focus:ring-purple-800 border-gray-300 rounded"
                   />
                   <label htmlFor="completion-sms" className="ml-2 text-sm text-gray-700">By SMS</label>
                 </div>
@@ -258,7 +259,7 @@ export default function SettingsPage() {
                     id="pastdue-email"
                     checked={settings.notifyOnPastDue.email}
                     onChange={(e) => handleSettingChange('notifyOnPastDue', 'email', e.target.checked)}
-                    className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                    className="h-4 w-4 text-purple-800 focus:ring-purple-800 border-gray-300 rounded"
                   />
                   <label htmlFor="pastdue-email" className="ml-2 text-sm text-gray-700">By Email</label>
                 </div>
@@ -268,7 +269,7 @@ export default function SettingsPage() {
                     id="pastdue-sms"
                     checked={settings.notifyOnPastDue.sms}
                     onChange={(e) => handleSettingChange('notifyOnPastDue', 'sms', e.target.checked)}
-                    className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                    className="h-4 w-4 text-purple-800 focus:ring-purple-800 border-gray-300 rounded"
                   />
                   <label htmlFor="pastdue-sms" className="ml-2 text-sm text-gray-700">By SMS</label>
                 </div>
@@ -300,7 +301,7 @@ export default function SettingsPage() {
                 <select
                   value={settings.emailComplianceSummary.frequency}
                   onChange={(e) => handleSettingChange('emailComplianceSummary', 'frequency', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-800 focus:border-transparent"
                 >
                   <option value="">Select frequency</option>
                   {summaryFrequencyOptions.map(option => (

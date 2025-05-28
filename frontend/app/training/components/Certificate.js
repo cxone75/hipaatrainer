@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -14,7 +15,7 @@ export default function Certificate({ courseTitle, courseId, template }) {
       try {
         // Simulate certificate generation - replace with actual API call
         await new Promise(resolve => setTimeout(resolve, 2000));
-
+        
         const certData = {
           certificateId: `CERT-${courseId.toUpperCase()}-${Date.now()}`,
           courseName: courseTitle,
@@ -25,7 +26,7 @@ export default function Certificate({ courseTitle, courseId, template }) {
           certificateUrl: `/api/certificates/download/${courseId}`,
           verificationCode: Math.random().toString(36).substring(2, 15).toUpperCase(),
         };
-
+        
         setCertificateData(certData);
         setDownloadUrl(certData.certificateUrl);
       } catch (error) {
@@ -47,7 +48,7 @@ export default function Certificate({ courseTitle, courseId, template }) {
           'Content-Type': 'application/pdf',
         },
       });
-
+      
       if (response.ok) {
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
@@ -214,17 +215,17 @@ export default function Certificate({ courseTitle, courseId, template }) {
           </svg>
           <span>Download Certificate</span>
         </button>
-
+        
         <button
           onClick={handleShare}
-          className="flex-1 bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-800 transition-colors flex items-center justify-center space-x-2"
+          className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
         >
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
             <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/>
           </svg>
           <span>Share Achievement</span>
         </button>
-
+        
         <button
           onClick={handleVerify}
           className="flex-1 bg-green-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 transition-colors flex items-center justify-center space-x-2"

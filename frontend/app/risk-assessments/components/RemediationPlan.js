@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -203,7 +204,7 @@ export default function RemediationPlan({ plan, onUpdateData }) {
 
   const handleSaveEdit = () => {
     if (!editingAction) return;
-
+    
     const updatedAction = {
       ...editingAction,
       ...editForm,
@@ -325,7 +326,7 @@ export default function RemediationPlan({ plan, onUpdateData }) {
                   </span>
                 </div>
                 <p className="text-gray-600 mb-4">{action.description}</p>
-
+                
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm mb-4">
                   <div>
                     <span className="font-medium text-gray-700">Cost:</span>
@@ -381,7 +382,7 @@ export default function RemediationPlan({ plan, onUpdateData }) {
                   <option value="In Progress">In Progress</option>
                   <option value="Completed">Completed</option>
                 </select>
-
+                
                 <button 
                   onClick={() => handleEditAction(action)}
                   className="text-sm text-purple-600 hover:text-purple-800 font-medium"

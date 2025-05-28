@@ -420,7 +420,7 @@ export default function SecuritySettings({ onFieldChange }) {
               />
               <button
                 type="submit"
-                className="bg-primary text-white px-4 py-2 rounded font-medium hover:bg-blue-800"
+                className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
               >
                 Update Password
               </button>
@@ -555,7 +555,7 @@ export default function SecuritySettings({ onFieldChange }) {
                     </div>
                   ))}
                 </div>
-
+                
                 {/* Pagination Controls */}
                 <div className="flex items-center justify-between border-t pt-4">
                   <div className="text-sm text-gray-700">
@@ -597,4 +597,3 @@ export default function SecuritySettings({ onFieldChange }) {
     </div>
   );
 }
-```
