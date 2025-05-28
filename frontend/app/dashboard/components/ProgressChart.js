@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -11,7 +12,7 @@ export default function ProgressChart({ type, data, ...props }) {
     const maxScore = Math.max(...data.map(d => d.score));
     const minScore = Math.min(...data.map(d => d.score));
     const scoreRange = maxScore - minScore || 1;
-
+    
     const svgWidth = 100; // Use percentage-based width
     const svgHeight = 200;
     const padding = 40;
@@ -181,7 +182,7 @@ export default function ProgressChart({ type, data, ...props }) {
         {data.map((item, index) => {
           const barWidth = (item.progress / 100) * chartWidth;
           const percentage = item.progress;
-
+          
           return (
             <div key={index} className="flex items-center space-x-4">
               <div className="w-28 text-sm font-medium text-gray-700 text-right">
