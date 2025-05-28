@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -30,13 +29,13 @@ export default function UserDirectory() {
         <div className="lg:col-span-1 space-y-4">
           <div className="bg-white rounded-lg shadow border p-4">
             <h3 className="text-lg font-semibold mb-4">Filters</h3>
-            
+
             {/* Role Filter */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-2" aria-label="Filter by Role">
                 Role
               </label>
-              <select className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+              <select className="w-full px-3 py-2 border border-light rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-transparent">
                 <option>All Roles</option>
                 <option>Admin</option>
                 <option>Manager</option>
@@ -52,7 +51,7 @@ export default function UserDirectory() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Department
               </label>
-              <select className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+              <select className="w-full px-3 py-2 border border-light rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-transparent">
                 <option>All Departments</option>
                 <option>Clinical</option>
                 <option>Administration</option>
@@ -94,13 +93,13 @@ export default function UserDirectory() {
             <button className="w-full bg-purple-800 text-white py-2 px-4 rounded-lg font-medium hover:bg-purple-900 transition-colors">
               Apply Filters
             </button>
-            
+
             <button className="w-full mt-2 bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-lg font-medium hover:bg-gray-50 transition-colors">
               Clear Filters
             </button>
           </div>
         </div>
-        
+
         {/* User Table - Takes up 3 columns */}
         <div className="lg:col-span-3">
           <UserTable 

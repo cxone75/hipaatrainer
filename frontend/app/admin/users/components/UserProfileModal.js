@@ -287,7 +287,7 @@ export default function UserProfileModal({ user, isOpen, onClose, initialEditMod
                             type="checkbox"
                             checked={formData.roles?.includes(role) || false}
                             onChange={() => handleRoleToggle(role)}
-                            className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                            className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
                           />
                           <span className="text-sm font-medium text-gray-700">{role}</span>
                         </label>

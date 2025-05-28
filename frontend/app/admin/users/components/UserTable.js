@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -117,7 +116,7 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
     const now = new Date();
     const diffTime = Math.abs(now - date);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
+
     if (diffDays === 1) return 'Yesterday';
     if (diffDays < 7) return `${diffDays} days ago`;
     return date.toLocaleDateString();
@@ -183,7 +182,7 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
                   type="checkbox"
                   checked={selectedUsers.length === users.length}
                   onChange={(e) => handleSelectAll(e.target.checked)}
-                  className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                  className="rounded border-gray-300 text-primary focus:ring-primary"
                   aria-label="Select all users"
                 />
               </th>
@@ -257,7 +256,7 @@ export default function UserTable({ selectedUsers = [], onSelectionChange }) {
                       e.stopPropagation();
                       handleSelectUser(user.id, e.target.checked);
                     }}
-                    className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                    className="rounded border-gray-300 text-primary focus:ring-primary"
                     aria-label={`Select ${user.name}`}
                   />
                 </td>
