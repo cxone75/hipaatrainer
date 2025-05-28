@@ -63,6 +63,14 @@ export default function TopNavigation() {
                 </div>
               </div>
             )}
+
+            {/* Click outside to close dropdown */}
+            {showOrgDropdown && (
+              <div 
+                className="fixed inset-0 z-0" 
+                onClick={() => setShowOrgDropdown(false)}
+              ></div>
+            )}
           </div>
         </div>
 
