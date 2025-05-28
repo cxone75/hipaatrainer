@@ -314,14 +314,84 @@ export default function LandingPage() {
                 </thead>
                 <tbody>
                   {[
-                    ["🧘 Calm & Clarity", "Sleep-easy confidence", "They've got compliance under lock-and-key."],
-                    ["⏰ Time Back", "10+ hours free per month", "How are they so productive?"],
-                    ["💰 Cost Savings", "$5K+ saved vs. consultants", "They did that for $30/mo?"],
-                    ["💪 Team Empowerment", "Staff own their tasks", "Compliance is part of our culture now."],
-                    ["📋 Audit-Ready in Minutes", "Two-click audit bundles", "Auditors impressed by your efficiency"]
+                    [
+                      {
+                        icon: (
+                          <div className="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center mr-3">
+                            <svg className="w-4 h-4 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                          </div>
+                        ),
+                        text: "Calm & Clarity"
+                      },
+                      "Sleep-easy confidence", 
+                      "They've got compliance under lock-and-key."
+                    ],
+                    [
+                      {
+                        icon: (
+                          <div className="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center mr-3">
+                            <svg className="w-4 h-4 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                        ),
+                        text: "Time Back"
+                      },
+                      "10+ hours free per month", 
+                      "How are they so productive?"
+                    ],
+                    [
+                      {
+                        icon: (
+                          <div className="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center mr-3">
+                            <svg className="w-4 h-4 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                            </svg>
+                          </div>
+                        ),
+                        text: "Cost Savings"
+                      },
+                      "$5K+ saved vs. consultants", 
+                      "They did that for $30/mo?"
+                    ],
+                    [
+                      {
+                        icon: (
+                          <div className="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center mr-3">
+                            <svg className="w-4 h-4 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                          </div>
+                        ),
+                        text: "Team Empowerment"
+                      },
+                      "Staff own their tasks", 
+                      "Compliance is part of our culture now."
+                    ],
+                    [
+                      {
+                        icon: (
+                          <div className="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center mr-3">
+                            <svg className="w-4 h-4 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                          </div>
+                        ),
+                        text: "Audit-Ready in Minutes"
+                      },
+                      "Two-click audit bundles", 
+                      "Auditors impressed by your efficiency"
+                    ]
                   ].map((row, index) => (
                     <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                      <td className="px-6 py-4 font-medium text-purple-800">{row[0]}</td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center">
+                          {row[0].icon}
+                          <span className="font-medium text-purple-800">{row[0].text}</span>
+                        </div>
+                      </td>
                       <td className="px-6 py-4 text-gray-900">{row[1]}</td>
                       <td className="px-6 py-4 text-gray-600 italic">"{row[2]}"</td>
                     </tr>
