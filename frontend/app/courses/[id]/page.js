@@ -13,6 +13,54 @@ export default function CoursePage() {
   const [showQuiz, setShowQuiz] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  // Quiz state
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [showAnswer, setShowAnswer] = useState(false);
+  const [answers, setAnswers] = useState([]);
+  const [quizCompleted, setQuizCompleted] = useState(false);
+
+  const quizData = {
+    questions: [
+      {
+        id: 1,
+        question: "What creates Protected Health Information (PHI)?",
+        options: [
+          "A patient's name alone",
+          "Any medical record",
+          "Electronic health records only",
+          "Individually identifiable information combined with health data"
+        ],
+        correctAnswer: 3,
+        explanation: "PHI is created when individually identifiable information is combined with health data. This means information that can identify a specific individual along with their health information."
+      },
+      {
+        id: 2,
+        question: "Who can access PHI under HIPAA?",
+        options: [
+          "Anyone who works at a healthcare facility",
+          "Only doctors and nurses",
+          "Only individuals with a business need and proper authorization",
+          "Any employee of a covered entity"
+        ],
+        correctAnswer: 2,
+        explanation: "PHI can only be accessed by individuals who have a legitimate business need and proper authorization. This follows the minimum necessary standard."
+      },
+      {
+        id: 3,
+        question: "What is the minimum necessary standard?",
+        options: [
+          "Using the least amount of PHI needed to accomplish a task",
+          "Keeping PHI for the minimum time required",
+          "Having the minimum number of people access PHI",
+          "Using minimum security measures"
+        ],
+        correctAnswer: 0,
+        explanation: "The minimum necessary standard requires that only the minimum amount of PHI necessary to accomplish a specific purpose should be used, disclosed, or requested."
+      }
+    ]
+  };
+
   useEffect(() => {
     // Load course data
     const loadCourse = async () => {
@@ -209,6 +257,54 @@ export default function CoursePage() {
       }));
     }
   };
+
+  const handleAnswerSelect = (answerIndex) => {
+    if (showAnswer) return; // Prevent changing answer after revealing
+    setSelectedAnswer(answerIndex);
+  };
+
+  const handleSubmitAnswer = () => {
+    if (selectedAnswer === null) return;
+    
+    const currentQuestionData = quizData.questions[currentQuestion];
+    const isCorrect = selectedAnswer === currentQuestionData.correctAnswer;
+    
+    // Store the answer
+    const newAnswer = {
+      questionId: currentQuestionData.id,
+      selectedAnswer,
+      correctAnswer: currentQuestionData.correctAnswer,
+      isCorrect
+    };
+    
+    setAnswers([...answers, newAnswer]);
+    setShowAnswer(true);
+  };
+
+  const handleNextQuestion = () => {
+    if (currentQuestion < quizData.questions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+      setSelectedAnswer(null);
+      setShowAnswer(false);
+    } else {
+      setQuizCompleted(true);
+    }
+  };
+
+  const resetQuiz = () => {
+    setCurrentQuestion(0);
+    setSelectedAnswer(null);
+    setShowAnswer(false);
+    setAnswers([]);
+    setQuizCompleted(false);
+  };
+
+  const calculateGrade = () => {
+    const correctAnswers = answers.filter(answer => answer.isCorrect).length;
+    return Math.round((correctAnswers / quizData.questions.length) * 100);
+  };
+
+  const currentQuestionData = quizData.questions[currentQuestion];
 
   const breadcrumbItems = [
     { label: 'Training', href: '/training' },
@@ -416,90 +512,203 @@ export default function CoursePage() {
             </div>
 
             {/* Quiz Content */}
-            <div className="p-6">
-              {/* Required passing grade */}
-              <p className="text-gray-600 mb-6">Required passing grade: 75%</p>
+            <div className="p-6 max-h-[75vh] overflow-y-auto">
+              {!quizCompleted ? (
+                <>
+                  {/* Required passing grade */}
+                  <p className="text-gray-600 mb-6">Required passing grade: 75%</p>
 
-              {/* Question counter and progress */}
-              <div className="flex items-center justify-between mb-6">
-                <span className="text-gray-600">Question 1 of 15</span>
-                <div className="flex space-x-1">
-                  {[...Array(15)].map((_, index) => (
-                    <div
-                      key={index}
-                      className={`w-3 h-3 rounded-full ${
-                        index === 0 ? 'bg-purple-600' : 'bg-gray-300'
-                      }`}
-                    />
-                  ))}
+                  {/* Question counter and progress */}
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="text-gray-600">Question {currentQuestion + 1} of {quizData.questions.length}</span>
+                    <div className="flex space-x-1">
+                      {quizData.questions.map((_, index) => (
+                        <div
+                          key={index}
+                          className={`w-3 h-3 rounded-full ${
+                            index === currentQuestion ? 'bg-purple-600' : 
+                            index < currentQuestion ? 'bg-green-500' : 'bg-gray-300'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Question */}
+                  <div className="mb-8">
+                    <h3 className="text-xl font-medium text-gray-900 mb-6">
+                      {currentQuestionData.question}
+                    </h3>
+
+                    {/* Answer options */}
+                    <div className="space-y-4">
+                      {currentQuestionData.options.map((option, index) => (
+                        <label 
+                          key={index}
+                          className={`flex items-center space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-colors ${
+                            showAnswer
+                              ? index === currentQuestionData.correctAnswer
+                                ? 'border-green-500 bg-green-50'
+                                : index === selectedAnswer && selectedAnswer !== currentQuestionData.correctAnswer
+                                ? 'border-red-500 bg-red-50'
+                                : 'border-gray-200 bg-gray-50'
+                              : selectedAnswer === index
+                              ? 'border-purple-500 bg-purple-50'
+                              : 'border-gray-200 hover:border-gray-300'
+                          }`}
+                        >
+                          <input
+                            type="radio"
+                            name={`quiz-question-${currentQuestion}`}
+                            checked={selectedAnswer === index}
+                            onChange={() => handleAnswerSelect(index)}
+                            disabled={showAnswer}
+                            className="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-500"
+                          />
+                          <span className="flex-1 text-gray-900">{option}</span>
+                          {showAnswer && index === currentQuestionData.correctAnswer && (
+                            <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                            </svg>
+                          )}
+                          {showAnswer && index === selectedAnswer && selectedAnswer !== currentQuestionData.correctAnswer && (
+                            <svg className="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                            </svg>
+                          )}
+                        </label>
+                      ))}
+                    </div>
+
+                    {/* Answer explanation */}
+                    {showAnswer && (
+                      <div className={`mt-6 p-4 rounded-lg ${
+                        selectedAnswer === currentQuestionData.correctAnswer 
+                          ? 'bg-green-50 border border-green-200' 
+                          : 'bg-red-50 border border-red-200'
+                      }`}>
+                        <div className="flex items-start space-x-3">
+                          {selectedAnswer === currentQuestionData.correctAnswer ? (
+                            <svg className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                            </svg>
+                          ) : (
+                            <svg className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                            </svg>
+                          )}
+                          <div>
+                            <p className={`font-medium ${
+                              selectedAnswer === currentQuestionData.correctAnswer 
+                                ? 'text-green-800' 
+                                : 'text-red-800'
+                            }`}>
+                              {selectedAnswer === currentQuestionData.correctAnswer ? 'Correct!' : 'Incorrect'}
+                            </p>
+                            <p className={`text-sm mt-1 ${
+                              selectedAnswer === currentQuestionData.correctAnswer 
+                                ? 'text-green-700' 
+                                : 'text-red-700'
+                            }`}>
+                              {currentQuestionData.explanation}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Navigation buttons */}
+                  <div className="flex justify-between">
+                    <button
+                      onClick={() => setCurrentQuestion(Math.max(0, currentQuestion - 1))}
+                      disabled={currentQuestion === 0}
+                      className="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                      </svg>
+                      <span>Previous</span>
+                    </button>
+
+                    <div className="flex space-x-4">
+                      {!showAnswer ? (
+                        <button 
+                          onClick={handleSubmitAnswer}
+                          disabled={selectedAnswer === null}
+                          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          Submit Answer
+                        </button>
+                      ) : (
+                        <button 
+                          onClick={handleNextQuestion}
+                          className="flex items-center space-x-2 px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                        >
+                          <span>{currentQuestion === quizData.questions.length - 1 ? 'Finish Quiz' : 'Next'}</span>
+                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                /* Quiz Results */
+                <div className="text-center">
+                  <div className="mb-8">
+                    <div className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 ${
+                      calculateGrade() >= 75 ? 'bg-green-100' : 'bg-red-100'
+                    }`}>
+                      {calculateGrade() >= 75 ? (
+                        <svg className="w-10 h-10 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                      ) : (
+                        <svg className="w-10 h-10 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                        </svg>
+                      )}
+                    </div>
+                    
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Quiz Complete!</h3>
+                    <div className={`text-4xl font-bold mb-4 ${
+                      calculateGrade() >= 75 ? 'text-green-600' : 'text-red-600'
+                    }`}>
+                      {calculateGrade()}%
+                    </div>
+                    
+                    <p className={`text-lg font-medium ${
+                      calculateGrade() >= 75 ? 'text-green-600' : 'text-red-600'
+                    }`}>
+                      {calculateGrade() >= 75 ? 'Congratulations! You passed!' : 'You need 75% to pass. Try again!'}
+                    </p>
+                    
+                    <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+                      <p className="text-gray-700">
+                        You answered {answers.filter(a => a.isCorrect).length} out of {quizData.questions.length} questions correctly.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Action buttons */}
+                  <div className="flex justify-center space-x-4">
+                    <button
+                      onClick={resetQuiz}
+                      className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                    >
+                      Retake Quiz
+                    </button>
+                    <button
+                      onClick={() => setShowQuiz(false)}
+                      className="px-6 py-3 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
+                    >
+                      Close
+                    </button>
+                  </div>
                 </div>
-              </div>
-
-              {/* Question */}
-              <div className="mb-8">
-                <h3 className="text-xl font-medium text-gray-900 mb-6">
-                  What creates Protected Health Information (PHI)?
-                </h3>
-
-                {/* Answer options */}
-                <div className="space-y-4">
-                  <label className="flex items-center space-x-3 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="quiz-question-1"
-                      className="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-500"
-                    />
-                    <span className="text-gray-900">A patient's name alone</span>
-                  </label>
-                  
-                  <label className="flex items-center space-x-3 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="quiz-question-1"
-                      className="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-500"
-                    />
-                    <span className="text-gray-900">Any medical record</span>
-                  </label>
-                  
-                  <label className="flex items-center space-x-3 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="quiz-question-1"
-                      className="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-500"
-                    />
-                    <span className="text-gray-900">Electronic health records only</span>
-                  </label>
-                  
-                  <label className="flex items-center space-x-3 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="quiz-question-1"
-                      className="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-500"
-                    />
-                    <span className="text-gray-900">Individually identifiable information combined with health data</span>
-                  </label>
-                </div>
-              </div>
-
-              {/* Navigation buttons */}
-              <div className="flex justify-between">
-                <button
-                  disabled
-                  className="flex items-center space-x-2 px-4 py-2 text-gray-400 cursor-not-allowed"
-                >
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-                  </svg>
-                  <span>Previous</span>
-                </button>
-
-                <button className="flex items-center space-x-2 px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
-                  <span>Next</span>
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
-                  </svg>
-                </button>
-              </div>
+              )}
             </div>
           </div>
         </div>
