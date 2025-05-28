@@ -20,7 +20,6 @@ export default function Home() {
     tasks: {
       training: { status: 'urgent', count: 12, label: 'Training' },
       riskAssessments: { status: 'warning', count: 3, label: 'Risk Assessments' },
-      baas: { status: 'compliant', count: 0, label: 'BAAs' },
       policies: { status: 'compliant', count: 1, label: 'Policies' }
     },
     trends: [
@@ -34,7 +33,6 @@ export default function Home() {
     categoryProgress: [
       { category: 'Training', progress: 75 },
       { category: 'Risk Assessment', progress: 90 },
-      { category: 'BAAs', progress: 100 },
       { category: 'Policies', progress: 95 }
     ]
   });
@@ -78,9 +76,6 @@ export default function Home() {
         break;
       case 'riskAssessments':
         window.location.href = '/risk-assessments';
-        break;
-      case 'baas':
-        window.location.href = '/risk-assessments#baas';
         break;
       case 'policies':
         window.location.href = '/policies';
@@ -156,15 +151,7 @@ export default function Home() {
                 onClick={() => handleTaskClick('riskAssessments')}
               />
             </div>
-            <div className="bg-white rounded-lg border border-gray-200 shadow-sm hover:border-gray-300 hover:shadow-md transition-all duration-300 overflow-hidden">
-              <StatusCard
-                type="task"
-                status={complianceData.tasks.baas.status}
-                count={complianceData.tasks.baas.count}
-                title={complianceData.tasks.baas.label}
-                onClick={() => handleTaskClick('baas')}
-              />
-            </div>
+            
             <div className="bg-white rounded-lg border border-gray-200 shadow-sm hover:border-gray-300 hover:shadow-md transition-all duration-300 overflow-hidden">
               <StatusCard
                 type="task"
