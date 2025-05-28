@@ -102,7 +102,7 @@ export default function Sidebar({ collapsed = false, onToggleCollapse, isMobile 
               href={item.href}
               className={`flex flex-col items-center px-2 py-1 text-xs transition-colors ${
                 isActive(item.href)
-                  ? 'text-purple-300'
+                  ? 'text-accent'
                   : 'text-gray-400 hover:text-white'
               }`}
             >
@@ -128,7 +128,7 @@ export default function Sidebar({ collapsed = false, onToggleCollapse, isMobile 
       <div className="p-4 border-b border-gray-700 flex items-center justify-between">
         {!isCollapsed && (
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-purple-800 rounded flex items-center justify-center">
+            <div className="w-8 h-8 bg-primary rounded flex items-center justify-center">
               <span className="text-white font-bold text-sm">HT</span>
             </div>
             <span className="text-white font-medium text-lg">HIPAA Trainer</span>
@@ -158,7 +158,7 @@ export default function Sidebar({ collapsed = false, onToggleCollapse, isMobile 
               href={item.href}
               className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors ${
                 isActive(item.href)
-                  ? 'bg-purple-800 text-white'
+                  ? 'bg-primary text-white'
                   : 'text-gray-300 hover:bg-gray-700 hover:text-white'
               }`}
               title={isCollapsed ? item.name : ''}
@@ -183,7 +183,7 @@ export default function Sidebar({ collapsed = false, onToggleCollapse, isMobile 
                     href={subItem.href}
                     className={`block px-2 py-1 text-sm rounded-md transition-colors ${
                       pathname === subItem.href
-                        ? 'text-purple-300 bg-purple-900'
+                        ? 'text-accent bg-primary'
                         : 'text-gray-400 hover:text-gray-300 hover:bg-gray-800'
                     }`}
                   >
