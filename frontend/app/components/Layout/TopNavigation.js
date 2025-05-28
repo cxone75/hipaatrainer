@@ -5,6 +5,24 @@ export default function TopNavigation() {
   const [showOrgDropdown, setShowOrgDropdown] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [currentOrg, setCurrentOrg] = useState('Healthcare Clinic A');
+
+  const organizations = [
+    'Healthcare Clinic A',
+    'Dental Practice B',
+    'Medical Center C'
+  ];
+
+  const handleOrgSwitch = (orgName) => {
+    setCurrentOrg(orgName);
+    setShowOrgDropdown(false);
+    // Here you would typically make an API call to switch the organization context
+    // and then reload the page or update the global state
+    console.log('Switching to organization:', orgName);
+    
+    // Optionally show a success message or reload the page
+    // window.location.reload(); // Uncomment if you need to reload the page
+  };
 
   return (
     <nav className="bg-gray-900 border-b border-gray-400 px-6 py-3">
@@ -17,7 +35,7 @@ export default function TopNavigation() {
               onClick={() => setShowOrgDropdown(!showOrgDropdown)}
               className="flex items-center space-x-2 px-3 py-2 rounded bg-gray-800 hover:bg-gray-700 text-gray-200"
             >
-              <span>Healthcare Clinic A</span>
+              <span>{currentOrg}</span>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
@@ -26,15 +44,22 @@ export default function TopNavigation() {
             {showOrgDropdown && (
               <div className="absolute top-full left-0 mt-1 w-64 bg-gray-800 border border-gray-600 rounded shadow-lg z-50">
                 <div className="p-2">
-                  <div className="px-3 py-2 hover:bg-gray-700 rounded cursor-pointer text-gray-200">
-                    Healthcare Clinic A
-                  </div>
-                  <div className="px-3 py-2 hover:bg-gray-700 rounded cursor-pointer text-gray-200">
-                    Dental Practice B
-                  </div>
-                  <div className="px-3 py-2 hover:bg-gray-700 rounded cursor-pointer text-gray-200">
-                    Medical Center C
-                  </div>
+                  {organizations.map((org) => (
+                    <div
+                      key={org}
+                      onClick={() => handleOrgSwitch(org)}
+                      className={`px-3 py-2 hover:bg-gray-700 rounded cursor-pointer text-gray-200 flex items-center justify-between ${
+                        currentOrg === org ? 'bg-gray-700' : ''
+                      }`}
+                    >
+                      <span>{org}</span>
+                      {currentOrg === org && (
+                        <svg className="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                      )}
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
