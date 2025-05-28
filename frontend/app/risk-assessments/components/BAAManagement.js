@@ -13,6 +13,8 @@ export default function BAAManagement({ baas, onUpdateData }) {
     title: '',
     message: ''
   });
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingBaa, setEditingBaa] = useState(null);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -170,6 +172,21 @@ export default function BAAManagement({ baas, onUpdateData }) {
         baa.id === baaId ? { ...baa, status: newStatus } : baa
       )
     );
+  };
+
+  const handleEdit = (baa) => {
+    setEditingBaa(baa);
+    setShowEditModal(true);
+  };
+
+  const handleSaveEdit = (updatedBaa) => {
+    setBaaList(prev =>
+      prev.map(baa =>
+        baa.id === updatedBaa.id ? updatedBaa : baa
+      )
+    );
+    setShowEditModal(false);
+    setEditingBaa(null);
   };
 
   const renderMobileCard = (baa) => (
@@ -414,7 +431,10 @@ export default function BAAManagement({ baas, onUpdateData }) {
                       >
                         Set Reminder
                       </button>
-                      <button className="text-purple-600 hover:text-purple-900">
+                      <button 
+                        onClick={() => handleEdit(baa)}
+                        className="text-purple-600 hover:text-purple-900"
+                      >
                         Edit
                       </button>
                     </td>
@@ -469,6 +489,168 @@ export default function BAAManagement({ baas, onUpdateData }) {
                 OK
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit BAA Modal */}
+      {showEditModal && editingBaa && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-semibold text-gray-900">Edit Business Associate Agreement</h3>
+              <button
+                onClick={() => setShowEditModal(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              const formData = new FormData(e.target);
+              const updatedBaa = {
+                ...editingBaa,
+                vendorName: formData.get('vendorName'),
+                vendorType: formData.get('vendorType'),
+                contactEmail: formData.get('contactEmail'),
+                contactPhone: formData.get('contactPhone'),
+                status: formData.get('status'),
+                reviewDate: formData.get('reviewDate'),
+                expirationDate: formData.get('expirationDate'),
+                riskLevel: formData.get('riskLevel'),
+                complianceOfficer: formData.get('complianceOfficer'),
+                notes: formData.get('notes')
+              };
+              handleSaveEdit(updatedBaa);
+            }}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Vendor Name</label>
+                  <input
+                    type="text"
+                    name="vendorName"
+                    defaultValue={editingBaa.vendorName}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Vendor Type</label>
+                  <input
+                    type="text"
+                    name="vendorType"
+                    defaultValue={editingBaa.vendorType}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Contact Email</label>
+                  <input
+                    type="email"
+                    name="contactEmail"
+                    defaultValue={editingBaa.contactEmail}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Contact Phone</label>
+                  <input
+                    type="tel"
+                    name="contactPhone"
+                    defaultValue={editingBaa.contactPhone}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                  <select
+                    name="status"
+                    defaultValue={editingBaa.status}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                    required
+                  >
+                    <option value="Active">Active</option>
+                    <option value="Expiring Soon">Expiring Soon</option>
+                    <option value="Under Review">Under Review</option>
+                    <option value="Expired">Expired</option>
+                    <option value="Terminated">Terminated</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Risk Level</label>
+                  <select
+                    name="riskLevel"
+                    defaultValue={editingBaa.riskLevel}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                    required
+                  >
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Review Date</label>
+                  <input
+                    type="date"
+                    name="reviewDate"
+                    defaultValue={editingBaa.reviewDate}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Expiration Date</label>
+                  <input
+                    type="date"
+                    name="expirationDate"
+                    defaultValue={editingBaa.expirationDate}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Compliance Officer</label>
+                  <input
+                    type="text"
+                    name="complianceOfficer"
+                    defaultValue={editingBaa.complianceOfficer}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                    required
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+                  <textarea
+                    name="notes"
+                    defaultValue={editingBaa.notes}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                    rows="3"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-3">
+                <button
+                  type="button"
+                  onClick={() => setShowEditModal(false)}
+                  className="px-4 py-2 border border-gray-300 rounded text-gray-700 hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
