@@ -19,6 +19,8 @@ export default function SubscriptionPage() {
   });
 
   const [showBillingHistory, setShowBillingHistory] = useState(false);
+  const [currentBillingPage, setCurrentBillingPage] = useState(1);
+  const billingPageSize = 5;
 
   // Mock billing history data
   const billingHistory = [
@@ -63,6 +65,20 @@ export default function SubscriptionPage() {
       invoice: 'INV-2025-005'
     }
   ];
+
+  // Pagination logic for billing history
+  const totalBillingPages = Math.ceil(billingHistory.length / billingPageSize);
+  const indexOfLastBillingItem = currentBillingPage * billingPageSize;
+  const indexOfFirstBillingItem = indexOfLastBillingItem - billingPageSize;
+  const currentBillingItems = billingHistory.slice(indexOfFirstBillingItem, indexOfLastBillingItem);
+
+  const handleBillingPrevPage = () => {
+    setCurrentBillingPage(prev => Math.max(prev - 1, 1));
+  };
+
+  const handleBillingNextPage = () => {
+    setCurrentBillingPage(prev => Math.min(prev + 1, totalBillingPages));
+  };
 
   const breadcrumbItems = [
     { label: 'Dashboard', href: '/' },
@@ -307,7 +323,7 @@ export default function SubscriptionPage() {
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
-                        {billingHistory.map((bill) => (
+                        {currentBillingItems.map((bill) => (
                           <tr key={bill.id} className="hover:bg-gray-50">
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                               {bill.date}
@@ -336,6 +352,32 @@ export default function SubscriptionPage() {
                         ))}
                       </tbody>
                     </table>
+                  </div>
+                </div>
+                
+                {/* Pagination Controls */}
+                <div className="flex items-center justify-between border-t pt-4">
+                  <div className="text-sm text-gray-700">
+                    Showing {indexOfFirstBillingItem + 1} to {Math.min(indexOfLastBillingItem, billingHistory.length)} of {billingHistory.length} billing records
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={handleBillingPrevPage}
+                      disabled={currentBillingPage === 1}
+                      className="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      Previous
+                    </button>
+                    <span className="px-3 py-1 text-sm">
+                      Page {currentBillingPage} of {totalBillingPages}
+                    </span>
+                    <button
+                      onClick={handleBillingNextPage}
+                      disabled={currentBillingPage === totalBillingPages}
+                      className="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      Next
+                    </button>
                   </div>
                 </div>
                 
