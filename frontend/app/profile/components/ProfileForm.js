@@ -20,6 +20,9 @@ export default function ProfileForm({ onFieldChange }) {
   const [currentOrg, setCurrentOrg] = useState('1');
   const [showRemoveModal, setShowRemoveModal] = useState(false);
   const [orgToRemove, setOrgToRemove] = useState(null);
+  const [showAddOrgModal, setShowAddOrgModal] = useState(false);
+  const [showEditOrgModal, setShowEditOrgModal] = useState(false);
+  const [orgToEdit, setOrgToEdit] = useState(null);
   const fileInputRef = useRef(null);
 
   const handleInputChange = (field, value) => {
@@ -70,6 +73,48 @@ export default function ProfileForm({ onFieldChange }) {
     } catch (error) {
       console.error('Error removing organization:', error);
       alert('Failed to remove organization');
+    }
+  };
+
+  const handleAddOrg = async (orgData) => {
+    try {
+      // await apiClient.request(`/organizations`, {
+      //   method: 'POST',
+      //   body: orgData
+      // });
+      const newOrg = {
+        id: String(organizations.length + 1),
+        name: orgData.name,
+        role: 'Admin'
+      };
+      setOrganizations(prev => [...prev, newOrg]);
+      setShowAddOrgModal(false);
+      onFieldChange?.();
+    } catch (error) {
+      console.error('Error adding organization:', error);
+      alert('Failed to add organization');
+    }
+  };
+
+  const handleEditOrg = async (orgData) => {
+    try {
+      // await apiClient.request(`/organizations/${orgToEdit.id}`, {
+      //   method: 'PUT',
+      //   body: orgData
+      // });
+      setOrganizations(prev => 
+        prev.map(org => 
+          org.id === orgToEdit.id 
+            ? { ...org, name: orgData.name }
+            : org
+        )
+      );
+      setShowEditOrgModal(false);
+      setOrgToEdit(null);
+      onFieldChange?.();
+    } catch (error) {
+      console.error('Error updating organization:', error);
+      alert('Failed to update organization');
     }
   };
 
@@ -165,7 +210,16 @@ export default function ProfileForm({ onFieldChange }) {
 
           {/* Organizations */}
           <div>
-            <label className="block text-sm font-medium mb-2">Organizations</label>
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-sm font-medium">Organizations</label>
+              <button
+                type="button"
+                onClick={() => setShowAddOrgModal(true)}
+                className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700"
+              >
+                Add Organization
+              </button>
+            </div>
             <div className="space-y-2">
               {organizations.map((org) => (
                 <div key={org.id} className="flex items-center justify-between p-3 border rounded">
@@ -184,25 +238,190 @@ export default function ProfileForm({ onFieldChange }) {
                       <p className="text-sm text-gray-500">Role: {org.role}</p>
                     </div>
                   </div>
-                  {organizations.length > 1 && (
+                  <div className="flex items-center space-x-2">
                     <button
                       type="button"
                       onClick={() => {
-                        setOrgToRemove(org);
-                        setShowRemoveModal(true);
+                        setOrgToEdit(org);
+                        setShowEditOrgModal(true);
                       }}
-                      className="text-red-600 hover:text-red-800 text-sm"
-                      aria-label={`Remove ${org.name}`}
+                      className="text-blue-600 hover:text-blue-800 text-sm"
+                      aria-label={`Edit ${org.name}`}
                     >
-                      Remove
+                      Edit
                     </button>
-                  )}
+                    {organizations.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setOrgToRemove(org);
+                          setShowRemoveModal(true);
+                        }}
+                        className="text-red-600 hover:text-red-800 text-sm"
+                        aria-label={`Remove ${org.name}`}
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Add Organization Modal */}
+      {showAddOrgModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg max-w-md w-full mx-4">
+            <h3 className="text-lg font-semibold mb-4">Add Organization</h3>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              const formData = new FormData(e.target);
+              handleAddOrg({
+                name: formData.get('name'),
+                domain: formData.get('domain'),
+                description: formData.get('description')
+              });
+            }}>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1" htmlFor="orgName">
+                    Organization Name *
+                  </label>
+                  <input
+                    id="orgName"
+                    name="name"
+                    type="text"
+                    required
+                    className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="Enter organization name"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1" htmlFor="orgDomain">
+                    Domain
+                  </label>
+                  <input
+                    id="orgDomain"
+                    name="domain"
+                    type="text"
+                    className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="example.com"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1" htmlFor="orgDescription">
+                    Description
+                  </label>
+                  <textarea
+                    id="orgDescription"
+                    name="description"
+                    rows="3"
+                    className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="Organization description"
+                  />
+                </div>
+              </div>
+              <div className="flex space-x-3 mt-6">
+                <button
+                  type="submit"
+                  className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+                >
+                  Add Organization
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowAddOrgModal(false)}
+                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Organization Modal */}
+      {showEditOrgModal && orgToEdit && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg max-w-md w-full mx-4">
+            <h3 className="text-lg font-semibold mb-4">Edit Organization</h3>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              const formData = new FormData(e.target);
+              handleEditOrg({
+                name: formData.get('name'),
+                domain: formData.get('domain'),
+                description: formData.get('description')
+              });
+            }}>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1" htmlFor="editOrgName">
+                    Organization Name *
+                  </label>
+                  <input
+                    id="editOrgName"
+                    name="name"
+                    type="text"
+                    required
+                    defaultValue={orgToEdit.name}
+                    className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="Enter organization name"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1" htmlFor="editOrgDomain">
+                    Domain
+                  </label>
+                  <input
+                    id="editOrgDomain"
+                    name="domain"
+                    type="text"
+                    defaultValue={orgToEdit.domain || ''}
+                    className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="example.com"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1" htmlFor="editOrgDescription">
+                    Description
+                  </label>
+                  <textarea
+                    id="editOrgDescription"
+                    name="description"
+                    rows="3"
+                    defaultValue={orgToEdit.description || ''}
+                    className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="Organization description"
+                  />
+                </div>
+              </div>
+              <div className="flex space-x-3 mt-6">
+                <button
+                  type="submit"
+                  className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+                >
+                  Update Organization
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowEditOrgModal(false);
+                    setOrgToEdit(null);
+                  }}
+                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Remove Organization Modal */}
       {showRemoveModal && orgToRemove && (
