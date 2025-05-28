@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -14,7 +13,7 @@ export default function ComplianceDashboard() {
     message: '',
     title: ''
   });
-  
+
   const [complianceData, setComplianceData] = useState({
     score: 85,
     tasks: {
@@ -103,7 +102,7 @@ export default function ComplianceDashboard() {
         },
         body: JSON.stringify({ eventId }),
       });
-      
+
       if (response.ok) {
         setReminderModalData({
           type: 'success',
@@ -150,7 +149,7 @@ export default function ComplianceDashboard() {
                 aria-label={`Compliance Score: ${complianceData.score}%`}
               />
             </div>
-            
+
             {/* Task Flags - Take 3 columns on desktop, stack on mobile */}
             <div className="lg:col-span-3 grid grid-cols-2 lg:grid-cols-4 gap-4">
               {Object.entries(complianceData.tasks).map(([key, task]) => (
@@ -190,7 +189,7 @@ export default function ComplianceDashboard() {
                 />
               </div>
             </div>
-            
+
             {/* Category Progress */}
             <div className="bg-white rounded-lg shadow border p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Category Progress</h2>

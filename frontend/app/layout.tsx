@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className="bg-background text-dark-text">
         <OnboardingGuard>
           {children}
         </OnboardingGuard>
