@@ -119,6 +119,14 @@ export default function TopNavigation() {
                 </div>
               </div>
             )}
+
+            {/* Click outside to close dropdown */}
+            {showNotifications && (
+              <div 
+                className="fixed inset-0 z-0" 
+                onClick={() => setShowNotifications(false)}
+              ></div>
+            )}
           </div>
 
           {/* User Menu */}
@@ -146,6 +154,14 @@ export default function TopNavigation() {
                   <button className="block w-full text-left px-3 py-2 hover:bg-gray-700 rounded text-gray-200">Sign Out</button>
                 </div>
               </div>
+            )}
+
+            {/* Click outside to close dropdown */}
+            {showUserMenu && (
+              <div 
+                className="fixed inset-0 z-0" 
+                onClick={() => setShowUserMenu(false)}
+              ></div>
             )}
           </div>
         </div>
