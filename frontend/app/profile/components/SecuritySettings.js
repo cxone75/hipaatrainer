@@ -97,6 +97,265 @@ export default function SecuritySettings({ onFieldChange }) {
       device: 'Chrome on Mac',
       location: 'Boston, MA',
       status: 'Success'
+    },
+    {
+      id: '4',
+      date: 'May 24, 2025 9:15 AM',
+      device: 'Firefox on Windows',
+      location: 'New York, NY',
+      status: 'Success'
+    },
+    {
+      id: '5',
+      date: 'May 23, 2025 6:30 PM',
+      device: 'Chrome on Android',
+      location: 'Brooklyn, NY',
+      status: 'Failed'
+    },
+    {
+      id: '6',
+      date: 'May 23, 2025 6:28 PM',
+      device: 'Chrome on Android',
+      location: 'Brooklyn, NY',
+      status: 'Success'
+    },
+    {
+      id: '7',
+      date: 'May 22, 2025 11:45 AM',
+      device: 'Safari on Mac',
+      location: 'New York, NY',
+      status: 'Success'
+    },
+    {
+      id: '8',
+      date: 'May 21, 2025 3:20 PM',
+      device: 'Chrome on Windows',
+      location: 'New York, NY',
+      status: 'Success'
+    },
+    {
+      id: '9',
+      date: 'May 20, 2025 8:00 AM',
+      device: 'Edge on Windows',
+      location: 'New York, NY',
+      status: 'Success'
+    },
+    {
+      id: '10',
+      date: 'May 19, 2025 5:30 PM',
+      device: 'Safari on iPad',
+      location: 'Manhattan, NY',
+      status: 'Success'
+    },
+    {
+      id: '11',
+      date: 'May 18, 2025 7:45 AM',
+      device: 'Chrome on Linux',
+      location: 'New York, NY',
+      status: 'Success'
+    },
+    {
+      id: '12',
+      date: 'May 17, 2025 12:30 PM',
+      device: 'Firefox on Mac',
+      location: 'Queens, NY',
+      status: 'Success'
+    },
+    {
+      id: '13',
+      date: 'May 16, 2025 4:15 PM',
+      device: 'Chrome on Windows',
+      location: 'New York, NY',
+      status: 'Failed'
+    },
+    {
+      id: '14',
+      date: 'May 16, 2025 4:12 PM',
+      device: 'Chrome on Windows',
+      location: 'New York, NY',
+      status: 'Success'
+    },
+    {
+      id: '15',
+      date: 'May 15, 2025 9:20 AM',
+      device: 'Safari on iPhone',
+      location: 'Bronx, NY',
+      status: 'Success'
+    },
+    {
+      id: '16',
+      date: 'May 14, 2025 2:45 PM',
+      device: 'Chrome on Android',
+      location: 'New York, NY',
+      status: 'Success'
+    },
+    {
+      id: '17',
+      date: 'May 13, 2025 6:10 PM',
+      device: 'Opera on Windows',
+      location: 'New York, NY',
+      status: 'Success'
+    },
+    {
+      id: '18',
+      date: 'May 12, 2025 10:30 AM',
+      device: 'Chrome on Mac',
+      location: 'Albany, NY',
+      status: 'Success'
+    },
+    {
+      id: '19',
+      date: 'May 11, 2025 1:15 PM',
+      device: 'Firefox on Linux',
+      location: 'New York, NY',
+      status: 'Success'
+    },
+    {
+      id: '20',
+      date: 'May 10, 2025 8:45 AM',
+      device: 'Safari on Mac',
+      location: 'New York, NY',
+      status: 'Success'
+    },
+    {
+      id: '21',
+      date: 'May 9, 2025 3:30 PM',
+      device: 'Chrome on Windows',
+      location: 'Buffalo, NY',
+      status: 'Success'
+    },
+    {
+      id: '22',
+      date: 'May 8, 2025 11:20 AM',
+      device: 'Edge on Windows',
+      location: 'New York, NY',
+      status: 'Failed'
+    },
+    {
+      id: '23',
+      date: 'May 8, 2025 11:18 AM',
+      device: 'Edge on Windows',
+      location: 'New York, NY',
+      status: 'Success'
+    },
+    {
+      id: '24',
+      date: 'May 7, 2025 7:00 PM',
+      device: 'Safari on iPhone',
+      location: 'New York, NY',
+      status: 'Success'
+    },
+    {
+      id: '25',
+      date: 'May 6, 2025 9:45 AM',
+      device: 'Chrome on Android',
+      location: 'Staten Island, NY',
+      status: 'Success'
+    },
+    {
+      id: '26',
+      date: 'May 5, 2025 4:20 PM',
+      device: 'Firefox on Windows',
+      location: 'New York, NY',
+      status: 'Success'
+    },
+    {
+      id: '27',
+      date: 'May 4, 2025 12:15 PM',
+      device: 'Chrome on Mac',
+      location: 'Rochester, NY',
+      status: 'Success'
+    },
+    {
+      id: '28',
+      date: 'May 3, 2025 6:30 AM',
+      device: 'Safari on iPad',
+      location: 'New York, NY',
+      status: 'Success'
+    },
+    {
+      id: '29',
+      date: 'May 2, 2025 2:45 PM',
+      device: 'Chrome on Linux',
+      location: 'New York, NY',
+      status: 'Success'
+    },
+    {
+      id: '30',
+      date: 'May 1, 2025 5:10 PM',
+      device: 'Opera on Mac',
+      location: 'Syracuse, NY',
+      status: 'Success'
+    },
+    {
+      id: '31',
+      date: 'Apr 30, 2025 8:30 AM',
+      device: 'Chrome on Windows',
+      location: 'New York, NY',
+      status: 'Success'
+    },
+    {
+      id: '32',
+      date: 'Apr 29, 2025 10:45 AM',
+      device: 'Safari on iPhone',
+      location: 'Long Island, NY',
+      status: 'Failed'
+    },
+    {
+      id: '33',
+      date: 'Apr 29, 2025 10:42 AM',
+      device: 'Safari on iPhone',
+      location: 'Long Island, NY',
+      status: 'Success'
+    },
+    {
+      id: '34',
+      date: 'Apr 28, 2025 3:15 PM',
+      device: 'Firefox on Linux',
+      location: 'New York, NY',
+      status: 'Success'
+    },
+    {
+      id: '35',
+      date: 'Apr 27, 2025 1:20 PM',
+      device: 'Edge on Windows',
+      location: 'Westchester, NY',
+      status: 'Success'
+    },
+    {
+      id: '36',
+      date: 'Apr 26, 2025 7:45 AM',
+      device: 'Chrome on Android',
+      location: 'New York, NY',
+      status: 'Success'
+    },
+    {
+      id: '37',
+      date: 'Apr 25, 2025 4:30 PM',
+      device: 'Safari on Mac',
+      location: 'New York, NY',
+      status: 'Success'
+    },
+    {
+      id: '38',
+      date: 'Apr 24, 2025 11:15 AM',
+      device: 'Chrome on Windows',
+      location: 'Utica, NY',
+      status: 'Success'
+    },
+    {
+      id: '39',
+      date: 'Apr 23, 2025 9:00 AM',
+      device: 'Firefox on Mac',
+      location: 'New York, NY',
+      status: 'Success'
+    },
+    {
+      id: '40',
+      date: 'Apr 22, 2025 6:20 PM',
+      device: 'Safari on iPad',
+      location: 'New York, NY',
+      status: 'Success'
     }
   ];
 
@@ -242,23 +501,46 @@ export default function SecuritySettings({ onFieldChange }) {
 
       {/* Login History Modal */}
       {showLoginHistory && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
-          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-            <div className="mt-3 text-center">
-              <h3 className="text-lg leading-6 font-medium text-gray-900">Login History</h3>
-              <div className="mt-2">
-                {loginHistory.map((log) => (
-                  <div key={log.id} className="py-2 border-b">
-                    <p className="text-sm text-gray-500">
-                      {log.date} - {log.device} - {log.location} - {log.status}
-                    </p>
-                  </div>
-                ))}
-              </div>
-              <div className="items-center px-4 py-3">
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+          <div className="relative top-10 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white">
+            <div className="mt-3">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg leading-6 font-medium text-gray-900">Complete Login History</h3>
                 <button
                   onClick={() => setShowLoginHistory(false)}
-                  className="px-4 py-2 bg-purple-600 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              <div className="max-h-96 overflow-y-auto">
+                <div className="space-y-2">
+                  {loginHistory.map((log) => (
+                    <div key={log.id} className="flex justify-between items-center p-3 bg-gray-50 rounded border">
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-4">
+                          <span className="font-medium text-sm">{log.date}</span>
+                          <span className="text-sm text-gray-600">{log.device}</span>
+                          <span className="text-sm text-gray-600">{log.location}</span>
+                        </div>
+                      </div>
+                      <span className={`px-2 py-1 rounded text-xs font-medium ${
+                        log.status === 'Success' 
+                          ? 'bg-green-100 text-green-800' 
+                          : 'bg-red-100 text-red-800'
+                      }`}>
+                        {log.status}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="mt-6 flex justify-end">
+                <button
+                  onClick={() => setShowLoginHistory(false)}
+                  className="px-6 py-2 bg-purple-600 text-white text-base font-medium rounded-md shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-300"
                 >
                   Close
                 </button>
