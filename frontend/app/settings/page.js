@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import MainLayout from '../components/Layout/MainLayout';
+import AlertModal from '../components/AlertModal';
 
 export default function SettingsPage() {
   const [settings, setSettings] = useState({
@@ -30,6 +31,7 @@ export default function SettingsPage() {
 
   const [saving, setSaving] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
+  const [alertModal, setAlertModal] = useState({ isOpen: false, title: '', message: '', type: 'info' });
 
   // Sample course options
   const courseOptions = [
@@ -81,10 +83,20 @@ export default function SettingsPage() {
       console.log('Saving settings:', settings);
       await new Promise(resolve => setTimeout(resolve, 1000));
       setHasChanges(false);
-      alert('Settings saved successfully!');
+      setAlertModal({
+        isOpen: true,
+        title: 'Success',
+        message: 'Settings saved successfully!',
+        type: 'success'
+      });
     } catch (error) {
       console.error('Error saving settings:', error);
-      alert('Error saving settings');
+      setAlertModal({
+        isOpen: true,
+        title: 'Error',
+        message: 'Error saving settings. Please try again.',
+        type: 'error'
+      });
     } finally {
       setSaving(false);
     }
@@ -313,6 +325,15 @@ export default function SettingsPage() {
           </div>
         )}
       </div>
+
+      {/* Alert Modal */}
+      <AlertModal
+        isOpen={alertModal.isOpen}
+        onClose={() => setAlertModal({ ...alertModal, isOpen: false })}
+        title={alertModal.title}
+        message={alertModal.message}
+        type={alertModal.type}
+      />
     </MainLayout>
   );
 }
