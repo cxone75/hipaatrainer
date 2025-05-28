@@ -6,6 +6,9 @@ import { useState, useEffect } from 'react';
 export default function RemediationPlan({ plan, onUpdateData }) {
   const [remediationPlan, setRemediationPlan] = useState([]);
   const [generating, setGenerating] = useState(false);
+  const [editingAction, setEditingAction] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editForm, setEditForm] = useState({});
 
   useEffect(() => {
     // Initialize with AI-generated sample remediation plan
@@ -183,6 +186,48 @@ export default function RemediationPlan({ plan, onUpdateData }) {
     );
   };
 
+  const handleEditAction = (action) => {
+    setEditingAction(action);
+    setEditForm({
+      title: action.title,
+      description: action.description,
+      priority: action.priority,
+      estimatedCost: action.estimatedCost,
+      timeframe: action.timeframe,
+      effort: action.effort,
+      assignee: action.assignee,
+      impact: action.impact,
+      steps: action.steps.join('\n')
+    });
+    setShowEditModal(true);
+  };
+
+  const handleSaveEdit = () => {
+    if (!editingAction) return;
+    
+    const updatedAction = {
+      ...editingAction,
+      ...editForm,
+      steps: editForm.steps.split('\n').filter(step => step.trim())
+    };
+
+    setRemediationPlan(prev =>
+      prev.map(action =>
+        action.id === editingAction.id ? updatedAction : action
+      )
+    );
+
+    setShowEditModal(false);
+    setEditingAction(null);
+    setEditForm({});
+  };
+
+  const handleCancelEdit = () => {
+    setShowEditModal(false);
+    setEditingAction(null);
+    setEditForm({});
+  };
+
   const totalCost = remediationPlan.reduce((sum, action) => sum + action.estimatedCost, 0);
   const totalRiskReduction = remediationPlan.reduce((sum, action) => sum + action.riskReduction, 0);
 
@@ -338,7 +383,10 @@ export default function RemediationPlan({ plan, onUpdateData }) {
                   <option value="Completed">Completed</option>
                 </select>
                 
-                <button className="text-sm text-purple-600 hover:text-purple-800 font-medium">
+                <button 
+                  onClick={() => handleEditAction(action)}
+                  className="text-sm text-purple-600 hover:text-purple-800 font-medium"
+                >
                   Edit Action
                 </button>
               </div>
@@ -366,6 +414,139 @@ export default function RemediationPlan({ plan, onUpdateData }) {
           </div>
         )}
       </div>
+
+      {/* Edit Action Modal */}
+      {showEditModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900">Edit Remediation Action</h3>
+              <p className="text-gray-600 text-sm mt-1">Update the details for this remediation action</p>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                <input
+                  type="text"
+                  value={editForm.title || ''}
+                  onChange={(e) => setEditForm(prev => ({ ...prev, title: e.target.value }))}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea
+                  value={editForm.description || ''}
+                  onChange={(e) => setEditForm(prev => ({ ...prev, description: e.target.value }))}
+                  rows={3}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Priority</label>
+                  <select
+                    value={editForm.priority || ''}
+                    onChange={(e) => setEditForm(prev => ({ ...prev, priority: e.target.value }))}
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                  >
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                    <option value="Critical">Critical</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Effort Level</label>
+                  <select
+                    value={editForm.effort || ''}
+                    onChange={(e) => setEditForm(prev => ({ ...prev, effort: e.target.value }))}
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                  >
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Estimated Cost ($)</label>
+                  <input
+                    type="number"
+                    value={editForm.estimatedCost || ''}
+                    onChange={(e) => setEditForm(prev => ({ ...prev, estimatedCost: parseInt(e.target.value) || 0 }))}
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Timeframe</label>
+                  <input
+                    type="text"
+                    value={editForm.timeframe || ''}
+                    onChange={(e) => setEditForm(prev => ({ ...prev, timeframe: e.target.value }))}
+                    placeholder="e.g., 30 days"
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Assignee</label>
+                <input
+                  type="text"
+                  value={editForm.assignee || ''}
+                  onChange={(e) => setEditForm(prev => ({ ...prev, assignee: e.target.value }))}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Impact</label>
+                <textarea
+                  value={editForm.impact || ''}
+                  onChange={(e) => setEditForm(prev => ({ ...prev, impact: e.target.value }))}
+                  rows={2}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Implementation Steps</label>
+                <textarea
+                  value={editForm.steps || ''}
+                  onChange={(e) => setEditForm(prev => ({ ...prev, steps: e.target.value }))}
+                  rows={4}
+                  placeholder="Enter each step on a new line"
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
+                />
+                <p className="text-xs text-gray-500 mt-1">Enter each step on a new line</p>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end space-x-3 p-6 border-t border-gray-200">
+              <button
+                onClick={handleCancelEdit}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveEdit}
+                className="px-4 py-2 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-md hover:bg-purple-700"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
