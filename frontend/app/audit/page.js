@@ -1,16 +1,17 @@
-
 'use client';
 
 import { useState } from 'react';
 import MainLayout from '../components/Layout/MainLayout';
 import DocumentList from './components/DocumentList';
-import MockAudit from './components/MockAudit';
 import CorrectiveActions from './components/CorrectiveActions';
+import MockAudit from './components/MockAudit';
+import AlertModal from '../components/AlertModal';
 
 export default function AuditPreparation() {
   const [activeTab, setActiveTab] = useState('documents');
-  const [isGeneratingReport, setIsGeneratingReport] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
+  const [alertModal, setAlertModal] = useState({ isOpen: false, title: '', message: '', type: 'info' });
+  const [isGeneratingReport, setIsGeneratingReport] = useState(false);
   const [mockReport, setMockReport] = useState(null);
 
   const handleGenerateReport = async () => {
@@ -18,7 +19,7 @@ export default function AuditPreparation() {
     try {
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       // Generate mock report data
       const reportData = {
         generatedAt: new Date().toISOString(),
@@ -79,7 +80,12 @@ export default function AuditPreparation() {
       setShowReportModal(true);
     } catch (error) {
       console.error('Error generating report:', error);
-      alert('Failed to generate report. Please try again.');
+      setAlertModal({
+        isOpen: true,
+        title: 'Error',
+        message: 'Failed to generate report. Please try again.',
+        type: 'error',
+      });
     } finally {
       setIsGeneratingReport(false);
     }
@@ -268,7 +274,7 @@ export default function AuditPreparation() {
                     Close
                   </button>
                   <button
-                    onClick={() => alert('Export functionality would be implemented here')}
+                    onClick={() => setAlertModal({ isOpen: true, title: 'Info', message: 'Export functionality would be implemented here', type: 'info' })}
                     className="px-4 py-2 bg-purple-800 text-white rounded-lg hover:bg-purple-900"
                   >
                     Export PDF
@@ -278,6 +284,13 @@ export default function AuditPreparation() {
             </div>
           </div>
         )}
+              <AlertModal
+                  isOpen={alertModal.isOpen}
+                  title={alertModal.title}
+                  message={alertModal.message}
+                  type={alertModal.type}
+                  onClose={() => setAlertModal({ ...alertModal, isOpen: false })}
+              />
       </div>
     </MainLayout>
   );

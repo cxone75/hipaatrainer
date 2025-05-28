@@ -2,6 +2,7 @@
 'use client';
 
 import { useState } from 'react';
+import AlertModal from '../../components/AlertModal';
 
 export default function CorrectiveActionModal({ isOpen, onClose, onSave }) {
   const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ export default function CorrectiveActionModal({ isOpen, onClose, onSave }) {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [alertModal, setAlertModal] = useState({ isOpen: false, title: '', message: '', type: 'info' });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -32,7 +34,12 @@ export default function CorrectiveActionModal({ isOpen, onClose, onSave }) {
     e.preventDefault();
     
     if (!formData.title.trim()) {
-      alert('Action title is required');
+      setAlertModal({
+        isOpen: true,
+        title: 'Validation Error',
+        message: 'Action title is required',
+        type: 'error'
+      });
       return;
     }
 
@@ -78,7 +85,12 @@ export default function CorrectiveActionModal({ isOpen, onClose, onSave }) {
       onClose();
     } catch (error) {
       console.error('Error saving corrective action:', error);
-      alert('Failed to save corrective action. Please try again.');
+      setAlertModal({
+        isOpen: true,
+        title: 'Save Error',
+        message: 'Failed to save corrective action. Please try again.',
+        type: 'error'
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -328,6 +340,14 @@ export default function CorrectiveActionModal({ isOpen, onClose, onSave }) {
           </div>
         </form>
       </div>
+
+      <AlertModal
+        isOpen={alertModal.isOpen}
+        onClose={() => setAlertModal({ ...alertModal, isOpen: false })}
+        title={alertModal.title}
+        message={alertModal.message}
+        type={alertModal.type}
+      />
     </div>
   );
 }

@@ -1,9 +1,9 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import MainLayout from '../../components/Layout/MainLayout';
+import AlertModal from '../../components/AlertModal';
 
 export default function CoursePage() {
   const { id } = useParams();
@@ -248,7 +248,7 @@ export default function CoursePage() {
     if (!completedLessons.includes(lessonId)) {
       setCompletedLessons([...completedLessons, lessonId]);
     }
-    
+
     // Check if all lessons are completed to enable final exam
     if (completedLessons.length + 1 === course?.lessons.length) {
       setCourse(prev => ({
@@ -265,10 +265,10 @@ export default function CoursePage() {
 
   const handleSubmitAnswer = () => {
     if (selectedAnswer === null) return;
-    
+
     const currentQuestionData = quizData.questions[currentQuestion];
     const isCorrect = selectedAnswer === currentQuestionData.correctAnswer;
-    
+
     // Store the answer
     const newAnswer = {
       questionId: currentQuestionData.id,
@@ -276,7 +276,7 @@ export default function CoursePage() {
       correctAnswer: currentQuestionData.correctAnswer,
       isCorrect
     };
-    
+
     setAnswers([...answers, newAnswer]);
     setShowAnswer(true);
   };
@@ -310,6 +310,7 @@ export default function CoursePage() {
     { label: 'Training', href: '/training' },
     { label: course?.title || 'Course', href: `/courses/${id}` }
   ];
+  const [alertModal, setAlertModal] = useState({ isOpen: false, title: '', message: '', type: 'info' });
 
   if (loading) {
     return (
@@ -350,7 +351,7 @@ export default function CoursePage() {
           {/* Course Header */}
           <div className="p-6 border-b border-gray-200">
             <h1 className="text-xl font-bold text-purple-800 mb-4">{course.title}</h1>
-            
+
             {/* Progress Bar */}
             <div className="mb-2">
               <div className="flex justify-between text-xs text-gray-600 mb-1">
@@ -508,6 +509,14 @@ export default function CoursePage() {
             </div>
           </div>
         </div>
+
+        <AlertModal
+          isOpen={alertModal.isOpen}
+          onClose={() => setAlertModal({ ...alertModal, isOpen: false })}
+          title={alertModal.title}
+          message={alertModal.message}
+          type={alertModal.type}
+        />
       </div>
 
       {/* Quiz Modal */}
@@ -635,7 +644,7 @@ export default function CoursePage() {
                   {/* Navigation buttons */}
                   <div className="flex justify-between">
                     <button
-                      onClick={() => setCurrentQuestion(Math.max(0, currentQuestion - 1))}
+                      onClick={()={() => setCurrentQuestion(Math.max(0, currentQuestion - 1))}
                       disabled={currentQuestion === 0}
                       className="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
@@ -685,20 +694,20 @@ export default function CoursePage() {
                         </svg>
                       )}
                     </div>
-                    
+
                     <h3 className="text-2xl font-bold text-gray-900 mb-2">Quiz Complete!</h3>
                     <div className={`text-4xl font-bold mb-4 ${
                       calculateGrade() >= 75 ? 'text-green-600' : 'text-red-600'
                     }`}>
                       {calculateGrade()}%
                     </div>
-                    
+
                     <p className={`text-lg font-medium ${
                       calculateGrade() >= 75 ? 'text-green-600' : 'text-red-600'
                     }`}>
                       {calculateGrade() >= 75 ? 'Congratulations! You passed!' : 'You need 75% to pass. Try again!'}
                     </p>
-                    
+
                     <div className="mt-6 p-4 bg-gray-50 rounded-lg">
                       <p className="text-gray-700">
                         You answered {answers.filter(a => a.isCorrect).length} out of {quizData.questions.length} questions correctly.

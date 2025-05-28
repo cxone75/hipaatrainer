@@ -2,15 +2,22 @@
 'use client';
 
 import { useState } from 'react';
+import AlertModal from '../../components/AlertModal';
 
 export default function AttestationModal({ policy, onClose, onAttest }) {
   const [attestationType, setAttestationType] = useState('digital');
   const [agreement, setAgreement] = useState(false);
   const [isAttesting, setIsAttesting] = useState(false);
+  const [alertModal, setAlertModal] = useState({ isOpen: false, title: '', message: '', type: 'info' });
 
   const handleAttest = async () => {
     if (!agreement) {
-      alert('Please confirm that you have read and understand the policy.');
+      setAlertModal({
+        isOpen: true,
+        title: 'Confirmation Required',
+        message: 'Please confirm that you have read and understand the policy.',
+        type: 'warning'
+      });
       return;
     }
 
@@ -53,7 +60,12 @@ export default function AttestationModal({ policy, onClose, onAttest }) {
       }
     } catch (error) {
       console.error('Error submitting attestation:', error);
-      alert('Failed to submit attestation. Please try again.');
+      setAlertModal({
+        isOpen: true,
+        title: 'Submission Error',
+        message: 'Failed to submit attestation. Please try again.',
+        type: 'error'
+      });
     } finally {
       setIsAttesting(false);
     }
@@ -256,6 +268,14 @@ export default function AttestationModal({ policy, onClose, onAttest }) {
             </button>
           </div>
         </div>
+
+        <AlertModal
+          isOpen={alertModal.isOpen}
+          onClose={() => setAlertModal({ ...alertModal, isOpen: false })}
+          title={alertModal.title}
+          message={alertModal.message}
+          type={alertModal.type}
+        />
       </div>
     </div>
   );

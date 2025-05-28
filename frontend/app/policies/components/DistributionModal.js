@@ -2,6 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import AlertModal from '../../components/AlertModal';
 
 export default function DistributionModal({ selectedPolicies, onClose, onDistribute }) {
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -13,6 +14,7 @@ export default function DistributionModal({ selectedPolicies, onClose, onDistrib
   const [reminderDays, setReminderDays] = useState(7);
   const [message, setMessage] = useState('');
   const [isDistributing, setIsDistributing] = useState(false);
+  const [alertModal, setAlertModal] = useState({ isOpen: false, title: '', message: '', type: 'info' });
 
   // Mock user and group data
   const [users] = useState([
@@ -74,7 +76,12 @@ export default function DistributionModal({ selectedPolicies, onClose, onDistrib
 
   const handleDistribute = async () => {
     if (selectedUsers.length === 0 && selectedGroups.length === 0) {
-      alert('Please select at least one user or group.');
+      setAlertModal({
+        isOpen: true,
+        title: 'Selection Required',
+        message: 'Please select at least one user or group.',
+        type: 'warning'
+      });
       return;
     }
 
@@ -109,7 +116,12 @@ export default function DistributionModal({ selectedPolicies, onClose, onDistrib
       }
     } catch (error) {
       console.error('Error distributing policies:', error);
-      alert('Failed to distribute policies. Please try again.');
+      setAlertModal({
+        isOpen: true,
+        title: 'Distribution Error',
+        message: 'Failed to distribute policies. Please try again.',
+        type: 'error'
+      });
     } finally {
       setIsDistributing(false);
     }
@@ -343,6 +355,14 @@ export default function DistributionModal({ selectedPolicies, onClose, onDistrib
               )}
             </button>
           </div>
+
+          <AlertModal
+            isOpen={alertModal.isOpen}
+            onClose={() => setAlertModal({ ...alertModal, isOpen: false })}
+            title={alertModal.title}
+            message={alertModal.message}
+            type={alertModal.type}
+          />
         </div>
       </div>
     </div>
