@@ -180,7 +180,7 @@ export default function UserProfileModal({ user, isOpen, onClose, initialEditMod
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto h-[440px]"></div>
+        <div className="p-6 overflow-y-auto h-[440px]">
           {activeTab === 'profile' && (
             <div className="space-y-6">
               {isEditMode ? (
