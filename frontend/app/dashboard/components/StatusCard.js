@@ -56,17 +56,17 @@ export default function StatusCard({ type, score, status, count, title, onClick,
 
   if (type === 'task') {
     const getStatusColor = (status) => {
-      switch (status) {
-        case 'urgent':
-          return 'bg-red-500 border-red-200 text-white';
-        case 'warning':
-          return 'bg-yellow-500 border-yellow-200 text-white';
-        case 'compliant':
-          return 'bg-green-500 border-green-200 text-white';
-        default:
-          return 'bg-gray-500 border-gray-200 text-white';
-      }
-    };
+    switch (status) {
+      case 'urgent':
+        return 'bg-white border-red-300 text-red-800 hover:border-red-400';
+      case 'warning':
+        return 'bg-white border-yellow-300 text-yellow-800 hover:border-yellow-400';
+      case 'compliant':
+        return 'bg-white border-green-300 text-green-800 hover:border-green-400';
+      default:
+        return 'bg-white border-gray-300 text-gray-800 hover:border-gray-400';
+    }
+  };
 
     const getStatusIcon = (status) => {
       switch (status) {

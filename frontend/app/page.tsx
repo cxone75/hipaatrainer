@@ -97,7 +97,7 @@ export default function Home() {
 
   return (
     <MainLayout>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-purple-50/30 p-4">
+      <div className="min-h-screen bg-gray-50 p-4">
         {/* Header Section */}
         <div className="mb-6">
           <div className="flex items-center justify-between">
@@ -106,13 +106,13 @@ export default function Home() {
               <p className="text-gray-600 text-sm">Monitor your HIPAA compliance status at a glance</p>
             </div>
             <div className="flex items-center space-x-3">
-              <div className="flex items-center space-x-2 bg-white/60 backdrop-blur-sm px-3 py-2 rounded-lg border border-purple-100">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <div className="flex items-center space-x-2 bg-white px-3 py-2 rounded-lg border border-gray-200">
+                <div className="w-2 h-2 border border-green-500 rounded-full bg-green-50"></div>
                 <span className="text-sm text-gray-700 font-medium">System Active</span>
               </div>
               <button 
                 onClick={() => window.location.reload()}
-                className="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors duration-200 flex items-center space-x-2"
+                className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 flex items-center space-x-2"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -127,7 +127,7 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-6">
           {/* Compliance Score - Takes 3 columns */}
           <div className="lg:col-span-3">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-purple-100 shadow-sm hover:shadow-md transition-all duration-300">
+            <div className="bg-white rounded-lg border border-gray-200 shadow-sm hover:border-gray-300 hover:shadow-md transition-all duration-300">
               <StatusCard
                 type="score"
                 score={complianceData.score}
@@ -138,7 +138,7 @@ export default function Home() {
 
           {/* Task Cards - Takes 9 columns, arranged in 3x3 grid */}
           <div className="lg:col-span-9 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-purple-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+            <div className="bg-white rounded-lg border border-gray-200 shadow-sm hover:border-gray-300 hover:shadow-md transition-all duration-300 overflow-hidden">
               <StatusCard
                 type="task"
                 status={complianceData.tasks.training.status}
@@ -147,7 +147,7 @@ export default function Home() {
                 onClick={() => handleTaskClick('training')}
               />
             </div>
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-purple-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+            <div className="bg-white rounded-lg border border-gray-200 shadow-sm hover:border-gray-300 hover:shadow-md transition-all duration-300 overflow-hidden">
               <StatusCard
                 type="task"
                 status={complianceData.tasks.riskAssessments.status}
@@ -156,7 +156,7 @@ export default function Home() {
                 onClick={() => handleTaskClick('riskAssessments')}
               />
             </div>
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-purple-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+            <div className="bg-white rounded-lg border border-gray-200 shadow-sm hover:border-gray-300 hover:shadow-md transition-all duration-300 overflow-hidden">
               <StatusCard
                 type="task"
                 status={complianceData.tasks.baas.status}
@@ -165,7 +165,7 @@ export default function Home() {
                 onClick={() => handleTaskClick('baas')}
               />
             </div>
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-purple-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+            <div className="bg-white rounded-lg border border-gray-200 shadow-sm hover:border-gray-300 hover:shadow-md transition-all duration-300 overflow-hidden">
               <StatusCard
                 type="task"
                 status={complianceData.tasks.policies.status}
@@ -175,30 +175,30 @@ export default function Home() {
               />
             </div>
             {/* Quick Actions Card */}
-            <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl border border-purple-200 shadow-sm hover:shadow-md transition-all duration-300 p-4 text-white cursor-pointer group" onClick={() => window.location.href = '/training'}>
+            <div className="bg-white rounded-lg border-2 border-gray-300 shadow-sm hover:border-gray-400 hover:shadow-md transition-all duration-300 p-4 cursor-pointer group" onClick={() => window.location.href = '/training'}>
               <div className="flex items-center justify-between h-full">
                 <div>
                   <div className="flex items-center space-x-2 mb-2">
-                    <svg className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-gray-600 group-hover:scale-110 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
-                    <span className="font-semibold text-sm">Quick Start</span>
+                    <span className="font-semibold text-sm text-gray-900">Quick Start</span>
                   </div>
-                  <div className="text-xs opacity-90">Create Training</div>
+                  <div className="text-xs text-gray-600">Create Training</div>
                 </div>
               </div>
             </div>
             {/* Reports Card */}
-            <div className="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl border border-indigo-200 shadow-sm hover:shadow-md transition-all duration-300 p-4 text-white cursor-pointer group" onClick={() => window.location.href = '/audit'}>
+            <div className="bg-white rounded-lg border-2 border-gray-300 shadow-sm hover:border-gray-400 hover:shadow-md transition-all duration-300 p-4 cursor-pointer group" onClick={() => window.location.href = '/audit'}>
               <div className="flex items-center justify-between h-full">
                 <div>
                   <div className="flex items-center space-x-2 mb-2">
-                    <svg className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-gray-600 group-hover:scale-110 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
-                    <span className="font-semibold text-sm">Reports</span>
+                    <span className="font-semibold text-sm text-gray-900">Reports</span>
                   </div>
-                  <div className="text-xs opacity-90">View Audit</div>
+                  <div className="text-xs text-gray-600">View Audit</div>
                 </div>
               </div>
             </div>
@@ -208,11 +208,11 @@ export default function Home() {
         {/* Charts and Calendar Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Compliance Trends Chart */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-purple-100 shadow-sm hover:shadow-md transition-all duration-300 p-6">
+          <div className="bg-white rounded-lg border border-gray-200 shadow-sm hover:border-gray-300 hover:shadow-md transition-all duration-300 p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-900">Compliance Trends</h3>
               <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                <div className="w-3 h-3 border border-gray-500 rounded-full bg-gray-50"></div>
                 <span>Score %</span>
               </div>
             </div>
@@ -222,10 +222,10 @@ export default function Home() {
           </div>
 
           {/* Category Progress */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-purple-100 shadow-sm hover:shadow-md transition-all duration-300 p-6">
+          <div className="bg-white rounded-lg border border-gray-200 shadow-sm hover:border-gray-300 hover:shadow-md transition-all duration-300 p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-900">Category Progress</h3>
-              <button className="text-purple-600 text-sm font-medium hover:text-purple-700 transition-colors">
+              <button className="text-gray-700 text-sm font-medium hover:text-gray-900 border border-gray-300 px-3 py-1 rounded hover:border-gray-400 transition-colors">
                 View Details
               </button>
             </div>
@@ -237,12 +237,12 @@ export default function Home() {
 
         {/* Calendar Section */}
         <div className="mt-6">
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-purple-100 shadow-sm hover:shadow-md transition-all duration-300 p-6">
+          <div className="bg-white rounded-lg border border-gray-200 shadow-sm hover:border-gray-300 hover:shadow-md transition-all duration-300 p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-900">Upcoming Events</h3>
               <button 
                 onClick={() => showReminder('success', 'Calendar Sync', 'Calendar events have been synchronized successfully.')}
-                className="text-purple-600 text-sm font-medium hover:text-purple-700 transition-colors flex items-center space-x-1"
+                className="text-gray-700 text-sm font-medium hover:text-gray-900 border border-gray-300 px-3 py-1 rounded hover:border-gray-400 transition-colors flex items-center space-x-1"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -281,7 +281,7 @@ export default function Home() {
               <div className="flex justify-end">
                 <button
                   onClick={() => setShowReminderModal(false)}
-                  className="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors duration-200"
+                  className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:border-gray-400 hover:bg-gray-50 transition-colors duration-200"
                 >
                   Close
                 </button>

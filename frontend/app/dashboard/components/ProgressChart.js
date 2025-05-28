@@ -101,11 +101,10 @@ export default function ProgressChart({ type, data, ...props }) {
           <path
             d={pathData}
             fill="none"
-            stroke="#8b5cf6"
+            stroke="#6b7280"
             strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
-            filter="url(#glow)"
           />
 
           {/* Gradient definition */}
@@ -118,8 +117,8 @@ export default function ProgressChart({ type, data, ...props }) {
               </feMerge>
             </filter>
             <linearGradient id="pointGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#a855f7"/>
-              <stop offset="100%" stopColor="#7c3aed"/>
+              <stop offset="0%" stopColor="#9ca3af"/>
+              <stop offset="100%" stopColor="#6b7280"/>
             </linearGradient>
           </defs>
 
@@ -220,10 +219,10 @@ export default function ProgressChart({ type, data, ...props }) {
                   }}
                 >
                   <div
-                    className={`h-full rounded-full transition-all duration-1000 ease-out shadow-sm ${
-                      percentage >= 90 ? 'bg-gradient-to-r from-green-400 to-green-500' :
-                      percentage >= 70 ? 'bg-gradient-to-r from-purple-400 to-purple-500' : 
-                      'bg-gradient-to-r from-red-400 to-red-500'
+                    className={`h-full rounded-full transition-all duration-1000 ease-out border ${
+                      percentage >= 90 ? 'bg-green-50 border-green-300' :
+                      percentage >= 70 ? 'bg-gray-50 border-gray-300' : 
+                      'bg-red-50 border-red-300'
                     }`}
                     style={{ width: `${percentage}%` }}
                   />
