@@ -29,7 +29,7 @@ export default function StatusCard({ type, score, status, count, title, onClick,
               cy="60"
               r="50"
               fill="none"
-              stroke={score >= 90 ? "#10b981" : score >= 70 ? "#f59e0b" : "#ef4444"}
+              stroke={score >= 90 ? "#10b981" : score >= 70 ? "#d946ef" : "#ef4444"}
               strokeWidth="8"
               strokeLinecap="round"
               strokeDasharray={`${(score / 100) * 314.16} 314.16`}
@@ -44,7 +44,7 @@ export default function StatusCard({ type, score, status, count, title, onClick,
         <h3 className="text-lg font-semibold text-gray-900 text-center">{title}</h3>
         <div className="mt-2 flex items-center space-x-2">
           <div className={`w-3 h-3 rounded-full ${
-            score >= 90 ? 'bg-green-500' : score >= 70 ? 'bg-yellow-500' : 'bg-red-500'
+            score >= 90 ? 'bg-green-500' : score >= 70 ? 'bg-magenta-500' : 'bg-red-500'
           }`}></div>
           <span className="text-sm text-gray-600">
             {score >= 90 ? 'Excellent' : score >= 70 ? 'Good' : 'Needs Attention'}
