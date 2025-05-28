@@ -12,9 +12,9 @@ export default function ProfileForm({ onFieldChange }) {
   });
 
   const [organizations, setOrganizations] = useState([
-    { id: '1', name: 'Healthcare Clinic A', role: 'Admin' },
-    { id: '2', name: 'Dental Practice B', role: 'Manager' },
-    { id: '3', name: 'Medical Center C', role: 'Staff' }
+    { id: '1', name: 'Healthcare Clinic A', role: 'Admin', type: 'Medical' },
+    { id: '2', name: 'Dental Practice B', role: 'Manager', type: 'Dental' },
+    { id: '3', name: 'Medical Center C', role: 'Staff', type: 'Medical' }
   ]);
 
   const [currentOrg, setCurrentOrg] = useState('1');
@@ -85,7 +85,8 @@ export default function ProfileForm({ onFieldChange }) {
       const newOrg = {
         id: String(organizations.length + 1),
         name: orgData.name,
-        role: 'Admin'
+        role: 'Admin',
+        type: orgData.type
       };
       setOrganizations(prev => [...prev, newOrg]);
       setShowAddOrgModal(false);
@@ -105,7 +106,7 @@ export default function ProfileForm({ onFieldChange }) {
       setOrganizations(prev => 
         prev.map(org => 
           org.id === orgToEdit.id 
-            ? { ...org, name: orgData.name }
+            ? { ...org, name: orgData.name, type: orgData.type }
             : org
         )
       );
@@ -281,8 +282,7 @@ export default function ProfileForm({ onFieldChange }) {
               const formData = new FormData(e.target);
               handleAddOrg({
                 name: formData.get('name'),
-                domain: formData.get('domain'),
-                description: formData.get('description')
+                type: formData.get('type')
               });
             }}>
               <div className="space-y-4">
@@ -300,28 +300,21 @@ export default function ProfileForm({ onFieldChange }) {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1" htmlFor="orgDomain">
-                    Domain
+                  <label className="block text-sm font-medium mb-1" htmlFor="orgType">
+                    Organization Type *
                   </label>
-                  <input
-                    id="orgDomain"
-                    name="domain"
-                    type="text"
+                  <select
+                    id="orgType"
+                    name="type"
+                    required
                     className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                    placeholder="example.com"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1" htmlFor="orgDescription">
-                    Description
-                  </label>
-                  <textarea
-                    id="orgDescription"
-                    name="description"
-                    rows="3"
-                    className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                    placeholder="Organization description"
-                  />
+                  >
+                    <option value="">Select organization type</option>
+                    <option value="Dental">Dental</option>
+                    <option value="Medical">Medical</option>
+                    <option value="Telemedicine">Telemedicine</option>
+                    <option value="Tech Company">Tech Company</option>
+                  </select>
                 </div>
               </div>
               <div className="flex space-x-3 mt-6">
@@ -354,8 +347,7 @@ export default function ProfileForm({ onFieldChange }) {
               const formData = new FormData(e.target);
               handleEditOrg({
                 name: formData.get('name'),
-                domain: formData.get('domain'),
-                description: formData.get('description')
+                type: formData.get('type')
               });
             }}>
               <div className="space-y-4">
@@ -374,30 +366,22 @@ export default function ProfileForm({ onFieldChange }) {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1" htmlFor="editOrgDomain">
-                    Domain
+                  <label className="block text-sm font-medium mb-1" htmlFor="editOrgType">
+                    Organization Type *
                   </label>
-                  <input
-                    id="editOrgDomain"
-                    name="domain"
-                    type="text"
-                    defaultValue={orgToEdit.domain || ''}
+                  <select
+                    id="editOrgType"
+                    name="type"
+                    required
+                    defaultValue={orgToEdit.type || ''}
                     className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                    placeholder="example.com"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1" htmlFor="editOrgDescription">
-                    Description
-                  </label>
-                  <textarea
-                    id="editOrgDescription"
-                    name="description"
-                    rows="3"
-                    defaultValue={orgToEdit.description || ''}
-                    className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                    placeholder="Organization description"
-                  />
+                  >
+                    <option value="">Select organization type</option>
+                    <option value="Dental">Dental</option>
+                    <option value="Medical">Medical</option>
+                    <option value="Telemedicine">Telemedicine</option>
+                    <option value="Tech Company">Tech Company</option>
+                  </select>
                 </div>
               </div>
               <div className="flex space-x-3 mt-6">
