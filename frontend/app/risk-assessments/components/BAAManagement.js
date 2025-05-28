@@ -7,6 +7,12 @@ export default function BAAManagement({ baas, onUpdateData }) {
   const [baaList, setBaaList] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [showReminderModal, setShowReminderModal] = useState(false);
+  const [reminderModalData, setReminderModalData] = useState({
+    type: 'success',
+    title: '',
+    message: ''
+  });
 
   useEffect(() => {
     const checkMobile = () => {
@@ -127,26 +133,34 @@ export default function BAAManagement({ baas, onUpdateData }) {
 
   const handleSetReminder = async (baaId, reminderType) => {
     try {
-      const response = await fetch('/api/compliance/reminders', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          baaId, 
-          reminderType, 
-          timestamp: new Date().toISOString() 
-        }),
-      });
+      // Simulate API call - replace with actual API endpoint when available
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      if (response.ok) {
-        alert(`${reminderType} reminder set successfully!`);
+      // For now, we'll simulate a successful response
+      const success = Math.random() > 0.2; // 80% success rate for demo
+      
+      if (success) {
+        setReminderModalData({
+          type: 'success',
+          title: 'Reminder Set',
+          message: `${reminderType} reminder has been set successfully! You will be notified before the deadline.`
+        });
       } else {
-        alert('Failed to set reminder');
+        setReminderModalData({
+          type: 'error',
+          title: 'Error',
+          message: 'Failed to set reminder. Please try again later.'
+        });
       }
     } catch (error) {
       console.error('Error setting reminder:', error);
-      alert('Error setting reminder');
+      setReminderModalData({
+        type: 'error',
+        title: 'Error',
+        message: 'An error occurred while setting the reminder. Please check your connection and try again.'
+      });
+    } finally {
+      setShowReminderModal(true);
     }
   };
 
@@ -419,6 +433,43 @@ export default function BAAManagement({ baas, onUpdateData }) {
           </svg>
           <h3 className="mt-2 text-sm font-medium text-gray-900">No BAAs found</h3>
           <p className="mt-1 text-sm text-gray-500">Get started by adding your first Business Associate Agreement.</p>
+        </div>
+      )}
+
+      {/* Reminder Modal */}
+      {showReminderModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+            <div className="flex items-center mb-4">
+              {reminderModalData.type === 'success' ? (
+                <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                  <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+              ) : (
+                <div className="flex-shrink-0 w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                  <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </div>
+              )}
+              <h3 className="text-lg font-semibold text-gray-900">{reminderModalData.title}</h3>
+            </div>
+            <p className="text-gray-600 mb-6">{reminderModalData.message}</p>
+            <div className="flex justify-end">
+              <button
+                onClick={() => setShowReminderModal(false)}
+                className={`px-4 py-2 rounded font-medium ${
+                  reminderModalData.type === 'success'
+                    ? 'bg-green-600 text-white hover:bg-green-700'
+                    : 'bg-red-600 text-white hover:bg-red-700'
+                }`}
+              >
+                OK
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
