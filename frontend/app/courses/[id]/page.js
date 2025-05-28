@@ -403,28 +403,103 @@ export default function CoursePage() {
       {/* Quiz Modal */}
       {showQuiz && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4">
-            <h3 className="text-xl font-bold mb-4">Lesson Quiz</h3>
-            <p className="text-gray-600 mb-6">
-              Test your knowledge of {currentLessonData?.title} with this quick quiz.
-            </p>
-            <div className="flex space-x-4">
+          <div className="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-hidden mx-4">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-900">Quiz</h2>
               <button
                 onClick={() => setShowQuiz(false)}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-600 hover:bg-gray-300"
               >
-                Cancel
+                ×
               </button>
-              <button
-                onClick={() => {
-                  setShowQuiz(false);
-                  // Navigate to quiz page
-                  window.location.href = `/courses/${id}/quiz/${currentLessonData.id}`;
-                }}
-                className="flex-1 bg-purple-800 text-white px-4 py-2 rounded-lg hover:bg-purple-900"
-              >
-                Start Quiz
-              </button>
+            </div>
+
+            {/* Quiz Content */}
+            <div className="p-6">
+              {/* Required passing grade */}
+              <p className="text-gray-600 mb-6">Required passing grade: 75%</p>
+
+              {/* Question counter and progress */}
+              <div className="flex items-center justify-between mb-6">
+                <span className="text-gray-600">Question 1 of 15</span>
+                <div className="flex space-x-1">
+                  {[...Array(15)].map((_, index) => (
+                    <div
+                      key={index}
+                      className={`w-3 h-3 rounded-full ${
+                        index === 0 ? 'bg-purple-600' : 'bg-gray-300'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Question */}
+              <div className="mb-8">
+                <h3 className="text-xl font-medium text-gray-900 mb-6">
+                  What creates Protected Health Information (PHI)?
+                </h3>
+
+                {/* Answer options */}
+                <div className="space-y-4">
+                  <label className="flex items-center space-x-3 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="quiz-question-1"
+                      className="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-500"
+                    />
+                    <span className="text-gray-900">A patient's name alone</span>
+                  </label>
+                  
+                  <label className="flex items-center space-x-3 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="quiz-question-1"
+                      className="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-500"
+                    />
+                    <span className="text-gray-900">Any medical record</span>
+                  </label>
+                  
+                  <label className="flex items-center space-x-3 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="quiz-question-1"
+                      className="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-500"
+                    />
+                    <span className="text-gray-900">Electronic health records only</span>
+                  </label>
+                  
+                  <label className="flex items-center space-x-3 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="quiz-question-1"
+                      className="w-4 h-4 text-purple-600 border-gray-300 focus:ring-purple-500"
+                    />
+                    <span className="text-gray-900">Individually identifiable information combined with health data</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Navigation buttons */}
+              <div className="flex justify-between">
+                <button
+                  disabled
+                  className="flex items-center space-x-2 px-4 py-2 text-gray-400 cursor-not-allowed"
+                >
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                  </svg>
+                  <span>Previous</span>
+                </button>
+
+                <button className="flex items-center space-x-2 px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                  <span>Next</span>
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </div>
