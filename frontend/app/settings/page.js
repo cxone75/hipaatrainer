@@ -214,7 +214,7 @@ export default function SettingsPage() {
                     id="completion-email"
                     checked={settings.notifyOnCompletion.email}
                     onChange={(e) => handleSettingChange('notifyOnCompletion', 'email', e.target.checked)}
-                    className="h-4 w-4 text-purple-800 focus:ring-purple-800 border-gray-300 rounded"
+                    className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
                   />
                   <label htmlFor="completion-email" className="ml-2 text-sm text-gray-700">By Email</label>
                 </div>
@@ -224,7 +224,7 @@ export default function SettingsPage() {
                     id="completion-sms"
                     checked={settings.notifyOnCompletion.sms}
                     onChange={(e) => handleSettingChange('notifyOnCompletion', 'sms', e.target.checked)}
-                    className="h-4 w-4 text-purple-800 focus:ring-purple-800 border-gray-300 rounded"
+                    className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
                   />
                   <label htmlFor="completion-sms" className="ml-2 text-sm text-gray-700">By SMS</label>
                 </div>
@@ -258,7 +258,7 @@ export default function SettingsPage() {
                     id="pastdue-email"
                     checked={settings.notifyOnPastDue.email}
                     onChange={(e) => handleSettingChange('notifyOnPastDue', 'email', e.target.checked)}
-                    className="h-4 w-4 text-purple-800 focus:ring-purple-800 border-gray-300 rounded"
+                    className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
                   />
                   <label htmlFor="pastdue-email" className="ml-2 text-sm text-gray-700">By Email</label>
                 </div>
@@ -268,7 +268,7 @@ export default function SettingsPage() {
                     id="pastdue-sms"
                     checked={settings.notifyOnPastDue.sms}
                     onChange={(e) => handleSettingChange('notifyOnPastDue', 'sms', e.target.checked)}
-                    className="h-4 w-4 text-purple-800 focus:ring-purple-800 border-gray-300 rounded"
+                    className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
                   />
                   <label htmlFor="pastdue-sms" className="ml-2 text-sm text-gray-700">By SMS</label>
                 </div>
