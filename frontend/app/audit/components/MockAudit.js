@@ -1,4 +1,3 @@
-javascript
 'use client';
 
 import { useState } from 'react';
@@ -339,6 +338,3 @@ export default function MockAudit() {
     </div>
   );
 }
-```
-
-The code was updated to use the new color palette, changing the button's background color to the primary color.
