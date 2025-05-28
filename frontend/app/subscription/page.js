@@ -18,6 +18,52 @@ export default function SubscriptionPage() {
     memberSince: 'May 2025'
   });
 
+  const [showBillingHistory, setShowBillingHistory] = useState(false);
+
+  // Mock billing history data
+  const billingHistory = [
+    {
+      id: 1,
+      date: 'May 1, 2025',
+      description: 'Pro Plan - Monthly Subscription',
+      amount: '$39.99',
+      status: 'Paid',
+      invoice: 'INV-2025-001'
+    },
+    {
+      id: 2,
+      date: 'Apr 1, 2025',
+      description: 'Pro Plan - Monthly Subscription',
+      amount: '$39.99',
+      status: 'Paid',
+      invoice: 'INV-2025-002'
+    },
+    {
+      id: 3,
+      date: 'Mar 1, 2025',
+      description: 'Standard Plan - Monthly Subscription',
+      amount: '$19.99',
+      status: 'Paid',
+      invoice: 'INV-2025-003'
+    },
+    {
+      id: 4,
+      date: 'Feb 1, 2025',
+      description: 'Standard Plan - Monthly Subscription',
+      amount: '$19.99',
+      status: 'Paid',
+      invoice: 'INV-2025-004'
+    },
+    {
+      id: 5,
+      date: 'Jan 1, 2025',
+      description: 'Basic Plan - Monthly Subscription',
+      amount: '$9.99',
+      status: 'Paid',
+      invoice: 'INV-2025-005'
+    }
+  ];
+
   const breadcrumbItems = [
     { label: 'Dashboard', href: '/' },
     { label: 'Subscription' }
@@ -162,7 +208,10 @@ export default function SubscriptionPage() {
                 <span className="text-gray-600">Member Since</span>
                 <span className="font-medium">{accountStatus.memberSince}</span>
               </div>
-              <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+              <button 
+                onClick={() => setShowBillingHistory(true)}
+                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+              >
                 View billing history →
               </button>
             </div>
@@ -217,6 +266,91 @@ export default function SubscriptionPage() {
             ))}
           </div>
         </div>
+
+        {/* Billing History Modal */}
+        {showBillingHistory && (
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+            <div className="relative top-10 mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white">
+              <div className="mt-3">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg leading-6 font-medium text-gray-900">Billing History</h3>
+                  <button
+                    onClick={() => setShowBillingHistory(false)}
+                    className="text-gray-400 hover:text-gray-600"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                
+                <div className="max-h-96 overflow-y-auto">
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Date
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Description
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Amount
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Status
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Invoice
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {billingHistory.map((bill) => (
+                          <tr key={bill.id} className="hover:bg-gray-50">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              {bill.date}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                              {bill.description}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                              {bill.amount}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${
+                                bill.status === 'Paid' 
+                                  ? 'bg-green-100 text-green-800' 
+                                  : 'bg-red-100 text-red-800'
+                              }`}>
+                                {bill.status}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 hover:text-blue-800">
+                              <button className="font-medium">
+                                {bill.invoice}
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                
+                <div className="mt-6 flex justify-end">
+                  <button
+                    onClick={() => setShowBillingHistory(false)}
+                    className="px-6 py-2 bg-purple-600 text-white text-base font-medium rounded-md shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </MainLayout>
   );
