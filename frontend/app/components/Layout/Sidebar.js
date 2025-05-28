@@ -109,7 +109,11 @@ export default function Sidebar({ collapsed = false, onToggleCollapse, isMobile 
 
   // Desktop Sidebar
   return (
-    <div className={`bg-gray-900 text-white ${isCollapsed ? 'w-16' : 'w-64'} transition-all duration-300 flex flex-col h-full flex-shrink-0`}>
+    <div 
+      className={`bg-gray-900 text-white ${isCollapsed ? 'w-16' : 'w-64'} transition-all duration-300 flex flex-col h-full flex-shrink-0`}
+      onMouseEnter={(e) => e.stopPropagation()}
+      onMouseLeave={(e) => e.stopPropagation()}
+    >
       {/* Header with Logo and Collapse Toggle */}
       <div className="p-4 border-b border-gray-700 flex items-center justify-between">
         {!isCollapsed && (
@@ -148,6 +152,9 @@ export default function Sidebar({ collapsed = false, onToggleCollapse, isMobile 
                   : 'text-gray-300 hover:bg-gray-700 hover:text-white'
               }`}
               title={isCollapsed ? item.name : ''}
+              onMouseEnter={(e) => e.stopPropagation()}
+              onMouseLeave={(e) => e.stopPropagation()}
+              onClick={(e) => e.stopPropagation()}
             >
               <div className="flex-shrink-0">
                 {item.icon}
