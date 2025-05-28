@@ -13,6 +13,10 @@ export default function RegulatoryUpdates() {
     { label: 'Regulatory Updates', href: '/regulatory' }
   ];
 
+  const handleViewDetails = (updateId) => {
+    setExpandedCard(expandedCard === updateId ? null : updateId);
+  };
+
   const [regulatoryUpdates] = useState([
     {
       id: 1,
@@ -198,8 +202,8 @@ export default function RegulatoryUpdates() {
               key={update.id}
               update={update}
               isExpanded={expandedCard === update.id}
-              onExpand={() => handleExpandCard(update.id)}
               onSetReminder={() => handleSetReminder(update)}
+              onViewDetails={handleViewDetails}
               getImpactColor={getImpactColor}
             />
           ))}

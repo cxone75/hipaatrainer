@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-export default function UpdateCard({ update, onSetReminder, onViewDetails }) {
-  const [isExpanded, setIsExpanded] = useState(false);
+export default function UpdateCard({ update, onSetReminder, onViewDetails, isExpanded }) {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
