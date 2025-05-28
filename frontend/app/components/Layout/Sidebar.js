@@ -121,10 +121,7 @@ export default function Sidebar({ collapsed = false, onToggleCollapse, isMobile 
           </div>
         )}
         <button
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsCollapsed(!isCollapsed);
-          }}
+          onClick={() => setIsCollapsed(!isCollapsed)}
           className="hover:bg-gray-800 p-2 rounded transition-colors"
           aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
@@ -151,10 +148,6 @@ export default function Sidebar({ collapsed = false, onToggleCollapse, isMobile 
                   : 'text-gray-300 hover:bg-gray-700 hover:text-white'
               }`}
               title={isCollapsed ? item.name : ''}
-              onClick={(e) => {
-                // Don't expand sidebar on navigation click
-                e.stopPropagation();
-              }}
             >
               <div className="flex-shrink-0">
                 {item.icon}
