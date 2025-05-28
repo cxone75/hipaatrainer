@@ -224,7 +224,7 @@ export default function TrainingCourses() {
                   <div className="flex space-x-2">
                     {course.enrolled ? (
                       <a
-                        href={`/training/${course.id}`}
+                        href={`/courses/${course.id}`}
                         className="flex-1 bg-purple-800 text-white px-4 py-2 rounded-lg text-center font-medium hover:bg-purple-900 transition-colors"
                       >
                         {course.status === 'completed' ? 'Review Course' : 'Continue'}
