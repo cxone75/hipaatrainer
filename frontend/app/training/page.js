@@ -134,7 +134,7 @@ export default function TrainingCourses() {
               placeholder="Search courses..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-800 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
             />
           </div>
           <div className="flex gap-2 overflow-x-auto">
@@ -144,7 +144,7 @@ export default function TrainingCourses() {
                 onClick={() => setFilter(filterOption)}
                 className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-colors ${
                   filter === filterOption
-                    ? 'bg-purple-800 text-white'
+                    ? 'bg-primary text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -159,7 +159,7 @@ export default function TrainingCourses() {
           {filteredCourses.map((course) => (
             <div key={course.id} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
               {/* Course Thumbnail */}
-              <div className="h-48 bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center">
+              <div className="h-48 bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
                 <div className="text-white text-center">
                   <svg className="w-16 h-16 mx-auto mb-2" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
@@ -205,7 +205,7 @@ export default function TrainingCourses() {
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
                       <div
-                        className="bg-purple-800 h-2 rounded-full transition-all duration-300"
+                        className="bg-primary h-2 rounded-full transition-all duration-300"
                         style={{ width: `${course.progress}%` }}
                       ></div>
                     </div>
@@ -225,7 +225,7 @@ export default function TrainingCourses() {
                     {course.enrolled ? (
                       <a
                         href={`/training/${course.id}`}
-                        className="flex-1 bg-purple-800 text-white px-4 py-2 rounded-lg text-center font-medium hover:bg-purple-900 transition-colors"
+                        className="flex-1 bg-primary text-white px-4 py-2 rounded-lg text-center font-medium hover:bg-support transition-colors"
                       >
                         {course.status === 'completed' ? 'Review Course' : 'Continue'}
                       </a>
@@ -237,7 +237,7 @@ export default function TrainingCourses() {
                             c.id === course.id ? { ...c, enrolled: true, status: 'in-progress' } : c
                           ));
                         }}
-                        className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                        className="flex-1 bg-secondary text-white px-4 py-2 rounded-lg font-medium hover:bg-primary transition-colors"
                       >
                         Enroll Now
                       </button>
@@ -246,7 +246,7 @@ export default function TrainingCourses() {
                     {course.certificateEarned && (
                       <a
                         href={`/training/${course.id}#certificate`}
-                        className="px-4 py-2 border border-purple-800 text-purple-800 rounded-lg font-medium hover:bg-purple-50 transition-colors"
+                        className="px-4 py-2 border border-primary text-primary rounded-lg font-medium hover:bg-light transition-colors"
                         title="View Certificate"
                       >
                         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">

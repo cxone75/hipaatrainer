@@ -43,8 +43,8 @@ export default function AlertModal({ isOpen, onClose, title, message, type = 'in
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           ),
-          bgColor: 'bg-blue-100',
-          buttonColor: 'bg-blue-600 hover:bg-blue-700'
+          bgColor: 'bg-light',
+          buttonColor: 'bg-secondary hover:bg-primary'
         };
     }
   };
