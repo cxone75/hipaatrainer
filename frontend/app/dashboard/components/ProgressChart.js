@@ -14,8 +14,8 @@ export default function ProgressChart({ type, data, ...props }) {
     const scoreRange = maxScore - minScore || 1;
     
     const svgWidth = 100; // Use percentage-based width
-    const svgHeight = 200;
-    const padding = 40;
+    const svgHeight = 150;
+    const padding = 30;
     const chartWidth = 320; // Fixed chart area width for calculations
     const chartHeight = svgHeight - 2 * padding;
 
@@ -49,7 +49,7 @@ export default function ProgressChart({ type, data, ...props }) {
     };
 
     return (
-      <div className="relative w-full h-full min-h-[200px]" {...props}>
+      <div className="relative w-full h-full min-h-[150px]" {...props}>
         <svg 
           width="100%" 
           height="100%" 
@@ -71,10 +71,11 @@ export default function ProgressChart({ type, data, ...props }) {
                   strokeWidth="1"
                 />
                 <text
-                  x={padding - 10}
-                  y={y + 4}
+                  x={padding - 8}
+                  y={y + 3}
                   textAnchor="end"
                   className="text-xs fill-gray-500"
+                  fontSize="10"
                 >
                   {score}%
                 </text>
@@ -87,9 +88,10 @@ export default function ProgressChart({ type, data, ...props }) {
             <text
               key={index}
               x={point.x}
-              y={190}
+              y={140}
               textAnchor="middle"
               className="text-xs fill-gray-500"
+              fontSize="10"
             >
               {formatDate(point.date)}
             </text>
@@ -111,10 +113,10 @@ export default function ProgressChart({ type, data, ...props }) {
               key={index}
               cx={point.x}
               cy={point.y}
-              r="6"
+              r="4"
               fill="#7c3aed"
               stroke="white"
-              strokeWidth="2"
+              strokeWidth="1.5"
               className="cursor-pointer hover:r-8 transition-all duration-200"
               onMouseEnter={(e) => handleMouseMove(e, point)}
               onMouseLeave={() => setHoveredItem(null)}
@@ -151,8 +153,8 @@ export default function ProgressChart({ type, data, ...props }) {
   if (type === 'bar') {
     // Bar chart for category progress
     const maxValue = Math.max(...data.map(d => d.progress));
-    const barHeight = 30;
-    const barSpacing = 20;
+    const barHeight = 20;
+    const barSpacing = 12;
     const svgHeight = data.length * (barHeight + barSpacing) - barSpacing + 40;
     const svgWidth = 400;
     const labelWidth = 120;
@@ -178,19 +180,19 @@ export default function ProgressChart({ type, data, ...props }) {
     };
 
     return (
-      <div className="space-y-4" {...props}>
+      <div className="space-y-2" {...props}>
         {data.map((item, index) => {
           const barWidth = (item.progress / 100) * chartWidth;
           const percentage = item.progress;
           
           return (
-            <div key={index} className="flex items-center space-x-4">
-              <div className="w-28 text-sm font-medium text-gray-700 text-right">
+            <div key={index} className="flex items-center space-x-3">
+              <div className="w-24 text-xs font-medium text-gray-700 text-right">
                 {item.category}
               </div>
               <div className="flex-1 relative">
                 <div 
-                  className="w-full bg-gray-200 rounded-full h-6 relative overflow-hidden cursor-pointer hover:bg-gray-300 transition-colors duration-200"
+                  className="w-full bg-gray-200 rounded-full h-4 relative overflow-hidden cursor-pointer hover:bg-gray-300 transition-colors duration-200"
                   onClick={() => handleCategoryClick(item.category)}
                   role="button"
                   tabIndex={0}
@@ -209,7 +211,7 @@ export default function ProgressChart({ type, data, ...props }) {
                     style={{ width: `${percentage}%` }}
                   />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-xs font-semibold text-gray-700">
+                    <span className="text-xs font-semibold text-gray-700" style={{ fontSize: '10px' }}>
                       {percentage}%
                     </span>
                   </div>
