@@ -10,36 +10,73 @@ import CorrectiveActions from './components/CorrectiveActions';
 export default function AuditPreparation() {
   const [activeTab, setActiveTab] = useState('documents');
   const [isGeneratingReport, setIsGeneratingReport] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [mockReport, setMockReport] = useState(null);
 
   const handleGenerateReport = async () => {
     setIsGeneratingReport(true);
     try {
-      // Simulate API call to generate audit report
-      const response = await fetch('/api/audit/report', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Generate mock report data
+      const reportData = {
+        generatedAt: new Date().toISOString(),
+        reportId: `AUD-${Date.now()}`,
+        organization: 'Healthcare Solutions Inc.',
+        reportType: 'Comprehensive Audit Preparation Report',
+        summary: {
+          totalDocuments: 24,
+          documentsReviewed: 21,
+          complianceScore: 87,
+          criticalIssues: 3,
+          recommendations: 12
         },
-        body: JSON.stringify({
-          includeDocuments: true,
-          includeMockAuditResults: true,
-          includeCorrectiveActions: true,
-        }),
-      });
+        sections: [
+          {
+            title: 'Document Repository Status',
+            status: 'Good',
+            details: '21 of 24 required documents are current and properly maintained.',
+            items: [
+              'HIPAA Privacy Policies - Current',
+              'Security Risk Assessment - Needs Update',
+              'Business Associate Agreements - Current',
+              'Incident Response Plan - Current'
+            ]
+          },
+          {
+            title: 'Mock Audit Results',
+            status: 'Attention Required',
+            details: 'Recent mock audit identified areas for improvement.',
+            items: [
+              'Administrative Safeguards: 85%',
+              'Physical Safeguards: 92%',
+              'Technical Safeguards: 65%',
+              'Privacy Rules: 88%'
+            ]
+          },
+          {
+            title: 'Corrective Actions',
+            status: 'In Progress',
+            details: '8 of 12 corrective actions have been completed.',
+            items: [
+              'Implement multi-factor authentication - In Progress',
+              'Update workforce training - Completed',
+              'Enhance audit logging - Pending',
+              'Review access controls - Completed'
+            ]
+          }
+        ],
+        recommendations: [
+          'Prioritize technical safeguards implementation',
+          'Complete outstanding risk assessment updates',
+          'Schedule quarterly compliance reviews',
+          'Enhance staff training on privacy procedures'
+        ]
+      };
 
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = `audit-preparation-report-${new Date().toISOString().split('T')[0]}.pdf`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-      } else {
-        throw new Error('Failed to generate report');
-      }
+      setMockReport(reportData);
+      setShowReportModal(true);
     } catch (error) {
       console.error('Error generating report:', error);
       alert('Failed to generate report. Please try again.');
@@ -124,6 +161,123 @@ export default function AuditPreparation() {
           {activeTab === 'mock-audit' && <MockAudit />}
           {activeTab === 'corrective-actions' && <CorrectiveActions />}
         </div>
+
+        {/* Mock Report Modal */}
+        {showReportModal && mockReport && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
+              {/* Modal Header */}
+              <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">{mockReport.reportType}</h2>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Generated on {new Date(mockReport.generatedAt).toLocaleString()}
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowReportModal(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Modal Content */}
+              <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+                {/* Report Summary */}
+                <div className="mb-8">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Executive Summary</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div className="bg-blue-50 p-4 rounded-lg">
+                      <div className="text-2xl font-bold text-blue-600">{mockReport.summary.totalDocuments}</div>
+                      <div className="text-sm text-blue-800">Total Documents</div>
+                    </div>
+                    <div className="bg-green-50 p-4 rounded-lg">
+                      <div className="text-2xl font-bold text-green-600">{mockReport.summary.complianceScore}%</div>
+                      <div className="text-sm text-green-800">Compliance Score</div>
+                    </div>
+                    <div className="bg-yellow-50 p-4 rounded-lg">
+                      <div className="text-2xl font-bold text-yellow-600">{mockReport.summary.criticalIssues}</div>
+                      <div className="text-sm text-yellow-800">Critical Issues</div>
+                    </div>
+                    <div className="bg-purple-50 p-4 rounded-lg">
+                      <div className="text-2xl font-bold text-purple-600">{mockReport.summary.recommendations}</div>
+                      <div className="text-sm text-purple-800">Recommendations</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Report Sections */}
+                <div className="space-y-6 mb-8">
+                  <h3 className="text-lg font-semibold text-gray-900">Detailed Analysis</h3>
+                  {mockReport.sections.map((section, index) => (
+                    <div key={index} className="border border-gray-200 rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <h4 className="text-md font-medium text-gray-900">{section.title}</h4>
+                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          section.status === 'Good' ? 'bg-green-100 text-green-800' :
+                          section.status === 'Attention Required' ? 'bg-yellow-100 text-yellow-800' :
+                          'bg-blue-100 text-blue-800'
+                        }`}>
+                          {section.status}
+                        </span>
+                      </div>
+                      <p className="text-gray-600 text-sm mb-3">{section.details}</p>
+                      <ul className="space-y-1">
+                        {section.items.map((item, itemIndex) => (
+                          <li key={itemIndex} className="text-sm text-gray-700 flex items-center">
+                            <svg className="w-4 h-4 text-gray-400 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Recommendations */}
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                  <h3 className="text-lg font-semibold text-blue-900 mb-4">Key Recommendations</h3>
+                  <ul className="space-y-2">
+                    {mockReport.recommendations.map((recommendation, index) => (
+                      <li key={index} className="flex items-start">
+                        <svg className="w-5 h-5 text-blue-600 mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span className="text-blue-800">{recommendation}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="flex justify-between items-center p-6 border-t border-gray-200 bg-gray-50">
+                <div className="text-sm text-gray-500">
+                  Report ID: {mockReport.reportId} | Organization: {mockReport.organization}
+                </div>
+                <div className="space-x-3">
+                  <button
+                    onClick={() => setShowReportModal(false)}
+                    className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+                  >
+                    Close
+                  </button>
+                  <button
+                    onClick={() => alert('Export functionality would be implemented here')}
+                    className="px-4 py-2 bg-purple-800 text-white rounded-lg hover:bg-purple-900"
+                  >
+                    Export PDF
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </MainLayout>
   );
