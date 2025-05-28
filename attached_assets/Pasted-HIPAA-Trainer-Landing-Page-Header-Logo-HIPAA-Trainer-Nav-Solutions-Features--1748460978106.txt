@@ -1,0 +1,233 @@
+HIPAA Trainer Landing Page
+Header
+Logo: HIPAA Trainer
+
+
+Nav:
+
+
+Solutions
+
+
+Features
+
+
+Pricing
+
+
+Resources
+
+
+Login
+
+
+Primary CTA: Free for individuals, upgrade to teams/organizations at any time
+
+
+Hero
+“Compliance Confidence for Practices and Startups Alike”
+Automate HIPAA training, policy updates, risk assessments & audit bundles—so dental offices, physician practices, healthtech startups, mental health clinics, and home healthcare agencies trade late-night spreadsheets for clear dashboards and real confidence.
+Free for individuals, upgrade to teams/organizations at any time
+Visual: A mix of professionals—a dental office manager, practice physician, startup CTO, clinic director, and home health agency supervisor—collaborating around a tablet that displays a clean, green “100 % Compliance” dashboard, in a bright, welcoming workspace.
+
+Who We Serve
+Built for Your Organization
+Whether you’re running a busy dental practice, a multi-physician clinic, launching a healthtech venture, managing a mental health program, or coordinating caregivers in home healthcare, HIPAA Trainer scales to your team—no big-budget compliance department required.
+
+The Pain Nobody Talks About
+Persona
+Daily Struggle
+Hidden Cost
+Dental Office Manager (Linda Lee)
+Staff can’t find the latest Notice of Privacy Practices in shared drives
+Patient complaints and potential state board warnings
+Physician Practice Manager (Dr. Chen)
+Tracking which physicians and nurses completed yearly training is a manual nightmare
+Fines for lapsed certifications and interrupted patient scheduling
+Healthtech Startup CTO (Alex Kim)
+CI/CD releases stall while you manually embed security and compliance scripts
+Missed funding milestones, uphill investor conversations
+Mental Health Clinic Director (Jasmine Patel)
+Uncertainty around telehealth PHI rules leads to ad hoc policy updates
+Legal exposure, client mistrust, and potential lawsuits
+Home Health Agency Supervisor (Maria Gonzalez)
+Coordinating compliance across dozens of in-home caregivers
+Lost reimbursements, audit penalties, and high turnover
+
+All these teams share one solution: a single, simple tool that automates tasks, centralizes documents, and delivers peace of mind.
+
+Our Promise
+No more one-size-fits-none GRC platforms
+
+
+No more consultant invoices that rival your software budget
+
+
+Only clear, actionable automation built for small teams
+
+
+
+How It Works—Feature by Feature
+Compliance Dashboard
+
+
+Your new morning ritual: one glance tells you if your dental, medical, or home-care operation is green, amber, or red on every HIPAA requirement—no digging, no guesswork.
+
+
+Automated Task Management
+
+
+Auto-assign annual trainings, policy reviews, and risk reassessments to dentists, physicians, developers, counselors, or caregivers—then sit back as the system nudges your team and tracks completions.
+
+
+Employee & Provider Management
+
+
+Add or import profiles for your front-desk staff, physicians, nurses, developers, therapists, or home aides—track training progress and compliance status at a glance.
+
+
+Bite-Size, Role-Specific Training
+
+
+10-minute modules tailored to dental assistants, physicians, engineers, mental health counselors, and home care providers—complete with quizzes and instant certificates.
+
+
+Guided Risk Assessment Tool
+
+
+Step-by-step SRA flags vulnerabilities in your clinical workflows, telehealth platform, or in-home processes—export prioritized remediation plans in minutes.
+
+
+Real-Time Notifications & Reports
+
+
+Get pinged when a hygienist, nurse, coder, therapist, or caregiver finishes—or misses—a module. Pull completion, usage, or past-due reports in one click.
+
+
+Centralized Document Library
+
+
+One source of truth for policies, BAAs, breach-plans, and updates—version control included so your practice manager, CTO, or clinical director never worries about outdated docs.
+
+
+
+Benefits That Resonate
+Benefit
+What You Feel
+What Others Think
+Calm & Clarity
+Sleep-easy confidence
+“They’ve got compliance under lock-and-key.”
+Time Back
+10+ hours free per month
+“How are they so productive?”
+Cost Savings
+$5K+ saved vs. consultants
+“They did that for $30 mo?”
+Team Empowerment
+Staff own their tasks
+“Compliance is part of our culture now.”
+Audit-Ready in Minutes
+Two-click audit bundles
+Auditors impressed by your efficiency
+
+
+Customer Stories
+Dental Office Manager
+ “I launched HIPAA Trainer on Monday, and by Wednesday our front-desk team felt fully confident in their privacy workflows.”
+ — Linda Lee, Office Manager @ BrightSmile Dental
+
+
+Physician Practice Manager
+ “Within days, I had real-time visibility into which doctors had completed training—no more chasing signatures.”
+ — Dr. Sarah Chen, Practice Manager @ Oakwood Medical Group
+
+
+Healthtech Startup CTO
+ “Integrating HIPAA Trainer into our CI pipeline made compliance invisible—now we ship features twice as fast.”
+ — Alex Kim, Co-Founder & CTO @ TeleClarity Health
+
+
+Mental Health Clinic Director
+ “I used to stress over every policy update; now I hit ‘Generate Audit Bundle’ and go coach my team.”
+ — Jasmine Patel, Clinical Director @ MindfulCare Therapy
+
+
+Home Health Agency Supervisor
+ “Coordinating dozens of caregivers was chaos; HIPAA Trainer brought order and saved us thousands in audit fines.”
+ — Maria Gonzalez, Director @ SafeHands Home Care
+
+
+
+Pre-Sale Founders Program
+Join our exclusive early community—shape the product with zero risk and lock in lifetime access.
+Plan
+Price
+Users Included
+Availability
+Founding Member
+$297 lifetime + 1-Year Money-Back Guarantee
+Up to 50 users
+First 50 customers only
+Early Bird
+$397 lifetime + 1-Year Money-Back Guarantee
+Up to 50 users
+Next 100 customers only
+Regular (Launch)
+$30 /mo for first 10 users
+$20 /mo per 10 additional users
+Unlimited up to capacity
+Opens after Early Bird seats fill
+
+Why Join Now?
+No Risk: 1-Year, 100% Money-Back Guarantee
+
+
+Exclusivity: Limited seats—once they’re gone, pricing shifts to subscription only
+
+
+Influence: Your feedback drives our next feature releases
+
+
+Savings: Lifetime cost vs. monthly fees saves thousands over time
+
+
+[Claim Your Founding Member Seat] [Become an Early Bird]
+
+Regular Subscription
+$30 /mo covers the first 10 users
+
+
+$20 /mo for each additional batch of 10 users
+
+
+All core features, automations, and updates included
+
+
+
+FAQ
+Q: We’re a small dental/medical team—can HIPAA Trainer scale down for us?
+ A: Yes—no IT needed, no hidden fees, onboarding in under one hour.
+
+
+Q: How do you handle regulatory updates for dentists, physicians, telehealth, and home care?
+ A: We push annual refreshers and critical bulletins (e.g., new telehealth PHI rules) automatically into your training modules and templates.
+
+
+Q: How fast can we be audit-ready?
+ A: Most customers achieve 100 % compliance within days—and generate audit bundles in seconds.
+
+
+
+Footer
+Product: Solutions · Features · Pricing · Demo
+
+
+Company: About · Careers · Blog · Contact
+
+
+Legal: Privacy Policy · Terms of Service
+
+
+Connect: LinkedIn · Twitter · Facebook
+
