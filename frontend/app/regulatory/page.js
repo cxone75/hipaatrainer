@@ -4,9 +4,18 @@
 import { useState } from 'react';
 import MainLayout from '../components/Layout/MainLayout';
 import UpdateCard from './components/UpdateCard';
+import ReminderModal from './components/ReminderModal';
+import SuccessModal from './components/SuccessModal';
+import ErrorModal from './components/ErrorModal';
 
 export default function RegulatoryUpdates() {
   const [expandedCard, setExpandedCard] = useState(null);
+  const [showReminderModal, setShowReminderModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [selectedUpdate, setSelectedUpdate] = useState(null);
+  const [isSettingReminder, setIsSettingReminder] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
   const breadcrumbItems = [
     { label: 'Dashboard', href: '/' },
@@ -109,6 +118,12 @@ export default function RegulatoryUpdates() {
   };
 
   const handleSetReminder = async (update) => {
+    setSelectedUpdate(update);
+    setShowReminderModal(true);
+  };
+
+  const confirmSetReminder = async () => {
+    setIsSettingReminder(true);
     try {
       // Simulate API call to set reminder
       const response = await fetch('/api/compliance/reminders', {
@@ -117,22 +132,28 @@ export default function RegulatoryUpdates() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          title: `Regulatory Compliance: ${update.title}`,
-          description: update.description,
-          dueDate: update.effectiveDate,
+          title: `Regulatory Compliance: ${selectedUpdate.title}`,
+          description: selectedUpdate.description,
+          dueDate: selectedUpdate.effectiveDate,
           type: 'regulatory_update',
-          updateId: update.id
+          updateId: selectedUpdate.id
         }),
       });
 
       if (response.ok) {
-        alert('Reminder added to your calendar successfully!');
+        setShowReminderModal(false);
+        setModalMessage('Reminder added to your calendar successfully!');
+        setShowSuccessModal(true);
       } else {
         throw new Error('Failed to set reminder');
       }
     } catch (error) {
       console.error('Error setting reminder:', error);
-      alert('Failed to set reminder. Please try again.');
+      setShowReminderModal(false);
+      setModalMessage('Failed to set reminder. Please try again.');
+      setShowErrorModal(true);
+    } finally {
+      setIsSettingReminder(false);
     }
   };
 
@@ -219,6 +240,27 @@ export default function RegulatoryUpdates() {
             <p className="text-gray-600">Check back later for the latest regulatory information.</p>
           </div>
         )}
+
+        {/* Modals */}
+        <ReminderModal
+          isOpen={showReminderModal}
+          onClose={() => setShowReminderModal(false)}
+          onConfirm={confirmSetReminder}
+          update={selectedUpdate}
+          isLoading={isSettingReminder}
+        />
+
+        <SuccessModal
+          isOpen={showSuccessModal}
+          onClose={() => setShowSuccessModal(false)}
+          message={modalMessage}
+        />
+
+        <ErrorModal
+          isOpen={showErrorModal}
+          onClose={() => setShowErrorModal(false)}
+          message={modalMessage}
+        />
       </div>
     </MainLayout>
   );
