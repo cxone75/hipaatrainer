@@ -15,6 +15,18 @@ export default function BAAManagement({ baas, onUpdateData }) {
   });
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingBaa, setEditingBaa] = useState(null);
+  const [newBaaForm, setNewBaaForm] = useState({
+    vendorName: '',
+    vendorType: '',
+    contactEmail: '',
+    contactPhone: '',
+    status: 'Under Review',
+    reviewDate: '',
+    expirationDate: '',
+    riskLevel: 'Medium',
+    complianceOfficer: '',
+    notes: ''
+  });
 
   useEffect(() => {
     const checkMobile = () => {
@@ -187,6 +199,39 @@ export default function BAAManagement({ baas, onUpdateData }) {
     );
     setShowEditModal(false);
     setEditingBaa(null);
+  };
+
+  const handleAddBaa = (formData) => {
+    const newBaa = {
+      id: `baa-${Date.now()}`,
+      vendorName: formData.get('vendorName'),
+      vendorType: formData.get('vendorType'),
+      contactEmail: formData.get('contactEmail'),
+      contactPhone: formData.get('contactPhone'),
+      status: formData.get('status'),
+      signedDate: formData.get('status') === 'Active' ? new Date().toISOString().split('T')[0] : null,
+      reviewDate: formData.get('reviewDate'),
+      expirationDate: formData.get('expirationDate'),
+      services: ['New Service'], // Default service
+      riskLevel: formData.get('riskLevel'),
+      complianceOfficer: formData.get('complianceOfficer'),
+      notes: formData.get('notes')
+    };
+
+    setBaaList(prev => [...prev, newBaa]);
+    setShowAddModal(false);
+    setNewBaaForm({
+      vendorName: '',
+      vendorType: '',
+      contactEmail: '',
+      contactPhone: '',
+      status: 'Under Review',
+      reviewDate: '',
+      expirationDate: '',
+      riskLevel: 'Medium',
+      complianceOfficer: '',
+      notes: ''
+    });
   };
 
   const renderMobileCard = (baa) => (
@@ -648,6 +693,176 @@ export default function BAAManagement({ baas, onUpdateData }) {
                   className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
                 >
                   Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Add BAA Modal */}
+      {showAddModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-semibold text-gray-900">Add New Business Associate Agreement</h3>
+              <button
+                onClick={() => setShowAddModal(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              handleAddBaa(new FormData(e.target));
+            }}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Vendor Name *</label>
+                  <input
+                    type="text"
+                    name="vendorName"
+                    value={newBaaForm.vendorName}
+                    onChange={(e) => setNewBaaForm(prev => ({...prev, vendorName: e.target.value}))}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Vendor Type *</label>
+                  <select
+                    name="vendorType"
+                    value={newBaaForm.vendorType}
+                    onChange={(e) => setNewBaaForm(prev => ({...prev, vendorType: e.target.value}))}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                    required
+                  >
+                    <option value="">Select Vendor Type</option>
+                    <option value="Cloud Provider">Cloud Provider</option>
+                    <option value="Communication Service">Communication Service</option>
+                    <option value="Analytics Provider">Analytics Provider</option>
+                    <option value="Backup Provider">Backup Provider</option>
+                    <option value="Software Vendor">Software Vendor</option>
+                    <option value="Healthcare Technology">Healthcare Technology</option>
+                    <option value="Payment Processor">Payment Processor</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Contact Email *</label>
+                  <input
+                    type="email"
+                    name="contactEmail"
+                    value={newBaaForm.contactEmail}
+                    onChange={(e) => setNewBaaForm(prev => ({...prev, contactEmail: e.target.value}))}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Contact Phone</label>
+                  <input
+                    type="tel"
+                    name="contactPhone"
+                    value={newBaaForm.contactPhone}
+                    onChange={(e) => setNewBaaForm(prev => ({...prev, contactPhone: e.target.value}))}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                    placeholder="(555) 123-4567"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Status *</label>
+                  <select
+                    name="status"
+                    value={newBaaForm.status}
+                    onChange={(e) => setNewBaaForm(prev => ({...prev, status: e.target.value}))}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                    required
+                  >
+                    <option value="Under Review">Under Review</option>
+                    <option value="Active">Active</option>
+                    <option value="Expiring Soon">Expiring Soon</option>
+                    <option value="Expired">Expired</option>
+                    <option value="Terminated">Terminated</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Risk Level *</label>
+                  <select
+                    name="riskLevel"
+                    value={newBaaForm.riskLevel}
+                    onChange={(e) => setNewBaaForm(prev => ({...prev, riskLevel: e.target.value}))}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                    required
+                  >
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Review Date *</label>
+                  <input
+                    type="date"
+                    name="reviewDate"
+                    value={newBaaForm.reviewDate}
+                    onChange={(e) => setNewBaaForm(prev => ({...prev, reviewDate: e.target.value}))}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Expiration Date</label>
+                  <input
+                    type="date"
+                    name="expirationDate"
+                    value={newBaaForm.expirationDate}
+                    onChange={(e) => setNewBaaForm(prev => ({...prev, expirationDate: e.target.value}))}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Compliance Officer *</label>
+                  <input
+                    type="text"
+                    name="complianceOfficer"
+                    value={newBaaForm.complianceOfficer}
+                    onChange={(e) => setNewBaaForm(prev => ({...prev, complianceOfficer: e.target.value}))}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                    placeholder="Enter compliance officer name"
+                    required
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+                  <textarea
+                    name="notes"
+                    value={newBaaForm.notes}
+                    onChange={(e) => setNewBaaForm(prev => ({...prev, notes: e.target.value}))}
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                    rows="3"
+                    placeholder="Additional notes or requirements"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-3">
+                <button
+                  type="button"
+                  onClick={() => setShowAddModal(false)}
+                  className="px-4 py-2 border border-gray-300 rounded text-gray-700 hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+                >
+                  Add BAA
                 </button>
               </div>
             </form>
