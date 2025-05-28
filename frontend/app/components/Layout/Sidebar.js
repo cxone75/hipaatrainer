@@ -112,14 +112,14 @@ export default function Sidebar({ collapsed = false, onToggleCollapse, isMobile 
     <div className={`bg-gray-900 text-white ${isCollapsed ? 'w-16' : 'w-64'} transition-all duration-300 flex flex-col h-full flex-shrink-0`}>
       {/* Header with Logo and Collapse Toggle */}
       <div className="p-4 border-b border-gray-700 flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-purple-800 rounded flex items-center justify-center">
-            <span className="text-white font-bold text-sm">HT</span>
-          </div>
-          {!isCollapsed && (
+        {!isCollapsed && (
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-purple-800 rounded flex items-center justify-center">
+              <span className="text-white font-bold text-sm">HT</span>
+            </div>
             <span className="text-white font-medium text-lg">HIPAA Trainer</span>
-          )}
-        </div>
+          </div>
+        )}
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
           className="hover:bg-gray-800 p-2 rounded transition-colors"
