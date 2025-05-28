@@ -349,7 +349,21 @@ export default function CoursePage() {
         <div className="w-80 bg-white border-r border-gray-200 flex flex-col">
           {/* Course Header */}
           <div className="p-6 border-b border-gray-200">
-            <h1 className="text-xl font-bold text-purple-800 mb-2">{course.title}</h1>
+            <h1 className="text-xl font-bold text-purple-800 mb-4">{course.title}</h1>
+            
+            {/* Progress Bar */}
+            <div className="mb-2">
+              <div className="flex justify-between text-xs text-gray-600 mb-1">
+                <span>Progress</span>
+                <span>{Math.round((completedLessons.length / course.lessons.length) * 100)}%</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  className="bg-purple-800 h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${(completedLessons.length / course.lessons.length) * 100}%` }}
+                ></div>
+              </div>
+            </div>
           </div>
 
           {/* Lessons List */}
