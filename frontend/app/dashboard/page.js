@@ -133,7 +133,7 @@ export default function ComplianceDashboard() {
       <div className="p-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Compliance Dashboard</h1>
+          <h1 className="text-2xl font-bold text-support mb-2">Compliance Dashboard</h1>
           <p className="text-gray-600">Monitor your organization's compliance status and upcoming deadlines</p>
         </div>
 
@@ -169,7 +169,7 @@ export default function ComplianceDashboard() {
 
           {/* Middle Row - Calendar View */}
           <div className="bg-white rounded-lg shadow border p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Upcoming Deadlines</h2>
+            <h2 className="text-lg font-semibold text-support mb-4">Upcoming Deadlines</h2>
             <CalendarView
               events={calendarEvents}
               onEventClick={handleCalendarEventClick}
@@ -181,7 +181,7 @@ export default function ComplianceDashboard() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Trends Chart */}
             <div className="bg-white rounded-lg shadow border p-6 flex flex-col">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Compliance Trends</h2>
+              <h2 className="text-lg font-semibold text-support mb-4">Compliance Trends</h2>
               <div className="flex-1 min-h-[200px]">
                 <ProgressChart
                   type="line"
@@ -193,7 +193,7 @@ export default function ComplianceDashboard() {
             
             {/* Category Progress */}
             <div className="bg-white rounded-lg shadow border p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Category Progress</h2>
+              <h2 className="text-lg font-semibold text-support mb-4">Category Progress</h2>
               <ProgressChart
                 type="bar"
                 data={complianceData.categoryProgress}
@@ -221,7 +221,7 @@ export default function ComplianceDashboard() {
                     </svg>
                   </div>
                 )}
-                <h3 className="text-lg font-semibold text-gray-900">{reminderModalData.title}</h3>
+                <h3 className="text-lg font-semibold text-support">{reminderModalData.title}</h3>
               </div>
               <p className="text-gray-600 mb-6">{reminderModalData.message}</p>
               <div className="flex justify-end">
@@ -229,7 +229,7 @@ export default function ComplianceDashboard() {
                   onClick={() => setShowReminderModal(false)}
                   className={`px-4 py-2 rounded font-medium ${
                     reminderModalData.type === 'success'
-                      ? 'bg-green-600 text-white hover:bg-green-700'
+                      ? 'bg-primary text-white hover:bg-support'
                       : 'bg-red-600 text-white hover:bg-red-700'
                   }`}
                 >
