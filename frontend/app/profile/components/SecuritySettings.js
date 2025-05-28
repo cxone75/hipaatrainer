@@ -37,6 +37,8 @@ export default function SecuritySettings({ onFieldChange }) {
 
   const [lastLogin] = useState('May 27, 2025 10:30 AM'); // Static date to avoid hydration issues
   const [showLoginHistory, setShowLoginHistory] = useState(false);
+  const [currentHistoryPage, setCurrentHistoryPage] = useState(1);
+  const [historyPageSize] = useState(10);
 
   const handleMfaToggle = async () => {
     try {
@@ -359,6 +361,20 @@ export default function SecuritySettings({ onFieldChange }) {
     }
   ];
 
+  // Pagination logic for login history
+  const totalHistoryPages = Math.ceil(loginHistory.length / historyPageSize);
+  const indexOfLastHistoryItem = currentHistoryPage * historyPageSize;
+  const indexOfFirstHistoryItem = indexOfLastHistoryItem - historyPageSize;
+  const currentHistoryItems = loginHistory.slice(indexOfFirstHistoryItem, indexOfLastHistoryItem);
+
+  const handleHistoryPrevPage = () => {
+    setCurrentHistoryPage(prev => Math.max(prev - 1, 1));
+  };
+
+  const handleHistoryNextPage = () => {
+    setCurrentHistoryPage(prev => Math.min(prev + 1, totalHistoryPages));
+  };
+
   return (
     <div className="bg-white p-6 rounded-lg shadow">
       <h3 className="text-lg font-semibold mb-4">Security Settings</h3>
@@ -491,7 +507,10 @@ export default function SecuritySettings({ onFieldChange }) {
             </div>
           </div>
           <button
-            onClick={() => setShowLoginHistory(true)}
+            onClick={() => {
+              setShowLoginHistory(true);
+              setCurrentHistoryPage(1);
+            }}
             className="text-purple-600 hover:text-purple-800 text-sm mt-2"
           >
             View full login history
@@ -516,8 +535,8 @@ export default function SecuritySettings({ onFieldChange }) {
                 </button>
               </div>
               <div className="max-h-96 overflow-y-auto">
-                <div className="space-y-2">
-                  {loginHistory.map((log) => (
+                <div className="space-y-2 mb-4">
+                  {currentHistoryItems.map((log) => (
                     <div key={log.id} className="flex justify-between items-center p-3 bg-gray-50 rounded border">
                       <div className="flex-1">
                         <div className="flex items-center space-x-4">
@@ -535,6 +554,32 @@ export default function SecuritySettings({ onFieldChange }) {
                       </span>
                     </div>
                   ))}
+                </div>
+                
+                {/* Pagination Controls */}
+                <div className="flex items-center justify-between border-t pt-4">
+                  <div className="text-sm text-gray-700">
+                    Showing {indexOfFirstHistoryItem + 1} to {Math.min(indexOfLastHistoryItem, loginHistory.length)} of {loginHistory.length} login attempts
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={handleHistoryPrevPage}
+                      disabled={currentHistoryPage === 1}
+                      className="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      Previous
+                    </button>
+                    <span className="px-3 py-1 text-sm">
+                      Page {currentHistoryPage} of {totalHistoryPages}
+                    </span>
+                    <button
+                      onClick={handleHistoryNextPage}
+                      disabled={currentHistoryPage === totalHistoryPages}
+                      className="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      Next
+                    </button>
+                  </div>
                 </div>
               </div>
               <div className="mt-6 flex justify-end">
