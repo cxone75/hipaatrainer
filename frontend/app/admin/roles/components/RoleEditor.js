@@ -23,7 +23,7 @@ export default function RoleEditor() {
           </div>
         </div>
         <div className="flex space-x-2">
-          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Save Role</button>
+          <button type="submit" className="px-4 py-2 bg-primary text-white rounded hover:bg-blue-800">Save Role</button>
           <button type="button" className="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
         </div>
       </form>

@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -103,9 +102,9 @@ export default function PolicyManagement() {
   const filteredPolicies = policies.filter(policy => {
     const matchesSearch = policy.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       policy.description.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     const matchesFilter = filterStatus === 'all' || policy.status === filterStatus;
-    
+
     return matchesSearch && matchesFilter;
   });
 
@@ -140,7 +139,7 @@ export default function PolicyManagement() {
             <button
               onClick={handleDistributePolicies}
               disabled={selectedPolicies.length === 0}
-              className="bg-purple-800 text-white px-6 py-3 rounded-lg font-medium hover:bg-purple-900 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+              className="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-800 transition-colors flex items-center space-x-2"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
@@ -174,7 +173,7 @@ export default function PolicyManagement() {
               placeholder="Search policies..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-800 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
             />
           </div>
           <div className="flex gap-2 overflow-x-auto">
@@ -190,7 +189,7 @@ export default function PolicyManagement() {
                 onClick={() => setFilterStatus(filter.value)}
                 className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-colors ${
                   filterStatus === filter.value
-                    ? 'bg-purple-800 text-white'
+                    ? 'bg-primary text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >

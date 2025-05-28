@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -37,7 +36,7 @@ export default function DistributionModal({ selectedPolicies, onClose, onDistrib
     const now = new Date();
     const tomorrow = new Date(now);
     tomorrow.setDate(tomorrow.getDate() + 1);
-    
+
     setScheduledDate(tomorrow.toISOString().split('T')[0]);
     setScheduledTime('09:00');
   }, []);
@@ -185,7 +184,7 @@ export default function DistributionModal({ selectedPolicies, onClose, onDistrib
                 <h4 className="text-sm font-medium text-gray-900 mb-3">
                   Recipients ({getTotalRecipients()} total)
                 </h4>
-                
+
                 {/* Groups */}
                 <div className="mb-4">
                   <h5 className="text-xs font-medium text-gray-700 mb-2">Groups</h5>
@@ -250,7 +249,7 @@ export default function DistributionModal({ selectedPolicies, onClose, onDistrib
                   />
                   <span className="text-sm text-gray-900">Send immediately</span>
                 </label>
-                
+
                 <label className="flex items-center space-x-2">
                   <input
                     type="radio"
@@ -292,7 +291,7 @@ export default function DistributionModal({ selectedPolicies, onClose, onDistrib
                 />
                 <span className="text-sm text-gray-900">Send reminder emails</span>
               </label>
-              
+
               {includeReminders && (
                 <div className="mt-2 ml-6">
                   <label className="block text-xs text-gray-700 mb-1">Remind before deadline:</label>
@@ -336,7 +335,7 @@ export default function DistributionModal({ selectedPolicies, onClose, onDistrib
             <button
               onClick={handleDistribute}
               disabled={isDistributing || (selectedUsers.length === 0 && selectedGroups.length === 0)}
-              className="px-4 py-2 bg-purple-800 text-white rounded-md text-sm font-medium hover:bg-purple-900 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+              className="px-4 py-2 bg-primary text-white rounded hover:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
             >
               {isDistributing ? (
                 <>

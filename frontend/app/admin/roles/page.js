@@ -1,4 +1,3 @@
-
 import MainLayout from '../../components/Layout/MainLayout';
 import RoleEditor from './components/RoleEditor';
 import PermissionMatrix from './components/PermissionMatrix';
@@ -18,7 +17,7 @@ export default function RolesPage() {
             <h1 className="text-3xl font-bold text-gray-900">Role Management</h1>
             <p className="text-gray-600 mt-2">Manage user roles and permissions</p>
           </div>
-          <button className="bg-purple-800 text-white px-6 py-3 rounded font-medium hover:bg-purple-900 transition-colors">
+          <button className="bg-primary text-white px-6 py-3 rounded font-medium hover:bg-blue-800 transition-colors">
             Create Role
           </button>
         </div>

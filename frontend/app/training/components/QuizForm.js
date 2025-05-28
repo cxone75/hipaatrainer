@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -105,12 +104,12 @@ export default function QuizForm({ quiz, attempts, maxAttempts, onSubmit, passed
               </svg>
             )}
           </div>
-          
+
           <h3 className="text-2xl font-bold text-gray-900 mb-2">Quiz Results</h3>
           <div className={`text-3xl font-bold ${getScoreColor(quizResult?.score || 0)} mb-4`}>
             {quizResult?.score || 0}%
           </div>
-          
+
           {quizResult?.passed ? (
             <p className="text-green-600 font-medium mb-4">
               Congratulations! You passed the quiz.
@@ -129,7 +128,7 @@ export default function QuizForm({ quiz, attempts, maxAttempts, onSubmit, passed
           {quiz.questions.map((question, index) => {
             const userAnswer = answers[question.id];
             const isCorrect = userAnswer === question.correctAnswer;
-            
+
             return (
               <div key={question.id} className="border border-gray-200 rounded-lg p-4">
                 <div className="flex items-start space-x-3 mb-3">
@@ -256,7 +255,7 @@ export default function QuizForm({ quiz, attempts, maxAttempts, onSubmit, passed
         <h4 className="text-lg font-medium text-gray-900 mb-6">
           Question {currentQuestion + 1}: {quiz.questions[currentQuestion].question}
         </h4>
-        
+
         <div className="space-y-3">
           {quiz.questions[currentQuestion].options.map((option, index) => (
             <label
@@ -303,11 +302,11 @@ export default function QuizForm({ quiz, attempts, maxAttempts, onSubmit, passed
             Next
           </button>
         </div>
-        
+
         <button
           onClick={handleSubmit}
           disabled={!isAllAnswered() || isSubmitting}
-          className="bg-purple-800 text-white px-8 py-3 rounded-lg font-medium hover:bg-purple-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-800 transition-colors"
         >
           {isSubmitting ? 'Submitting...' : 'Submit Quiz'}
         </button>
@@ -324,3 +323,4 @@ export default function QuizForm({ quiz, attempts, maxAttempts, onSubmit, passed
     </div>
   );
 }
+```

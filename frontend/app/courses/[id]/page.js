@@ -53,7 +53,7 @@ export default function CoursePage() {
           "Using the least amount of PHI needed to accomplish a task",
           "Keeping PHI for the minimum time required",
           "Having the minimum number of people access PHI",
-          "Using minimum security measures"
+          "Using the minimum security measures"
         ],
         correctAnswer: 0,
         explanation: "The minimum necessary standard requires that only the minimum amount of PHI necessary to accomplish a specific purpose should be used, disclosed, or requested."
@@ -402,7 +402,7 @@ export default function CoursePage() {
                               e.stopPropagation();
                               setShowQuiz(true);
                             }}
-                            className="bg-blue-500 text-white px-3 py-1 rounded text-xs font-medium hover:bg-blue-600 transition-colors"
+                            className="bg-primary text-white px-3 py-1 rounded text-xs font-medium hover:bg-blue-800 transition-colors"
                           >
                             Quiz
                           </button>
@@ -659,7 +659,7 @@ export default function CoursePage() {
                         <button 
                           onClick={handleSubmitAnswer}
                           disabled={selectedAnswer === null}
-                          className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-blue-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           Submit Answer
                         </button>
@@ -719,7 +719,7 @@ export default function CoursePage() {
                   <div className="flex justify-center space-x-4">
                     <button
                       onClick={resetQuiz}
-                      className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                      className="border border-primary text-primary px-6 py-3 rounded-lg font-medium hover:bg-blue-50 transition-colors"
                     >
                       Retake Quiz
                     </button>

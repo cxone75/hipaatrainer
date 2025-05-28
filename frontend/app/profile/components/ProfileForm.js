@@ -1,3 +1,4 @@
+javascript
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -182,7 +183,7 @@ export default function ProfileForm({ onFieldChange }) {
                 type="text"
                 value={profile.firstName}
                 onChange={(e) => handleInputChange('firstName', e.target.value)}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
                 required
               />
             </div>
@@ -195,7 +196,7 @@ export default function ProfileForm({ onFieldChange }) {
                 type="text"
                 value={profile.lastName}
                 onChange={(e) => handleInputChange('lastName', e.target.value)}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
                 required
               />
             </div>
@@ -211,7 +212,7 @@ export default function ProfileForm({ onFieldChange }) {
               type="tel"
               value={profile.phone}
               onChange={(e) => handleInputChange('phone', e.target.value)}
-              className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
             />
           </div>
 
@@ -315,7 +316,7 @@ export default function ProfileForm({ onFieldChange }) {
                     name="name"
                     type="text"
                     required
-                    className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
                     placeholder="Enter organization name"
                   />
                 </div>
@@ -327,7 +328,7 @@ export default function ProfileForm({ onFieldChange }) {
                     id="orgType"
                     name="type"
                     required
-                    className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
                   >
                     <option value="">Select organization type</option>
                     <option value="Dental">Dental</option>
@@ -381,7 +382,7 @@ export default function ProfileForm({ onFieldChange }) {
                     type="text"
                     required
                     defaultValue={orgToEdit.name}
-                    className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
                     placeholder="Enter organization name"
                   />
                 </div>
@@ -394,7 +395,7 @@ export default function ProfileForm({ onFieldChange }) {
                     name="type"
                     required
                     defaultValue={orgToEdit.type || ''}
-                    className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
                   >
                     <option value="">Select organization type</option>
                     <option value="Dental">Dental</option>

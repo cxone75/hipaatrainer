@@ -13,12 +13,9 @@ export default function UpdateCard({ update, onSetReminder, onViewDetails, isExp
 
   const getImpactColor = (impact) => {
     switch (impact.toLowerCase()) {
-      case 'high':
-        return 'text-red-600 bg-red-100';
-      case 'medium':
-        return 'text-yellow-600 bg-yellow-100';
-      case 'low':
-        return 'text-green-600 bg-green-100';
+      case 'high': return 'text-alert bg-red-100';
+      case 'medium': return 'text-warning bg-yellow-100';
+      case 'low': return 'text-success bg-green-100';
       default:
         return 'text-gray-600 bg-gray-100';
     }

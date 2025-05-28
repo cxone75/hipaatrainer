@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -13,7 +12,7 @@ export default function SRAGuide({ assessmentData, onUpdateData }) {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
@@ -235,7 +234,7 @@ export default function SRAGuide({ assessmentData, onUpdateData }) {
   const handleAnswerChange = (questionId, value) => {
     const newAnswers = { ...answers, [questionId]: value };
     setAnswers(newAnswers);
-    
+
     // Update parent component
     onUpdateData({
       ...assessmentData,
@@ -273,7 +272,7 @@ export default function SRAGuide({ assessmentData, onUpdateData }) {
     return (
       <div 
         key={question.id}
-        className={`border rounded-lg ${isActive ? 'border-purple-500 bg-purple-50' : 'border-gray-200'}`}
+        className={`border rounded-lg ${isActive ? 'border-primary bg-light-blue' : 'border-light'}`}
       >
         {/* Mobile Accordion Header */}
         {isMobile && (
@@ -284,7 +283,7 @@ export default function SRAGuide({ assessmentData, onUpdateData }) {
           >
             <div className="flex items-center space-x-3">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                isComplete ? 'bg-green-500 text-white' : isActive ? 'bg-purple-500 text-white' : 'bg-gray-200 text-gray-600'
+                isComplete ? 'bg-success text-white' : isActive ? 'bg-primary text-white' : 'bg-gray-200 text-gray-600'
               }`}>
                 {isComplete ? (
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -310,11 +309,11 @@ export default function SRAGuide({ assessmentData, onUpdateData }) {
         {/* Question Content */}
         <div className={`p-6 ${isMobile && expandedStep !== stepIndex ? 'hidden' : ''}`}>
           <div className="mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            <h3 className="text-lg font-semibold text-dark mb-2">
               {question.question}
             </h3>
             {question.required && (
-              <span className="text-sm text-red-600">* Required</span>
+              <span className="text-sm text-alert">* Required</span>
             )}
           </div>
 
@@ -327,9 +326,9 @@ export default function SRAGuide({ assessmentData, onUpdateData }) {
                   value={option}
                   checked={answers[question.id] === option}
                   onChange={(e) => handleAnswerChange(question.id, e.target.value)}
-                  className="rounded-full border-gray-300 text-purple-600 focus:ring-purple-500"
+                  className="rounded-full border-gray-300 text-primary focus:ring-primary"
                 />
-                <span className="ml-3 text-gray-700">{option}</span>
+                <span className="ml-3 text-dark">{option}</span>
               </label>
             ))}
 
@@ -346,9 +345,9 @@ export default function SRAGuide({ assessmentData, onUpdateData }) {
                       : currentValues.filter(v => v !== option);
                     handleAnswerChange(question.id, newValues);
                   }}
-                  className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                  className="rounded border-gray-300 text-primary focus:ring-primary"
                 />
-                <span className="ml-3 text-gray-700">{option}</span>
+                <span className="ml-3 text-dark">{option}</span>
               </label>
             ))}
           </div>
@@ -360,8 +359,8 @@ export default function SRAGuide({ assessmentData, onUpdateData }) {
   return (
     <div className="p-6">
       <div className="mb-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-2">Security Risk Assessment Questionnaire</h2>
-        <p className="text-gray-600">Answer the following questions to assess your organization's security posture</p>
+        <h2 className="text-xl font-semibold text-dark mb-2">Security Risk Assessment Questionnaire</h2>
+        <p className="text-muted">Answer the following questions to assess your organization's security posture</p>
       </div>
 
       {/* Desktop Stepper Progress */}
@@ -371,8 +370,8 @@ export default function SRAGuide({ assessmentData, onUpdateData }) {
             {questions.map((_, index) => (
               <div key={index} className="flex items-center">
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                  isStepComplete(index) ? 'bg-green-500 text-white' : 
-                  index === currentStep ? 'bg-purple-500 text-white' : 
+                  isStepComplete(index) ? 'bg-success text-white' : 
+                  index === currentStep ? 'bg-primary text-white' : 
                   'bg-gray-200 text-gray-600'
                 }`}>
                   {isStepComplete(index) ? (
@@ -385,13 +384,13 @@ export default function SRAGuide({ assessmentData, onUpdateData }) {
                 </div>
                 {index < questions.length - 1 && (
                   <div className={`h-1 w-full mx-4 ${
-                    isStepComplete(index) ? 'bg-green-500' : 'bg-gray-200'
+                    isStepComplete(index) ? 'bg-success' : 'bg-gray-200'
                   }`} />
                 )}
               </div>
             ))}
           </div>
-          <div className="mt-2 text-sm text-gray-600 text-center">
+          <div className="mt-2 text-sm text-muted text-center">
             Step {currentStep + 1} of {totalSteps}
           </div>
         </div>
@@ -410,7 +409,7 @@ export default function SRAGuide({ assessmentData, onUpdateData }) {
 
       {/* Navigation */}
       {!isMobile && (
-        <div className="flex items-center justify-between mt-8 pt-6 border-t border-gray-200">
+        <div className="flex items-center justify-between mt-8 pt-6 border-t border-light">
           <button
             onClick={handlePrevious}
             disabled={currentStep === 0}
@@ -429,7 +428,7 @@ export default function SRAGuide({ assessmentData, onUpdateData }) {
           <button
             onClick={handleNext}
             disabled={currentStep === totalSteps - 1 || !isStepComplete(currentStep)}
-            className="flex items-center space-x-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-800 transition-colors flex items-center"
           >
             <span>Next</span>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

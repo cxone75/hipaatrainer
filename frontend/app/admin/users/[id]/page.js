@@ -39,7 +39,7 @@ export default function UserProfilePage({ params }) {
           <div className="flex flex-col sm:flex-row gap-3 mt-4 md:mt-0">
             <Link 
               href={`/admin/users/${params.id}/edit`}
-              className="bg-purple-800 text-white px-6 py-3 rounded font-medium hover:bg-purple-900 transition-colors text-center"
+              className="bg-primary text-white px-6 py-3 rounded font-medium hover:bg-blue-800 transition-colors text-center"
             >
               Edit Profile
             </Link>

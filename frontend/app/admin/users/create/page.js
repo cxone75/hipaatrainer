@@ -5,13 +5,13 @@ export default function CreateUserPage() {
       <form className="space-y-4">
         <div>
           <label className="block text-sm font-medium mb-1">Name</label>
-          <input type="text" className="w-full p-2 border rounded" />
+          <input type="text" className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary" />
         </div>
         <div>
           <label className="block text-sm font-medium mb-1">Email</label>
-          <input type="email" className="w-full p-2 border rounded" />
+          <input type="email" className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary" />
         </div>
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
+        <button type="submit" className="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-800 transition-colors">
           Create User
         </button>
       </form>
