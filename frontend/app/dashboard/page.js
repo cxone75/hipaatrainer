@@ -132,8 +132,8 @@ export default function ComplianceDashboard() {
       <div className="p-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Compliance Dashboard</h1>
-          <p className="text-gray-600">Monitor your organization's compliance status and upcoming deadlines</p>
+          <h1 className="text-2xl font-bold text-dark mb-2">Compliance Dashboard</h1>
+          <p className="text-muted">Monitor your organization's compliance status and upcoming deadlines</p>
         </div>
 
         {/* Mobile and Desktop Layout */}
@@ -167,8 +167,8 @@ export default function ComplianceDashboard() {
           </div>
 
           {/* Middle Row - Calendar View */}
-          <div className="bg-white rounded-lg shadow border p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Upcoming Deadlines</h2>
+          <div className="bg-white rounded-lg shadow border border-light p-6">
+            <h2 className="text-lg font-semibold text-dark mb-4">Upcoming Deadlines</h2>
             <CalendarView
               events={calendarEvents}
               onEventClick={handleCalendarEventClick}
@@ -179,8 +179,8 @@ export default function ComplianceDashboard() {
           {/* Bottom Row - Progress Charts */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Trends Chart */}
-            <div className="bg-white rounded-lg shadow border p-6 flex flex-col">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Compliance Trends</h2>
+            <div className="bg-white rounded-lg shadow border border-light p-6 flex flex-col">
+              <h2 className="text-lg font-semibold text-dark mb-4">Compliance Trends</h2>
               <div className="flex-1 min-h-[200px]">
                 <ProgressChart
                   type="line"
@@ -191,8 +191,8 @@ export default function ComplianceDashboard() {
             </div>
 
             {/* Category Progress */}
-            <div className="bg-white rounded-lg shadow border p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Category Progress</h2>
+            <div className="bg-white rounded-lg shadow border border-light p-6">
+              <h2 className="text-lg font-semibold text-dark mb-4">Category Progress</h2>
               <ProgressChart
                 type="bar"
                 data={complianceData.categoryProgress}
@@ -209,27 +209,27 @@ export default function ComplianceDashboard() {
               <div className="flex items-center mb-4">
                 {reminderModalData.type === 'success' ? (
                   <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                    <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
                 ) : (
                   <div className="flex-shrink-0 w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mr-3">
-                    <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-alert" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </div>
                 )}
-                <h3 className="text-lg font-semibold text-gray-900">{reminderModalData.title}</h3>
+                <h3 className="text-lg font-semibold text-dark">{reminderModalData.title}</h3>
               </div>
-              <p className="text-gray-600 mb-6">{reminderModalData.message}</p>
+              <p className="text-muted mb-6">{reminderModalData.message}</p>
               <div className="flex justify-end">
                 <button
                   onClick={() => setShowReminderModal(false)}
                   className={`px-4 py-2 rounded font-medium ${
                     reminderModalData.type === 'success'
-                      ? 'bg-green-600 text-white hover:bg-green-700'
-                      : 'bg-red-600 text-white hover:bg-red-700'
+                      ? 'bg-success text-white hover:bg-green-700'
+                      : 'bg-alert text-white hover:bg-red-700'
                   }`}
                 >
                   OK
