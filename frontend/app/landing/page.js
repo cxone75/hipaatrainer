@@ -6,6 +6,7 @@ import Link from 'next/link';
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [countdown, setCountdown] = useState('');
+  const [expandedFAQ, setExpandedFAQ] = useState(0);
 
   useEffect(() => {
     // Fixed target date: 90 days from June 1st, 2025
@@ -784,44 +785,48 @@ export default function LandingPage() {
           </div>
 
           <div className="space-y-4">
-            <div className="bg-gray-50 rounded-lg border border-gray-200">
-              <button className="w-full px-6 py-4 text-left flex items-center justify-between focus:outline-none">
-                <span className="font-medium text-gray-900">I'm a small team—can HIPAA Trainer really scale down for us?</span>
-                <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              <div className="px-6 pb-4">
-                <p className="text-gray-600">Yes—no IT needed, no hidden fees, onboarding in under one hour. We've designed HIPAA Trainer specifically for small healthcare teams who don't have dedicated compliance departments.</p>
+            {[
+              {
+                question: "I'm a small team—can HIPAA Trainer really scale down for us?",
+                answer: "Yes—no IT needed, no hidden fees, onboarding in under one hour. We've designed HIPAA Trainer specifically for small healthcare teams who don't have dedicated compliance departments."
+              },
+              {
+                question: "How do you handle regulatory updates?",
+                answer: "We monitor regulatory changes continuously and automatically update your policies and training materials. You'll receive notifications about any changes that affect your organization, with clear guidance on what actions to take."
+              },
+              {
+                question: "How fast can we be audit-ready?",
+                answer: "Most teams are audit-ready within 2-4 weeks. Our system generates comprehensive audit bundles in minutes, including all required documentation, training records, and compliance evidence."
+              },
+              {
+                question: "Is HIPAA Trainer itself HIPAA-compliant?",
+                answer: "Absolutely. We're SOC 2 certified, use enterprise-grade encryption, and follow all HIPAA requirements. We practice what we preach when it comes to data security and privacy."
+              }
+            ].map((faq, index) => (
+              <div key={index} className="bg-gray-50 rounded-lg border border-gray-200">
+                <button 
+                  onClick={() => setExpandedFAQ(expandedFAQ === index ? -1 : index)}
+                  className="w-full px-6 py-4 text-left flex items-center justify-between focus:outline-none hover:bg-gray-100 transition-colors"
+                >
+                  <span className="font-medium text-gray-900">{faq.question}</span>
+                  <svg 
+                    className={`w-5 h-5 text-gray-500 transform transition-transform ${
+                      expandedFAQ === index ? 'rotate-180' : ''
+                    }`} 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {expandedFAQ === index && (
+                  <div className="px-6 pb-4">
+                    <p className="text-gray-600">{faq.answer}</p>
+                  </div>
+                )}
               </div>
-            </div>
-
-            <div className="bg-gray-50 rounded-lg border border-gray-200">
-              <button className="w-full px-6 py-4 text-left flex items-center justify-between focus:outline-none">
-                <span className="font-medium text-gray-900">How do you handle regulatory updates?</span>
-                <svg className="w-5 h-5 text-gray-500 transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-            </div>
-
-            <div className="bg-gray-50 rounded-lg border border-gray-200">
-              <button className="w-full px-6 py-4 text-left flex items-center justify-between focus:outline-none">
-                <span className="font-medium text-gray-900">How fast can we be audit-ready?</span>
-                <svg className="w-5 h-5 text-gray-500 transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-            </div>
-
-            <div className="bg-gray-50 rounded-lg border border-gray-200">
-              <button className="w-full px-6 py-4 text-left flex items-center justify-between focus:outline-none">
-                <span className="font-medium text-gray-900">Is HIPAA Trainer itself HIPAA-compliant?</span>
-                <svg className="w-5 h-5 text-gray-500 transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-            </div>
+            ))}
           </div>
         </div>
       </section>
