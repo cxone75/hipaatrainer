@@ -775,6 +775,57 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+            <p className="text-xl text-gray-600">Get answers to the most common questions about HIPAA Trainer.</p>
+          </div>
+
+          <div className="space-y-4">
+            <div className="bg-gray-50 rounded-lg border border-gray-200">
+              <button className="w-full px-6 py-4 text-left flex items-center justify-between focus:outline-none">
+                <span className="font-medium text-gray-900">I'm a small team—can HIPAA Trainer really scale down for us?</span>
+                <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div className="px-6 pb-4">
+                <p className="text-gray-600">Yes—no IT needed, no hidden fees, onboarding in under one hour. We've designed HIPAA Trainer specifically for small healthcare teams who don't have dedicated compliance departments.</p>
+              </div>
+            </div>
+
+            <div className="bg-gray-50 rounded-lg border border-gray-200">
+              <button className="w-full px-6 py-4 text-left flex items-center justify-between focus:outline-none">
+                <span className="font-medium text-gray-900">How do you handle regulatory updates?</span>
+                <svg className="w-5 h-5 text-gray-500 transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="bg-gray-50 rounded-lg border border-gray-200">
+              <button className="w-full px-6 py-4 text-left flex items-center justify-between focus:outline-none">
+                <span className="font-medium text-gray-900">How fast can we be audit-ready?</span>
+                <svg className="w-5 h-5 text-gray-500 transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="bg-gray-50 rounded-lg border border-gray-200">
+              <button className="w-full px-6 py-4 text-left flex items-center justify-between focus:outline-none">
+                <span className="font-medium text-gray-900">Is HIPAA Trainer itself HIPAA-compliant?</span>
+                <svg className="w-5 h-5 text-gray-500 transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-purple-600 to-pink-600 text-white">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
