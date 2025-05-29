@@ -115,7 +115,7 @@ export default function LandingPage() {
           <div className="relative max-w-6xl mx-auto">
             <div className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl p-8 shadow-2xl">
               <img 
-                src="/Screenshot 2025-05-28 171920.png" 
+                src="/attached_assets/Screenshot 2025-05-28 171920.png" 
                 alt="HIPAA Trainer Dashboard Preview" 
                 className="w-full h-auto rounded-lg shadow-lg border border-gray-200"
               />
