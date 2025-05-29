@@ -23,19 +23,23 @@ export default function LandingPage() {
         const seconds = Math.floor((difference / 1000) % 60);
 
         setCountdown({
-          days,
-          hours,
-          minutes,
-          seconds
+          days: days,
+          hours: hours,
+          minutes: minutes,
+          seconds: seconds
         });
       } else {
         setCountdown("Offer expired!");
       }
     };
 
+    // Calculate immediately
     calculateTimeLeft();
+    
+    // Set up interval to update every second
     const intervalId = setInterval(calculateTimeLeft, 1000);
 
+    // Clean up interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
 
@@ -563,28 +567,28 @@ export default function LandingPage() {
               <h3 className="text-lg font-semibold text-pink-600 mb-4">
                 Limited Time Offer - Founders Program Ends In:
               </h3>
-              {typeof countdown === 'object' ? (
+              {countdown && typeof countdown === 'object' && countdown.days !== undefined ? (
                 <div className="grid grid-cols-4 gap-4 max-w-2xl mx-auto">
                   <div className="bg-white rounded-lg p-4 shadow-sm">
-                    <div className="text-3xl font-bold text-pink-600">{countdown.days}</div>
+                    <div className="text-3xl font-bold text-pink-600">{countdown.days || 0}</div>
                     <div className="text-sm text-gray-600 font-medium">Days</div>
                   </div>
                   <div className="bg-white rounded-lg p-4 shadow-sm">
-                    <div className="text-3xl font-bold text-pink-600">{countdown.hours}</div>
+                    <div className="text-3xl font-bold text-pink-600">{countdown.hours || 0}</div>
                     <div className="text-sm text-gray-600 font-medium">Hours</div>
                   </div>
                   <div className="bg-white rounded-lg p-4 shadow-sm">
-                    <div className="text-3xl font-bold text-pink-600">{countdown.minutes}</div>
+                    <div className="text-3xl font-bold text-pink-600">{countdown.minutes || 0}</div>
                     <div className="text-sm text-gray-600 font-medium">Minutes</div>
                   </div>
                   <div className="bg-white rounded-lg p-4 shadow-sm">
-                    <div className="text-3xl font-bold text-pink-600">{countdown.seconds}</div>
+                    <div className="text-3xl font-bold text-pink-600">{countdown.seconds || 0}</div>
                     <div className="text-sm text-gray-600 font-medium">Seconds</div>
                   </div>
                 </div>
               ) : (
                 <div className="text-2xl text-red-600 font-semibold">
-                  {countdown}
+                  {typeof countdown === 'string' ? countdown : 'Loading...'}
                 </div>
               )}
             </div>
