@@ -8,8 +8,9 @@ export default function LandingPage() {
   const [countdown, setCountdown] = useState('');
 
   useEffect(() => {
-    // Set the target date once when component mounts (90 days from initial load)
-    const targetDate = new Date();
+    // Fixed target date: 90 days from June 1st, 2025
+    const startDate = new Date('2025-06-01');
+    const targetDate = new Date(startDate);
     targetDate.setDate(targetDate.getDate() + 90);
 
     const calculateTimeLeft = () => {
@@ -35,7 +36,7 @@ export default function LandingPage() {
 
     // Calculate immediately
     calculateTimeLeft();
-    
+
     // Set up interval to update every second
     const intervalId = setInterval(calculateTimeLeft, 1000);
 
@@ -431,7 +432,7 @@ export default function LandingPage() {
                     </div>
                     <button className="bg-purple-600 text-white text-xs px-3 py-1 rounded">Start</button>
                   </div>
-                  <div className="flex items-center justify-between p-3 bg-white rounded">
+                  <div className`="flex items-center justify-between p-3 bg-white rounded">
                     <div className="flex items-center space-x-3">
                       <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
                         <span className="text-purple-600 text-xs">🏥</span>
