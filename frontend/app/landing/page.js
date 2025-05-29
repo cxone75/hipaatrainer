@@ -432,7 +432,7 @@ export default function LandingPage() {
                     </div>
                     <button className="bg-purple-600 text-white text-xs px-3 py-1 rounded">Start</button>
                   </div>
-                  <div className`="flex items-center justify-between p-3 bg-white rounded">
+                  <div className="flex items-center justify-between p-3 bg-white rounded">
                     <div className="flex items-center space-x-3">
                       <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
                         <span className="text-purple-600 text-xs">🏥</span>
