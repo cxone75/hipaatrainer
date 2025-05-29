@@ -120,19 +120,6 @@ export default function LandingPage() {
                 className="w-full h-auto rounded-lg shadow-lg border border-gray-200"
               />
             </div>
-            {/* Floating feature callouts */}
-            <div className="absolute -top-4 -left-4 bg-white rounded-lg shadow-lg p-4 border border-gray-200 hidden lg:block">
-              <div className="flex items-center">
-                <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
-                <span className="text-sm font-medium text-gray-900">85% Compliant</span>
-              </div>
-            </div>
-            <div className="absolute -bottom-4 -right-4 bg-white rounded-lg shadow-lg p-4 border border-gray-200 hidden lg:block">
-              <div className="flex items-center">
-                <div className="w-3 h-3 bg-purple-500 rounded-full mr-2"></div>
-                <span className="text-sm font-medium text-gray-900">Real-time Updates</span>
-              </div>
-            </div>
           </div>
         </div>
       </section>
