@@ -569,7 +569,7 @@ export default function LandingPage() {
                 disabled: true
               }
             ].map((tier, index) => (
-              <div key={index} className={`rounded-2xl p-8 ${tier.popular ? 'bg-gradient-to-br from-purple-50 to-pink-50 border-2 border-purple-200 relative' : 'bg-white border border-gray-200'} shadow-sm`}>
+              <div key={index} className={`rounded-2xl p-8 ${tier.popular ? 'bg-gradient-to-br from-purple-50 to-pink-50 border-2 border-purple-200 relative' : 'bg-white border border-gray-200'} shadow-sm flex flex-col h-full`}>
                 {tier.popular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                     <span className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-full text-sm font-medium">
@@ -582,7 +582,7 @@ export default function LandingPage() {
                   <span className="text-4xl font-bold text-gray-900">{tier.price}</span>
                   <span className="text-gray-600 ml-1">{tier.period}</span>
                 </div>
-                <ul className="space-y-3 mb-8">
+                <ul className="space-y-3 mb-8 flex-grow">
                   {tier.features.map((feature, i) => (
                     <li key={i} className="flex items-center text-gray-600">
                       <svg className="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
@@ -592,23 +592,25 @@ export default function LandingPage() {
                     </li>
                   ))}
                 </ul>
-                {tier.promoText && (
-                  <p className="text-sm text-gray-600 text-center mb-3 font-medium">
-                    {tier.promoText}
-                  </p>
-                )}
-                <button 
-                  className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 ${
-                    tier.disabled 
-                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                      : tier.popular 
-                        ? 'bg-gradient-to-r from-purple-600 to-purple-800 text-white hover:from-purple-700 hover:to-purple-900 shadow-lg transform hover:scale-105' 
-                        : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
-                  }`}
-                  disabled={tier.disabled}
-                >
-                  {tier.buttonText || (tier.popular ? 'Get Started' : 'Choose Plan')}
-                </button>
+                <div className="mt-auto">
+                  {tier.promoText && (
+                    <p className="text-sm text-gray-600 text-center mb-3 font-medium">
+                      {tier.promoText}
+                    </p>
+                  )}
+                  <button 
+                    className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 ${
+                      tier.disabled 
+                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        : tier.popular 
+                          ? 'bg-gradient-to-r from-purple-600 to-purple-800 text-white hover:from-purple-700 hover:to-purple-900 shadow-lg transform hover:scale-105' 
+                          : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                    }`}
+                    disabled={tier.disabled}
+                  >
+                    {tier.buttonText || (tier.popular ? 'Get Started' : 'Choose Plan')}
+                  </button>
+                </div>
               </div>
             ))}
           </div>
