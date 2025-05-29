@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import LandingHeader from '../components/Layout/LandingHeader';
+import LandingFooter from '../components/Layout/LandingFooter';
 
 export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState('All');
