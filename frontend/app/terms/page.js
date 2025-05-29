@@ -178,7 +178,7 @@ export default function TermsPage() {
                   If you have any questions about these Terms of Service, please contact us:
                 </p>
                 <div className="bg-gray-50 p-6 rounded-lg">
-                  <p className="text-gray-700 mb-2"><strong>Email:</strong> legal@hipaatrainer.com</p>
+                  <p className="text-gray-700 mb-2"><strong>Email:</strong> info@hipaatrainer.net</p>
                   <p className="text-gray-700 mb-2"><strong>Address:</strong> HIPAA Trainer, Inc.</p>
                   <p className="text-gray-700 mb-2">123 Healthcare Compliance Way</p>
                   <p className="text-gray-700 mb-2">Legal Department, Suite 200</p>

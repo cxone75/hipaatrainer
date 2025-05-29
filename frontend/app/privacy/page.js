@@ -220,7 +220,7 @@ export default function PrivacyPolicyPage() {
               If you have any questions about this Privacy Policy or our data practices, please contact us:
             </p>
             <div className="bg-gray-50 p-6 rounded-lg">
-              <p className="text-gray-700 mb-2"><strong>Email:</strong> privacy@hipaatrainer.com</p>
+              <p className="text-gray-700 mb-2"><strong>Email:</strong> info@hipaatrainer.net</p>
               <p className="text-gray-700 mb-2"><strong>Address:</strong> HIPAA Trainer, Inc.</p>
               <p className="text-gray-700 mb-2">123 Healthcare Compliance Way</p>
               <p className="text-gray-700">Privacy Department, Suite 100</p>
