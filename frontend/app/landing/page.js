@@ -8,12 +8,12 @@ export default function LandingPage() {
   const [countdown, setCountdown] = useState('');
 
   useEffect(() => {
+    // Set the target date once when component mounts (90 days from initial load)
+    const targetDate = new Date();
+    targetDate.setDate(targetDate.getDate() + 90);
+
     const calculateTimeLeft = () => {
-      // Calculate 90 days from now
       const now = new Date();
-      const targetDate = new Date(now);
-      targetDate.setDate(targetDate.getDate() + 90);
-      
       const difference = targetDate.getTime() - now.getTime();
 
       if (difference > 0) {
