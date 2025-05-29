@@ -580,10 +580,28 @@ export default function LandingPage() {
                 {/* Dark Header Section */}
                 <div className="bg-gray-900 text-white p-8 rounded-t-2xl">
                   <h3 className="text-xl font-bold mb-4">{tier.plan}</h3>
-                  <div className="mb-0">
+                  <div className="mb-2">
                     <span className="text-4xl font-bold">{tier.price}</span>
                     <span className="text-gray-300 ml-1">{tier.period}</span>
                   </div>
+                  
+                  {/* Tier-specific descriptive text */}
+                  {tier.plan === "Free" && (
+                    <p className="text-sm text-gray-300">
+                      Free for small teams
+                    </p>
+                  )}
+                  {tier.plan === "Founding Member" && (
+                    <div className="text-sm text-gray-300">
+                      <p className="mb-1">1-Year Money-Back Guarantee</p>
+                      <p>For the first 10 users</p>
+                    </div>
+                  )}
+                  {tier.plan === "Early Bird" && (
+                    <p className="text-sm text-gray-300">
+                      1-Year Money-Back Guarantee
+                    </p>
+                  )}
                 </div>
                 {/* Light Content Section */}
                 <div className={`p-8 flex-1 flex flex-col rounded-b-2xl ${tier.popular ? 'bg-gradient-to-br from-purple-50 to-pink-50' : 'bg-white'}`}>
