@@ -603,6 +603,29 @@ export default function LandingPage() {
                         {tier.promoText}
                       </p>
                     )}
+                    
+                    {/* Tier-specific text */}
+                    {tier.plan === "Free" && (
+                      <p className="text-sm text-gray-600 text-center mb-3">
+                        Free for small teams
+                      </p>
+                    )}
+                    {tier.plan === "Founding Member" && (
+                      <div className="text-center mb-3">
+                        <p className="text-sm text-gray-600 mb-1">
+                          1-Year Money-Back Guarantee
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          For the first 10 users
+                        </p>
+                      </div>
+                    )}
+                    {tier.plan === "Early Bird" && (
+                      <p className="text-sm text-gray-600 text-center mb-3">
+                        1-Year Money-Back Guarantee
+                      </p>
+                    )}
+                    
                     <button 
                       className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 ${
                         tier.disabled 
