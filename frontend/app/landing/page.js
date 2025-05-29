@@ -536,28 +536,37 @@ export default function LandingPage() {
                 price: "$0",
                 period: "/mo",
                 popular: false,
-                features: ["Up to 2 users", "Compliance Dashboard", "Risk Assessment", "Training Tool", "Community support"]
+                features: ["Up to 2 users", "Compliance Dashboard", "Risk Assessment", "Training Tool", "Community support"],
+                buttonText: "Join waiting list",
+                promoText: "Always free"
               },
               {
                 plan: "Founding Member",
                 price: "$297",
                 period: "lifetime",
                 popular: true,
-                features: ["Up to 50 users", "All core features", "1-year money-back guarantee", "Priority support"]
+                features: ["Up to 50 users", "All core features", "1-year money-back guarantee", "Priority support"],
+                buttonText: "Claim Your Founding Member Seat",
+                promoText: "First 50 members only, going quickly"
               },
               {
                 plan: "Early Bird",
                 price: "$397",
                 period: "lifetime", 
                 popular: false,
-                features: ["Up to 50 users", "All core features", "1-year money-back guarantee", "Standard support"]
+                features: ["Up to 50 users", "All core features", "1-year money-back guarantee", "Standard support"],
+                buttonText: "Become an Early Bird",
+                promoText: "Next 100 customers only"
               },
               {
                 plan: "Regular",
                 price: "$30",
                 period: "/month",
                 popular: false,
-                features: ["First 10 users", "$20/mo per 10 additional", "All features", "Standard support"]
+                features: ["First 10 users", "$20/mo per 10 additional", "All features", "Standard support"],
+                buttonText: "Coming Soon",
+                promoText: "Your compliance nightmare will soon be over",
+                disabled: true
               }
             ].map((tier, index) => (
               <div key={index} className={`rounded-2xl p-8 ${tier.popular ? 'bg-gradient-to-br from-purple-50 to-pink-50 border-2 border-purple-200 relative' : 'bg-white border border-gray-200'} shadow-sm`}>
@@ -583,12 +592,22 @@ export default function LandingPage() {
                     </li>
                   ))}
                 </ul>
-                <button className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 ${
-                  tier.popular 
-                    ? 'bg-gradient-to-r from-purple-600 to-purple-800 text-white hover:from-purple-700 hover:to-purple-900 shadow-lg transform hover:scale-105' 
-                    : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
-                }`}>
-                  {tier.popular ? 'Get Started' : 'Choose Plan'}
+                {tier.promoText && (
+                  <p className="text-sm text-gray-600 text-center mb-3 font-medium">
+                    {tier.promoText}
+                  </p>
+                )}
+                <button 
+                  className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 ${
+                    tier.disabled 
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : tier.popular 
+                        ? 'bg-gradient-to-r from-purple-600 to-purple-800 text-white hover:from-purple-700 hover:to-purple-900 shadow-lg transform hover:scale-105' 
+                        : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                  }`}
+                  disabled={tier.disabled}
+                >
+                  {tier.buttonText || (tier.popular ? 'Get Started' : 'Choose Plan')}
                 </button>
               </div>
             ))}
