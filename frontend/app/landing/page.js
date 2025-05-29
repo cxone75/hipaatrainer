@@ -9,7 +9,11 @@ export default function LandingPage() {
 
   useEffect(() => {
     const calculateTimeLeft = () => {
-      const difference = +new Date("2024-12-25") - +new Date(); // Target date 90 days from now
+      // Calculate 90 days from now
+      const targetDate = new Date();
+      targetDate.setDate(targetDate.getDate() + 90);
+      
+      const difference = +targetDate - +new Date();
 
       if (difference > 0) {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
@@ -17,9 +21,12 @@ export default function LandingPage() {
         const minutes = Math.floor((difference / 1000 / 60) % 60);
         const seconds = Math.floor((difference / 1000) % 60);
 
-        setCountdown(
-          `${days}d ${hours}h ${minutes}m ${seconds}s`
-        );
+        setCountdown({
+          days,
+          hours,
+          minutes,
+          seconds
+        });
       } else {
         setCountdown("Offer expired!");
       }
@@ -425,7 +432,7 @@ export default function LandingPage() {
                         <span className="text-purple-600 text-xs">🏥</span>
                       </div>
                       <div>
-                        <div className="font-medium text-gray-900">Patient Privacy Basics</div>```python
+                        <div className="font-medium text-gray-900">Patient Privacy Basics</div>
                         <div className="text-gray-500 text-xs">8 min | For clinical staff</div>
                       </div>
                     </div>
@@ -549,9 +556,36 @@ export default function LandingPage() {
       {/* Pricing */}
       <section id="pricing" className="py-20 bg-white pt-32">
         <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-           <div className="text-center mb-4">
-            <div className="text-2xl text-gray-700 font-semibold">
-              {countdown}
+           {/* Countdown Timer */}
+          <div className="text-center mb-8">
+            <div className="bg-gradient-to-r from-pink-100 to-purple-100 rounded-2xl p-6 max-w-4xl mx-auto">
+              <h3 className="text-lg font-semibold text-pink-600 mb-4">
+                Limited Time Offer - Founders Program Ends In:
+              </h3>
+              {typeof countdown === 'object' ? (
+                <div className="grid grid-cols-4 gap-4 max-w-2xl mx-auto">
+                  <div className="bg-white rounded-lg p-4 shadow-sm">
+                    <div className="text-3xl font-bold text-pink-600">{countdown.days}</div>
+                    <div className="text-sm text-gray-600 font-medium">Days</div>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 shadow-sm">
+                    <div className="text-3xl font-bold text-pink-600">{countdown.hours}</div>
+                    <div className="text-sm text-gray-600 font-medium">Hours</div>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 shadow-sm">
+                    <div className="text-3xl font-bold text-pink-600">{countdown.minutes}</div>
+                    <div className="text-sm text-gray-600 font-medium">Minutes</div>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 shadow-sm">
+                    <div className="text-3xl font-bold text-pink-600">{countdown.seconds}</div>
+                    <div className="text-sm text-gray-600 font-medium">Seconds</div>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-2xl text-red-600 font-semibold">
+                  {countdown}
+                </div>
+              )}
             </div>
           </div>
           <div className="text-center mb-16">
