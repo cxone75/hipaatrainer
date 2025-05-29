@@ -73,6 +73,7 @@ export default function LandingPage() {
                 <a href="#features" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Features</a>
                 <a href="#pricing" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Pricing</a>
                 <a href="#resources" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Resources</a>
+                <Link href="/contact" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Contact</Link>
                 <Link href="/onboarding" className="text-gray-600 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Login</Link>
               </div>
             </div>
@@ -108,6 +109,7 @@ export default function LandingPage() {
                 <a href="#features" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Features</a>
                 <a href="#pricing" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Pricing</a>
                 <a href="#resources" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Resources</a>
+                <Link href="/contact" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Contact</Link>
                 <Link href="/onboarding" className="text-gray-600 hover:text-purple-800 block px-3 py-2 text-base font-medium">Login</Link>
                 <button 
                   onClick={scrollToPricing}
@@ -883,7 +885,7 @@ export default function LandingPage() {
               <ul className="space-y-2">
                 <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Home</a></li>
                 <li><a href="#" className="text-gray-300 hover:text-white transition-colors">FAQ</a></li>
-                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Contact</a></li>
+                <li><Link href="/contact" className="text-gray-300 hover:text-white transition-colors">Contact</Link></li>
               </ul>
             </div>
             <div>
