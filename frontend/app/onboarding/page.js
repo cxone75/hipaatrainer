@@ -110,7 +110,12 @@ export default function OnboardingPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome to HIPAA Tracker</h1>
+          <img 
+            src="/hipaatrainer-logo.png" 
+            alt="HIPAA Trainer" 
+            className="h-12 w-auto mx-auto mb-4"
+          />
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome to HIPAA Trainer</h1>
           <p className="text-gray-600">Let's get your organization set up for HIPAA compliance tracking</p>
         </div>
 

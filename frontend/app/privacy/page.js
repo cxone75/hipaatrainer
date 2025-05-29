@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -14,7 +13,11 @@ export default function PrivacyPolicyPage() {
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <Link href="/landing">
-                  <h1 className="text-2xl font-bold text-purple-800">HIPAA Trainer</h1>
+                  <img 
+                    src="/hipaatrainer-logo.png" 
+                    alt="HIPAA Trainer" 
+                    className="h-8 w-auto"
+                  />
                 </Link>
               </div>
             </div>
