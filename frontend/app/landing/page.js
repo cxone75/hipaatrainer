@@ -33,7 +33,7 @@ export default function LandingPage() {
             {/* CTA Button */}
             <div className="hidden md:block">
               <button className="bg-purple-800 text-white px-6 py-2 rounded-lg font-medium hover:bg-purple-900 transition-colors shadow-md">
-                Start Free Trial
+                Start For Free
               </button>
             </div>
 
@@ -77,27 +77,23 @@ export default function LandingPage() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-purple-100 text-purple-800 text-sm font-medium mb-6">
-              <span className="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
-              Automate your HIPAA compliance
-            </div>
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              Compliance Confidence for<br />
-              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Practices and Startups Alike</span>
+              From Compliance Chaos<br />
+              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">to Complete Control</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
-              Automate HIPAA training, policy updates, risk assessments & audit bundles—so dental offices, physician practices, healthtech startups, mental health clinics, and home healthcare agencies trade late-night spreadsheets for clear dashboards and real confidence.
+              Automate HIPAA training, policy updates, risk assessments & audit bundles—so you trade late-night spreadsheets for clear dashboards and real confidence.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <button className="bg-gradient-to-r from-purple-600 to-purple-800 text-white px-8 py-4 rounded-lg font-semibold hover:from-purple-700 hover:to-purple-900 transition-all duration-300 text-lg shadow-lg transform hover:scale-105">
-                Start Free for Individuals
+                Start For Free
               </button>
               <button className="border-2 border-purple-600 text-purple-600 px-8 py-4 rounded-lg font-semibold hover:bg-purple-600 hover:text-white transition-all duration-300 text-lg">
                 Watch Demo
               </button>
             </div>
             <p className="text-sm text-gray-500 mt-4">
-              Free for individuals • Upgrade to teams/organizations at any time
+              Free for small teams • Upgrade at any time
             </p>
           </div>
         </div>
@@ -125,7 +121,7 @@ export default function LandingPage() {
       </section>
 
       {/* Logo Strip */}
-      <section className="py-12 bg-gray-50 border-b border-gray-200">
+      {/*<section className="py-12 bg-gray-50 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-gray-500 text-sm mb-8">Trusted by healthcare organizations worldwide</p>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8 items-center opacity-60">
@@ -137,14 +133,14 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-
+*/}
       {/* Who We Serve */}
       <section id="solutions" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Built for Your Organization</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Whether you're running a busy dental practice, a multi-physician clinic, launching a healthtech venture, managing a mental health program, or coordinating caregivers in home healthcare, HIPAA Trainer scales to your team.
+              Whether you're running a busy dental practice, a multi-physician clinic, or launching a healthtech venture, HIPAA Trainer scales to your team.
             </p>
           </div>
 
@@ -332,7 +328,7 @@ export default function LandingPage() {
                 <h3 className="text-xl font-bold text-gray-900">Employee Management</h3>
               </div>
               <p className="text-gray-600">
-                Add or import individual employee profiles—track training progress, view each employee's compliance status at a glance and delegate reminders.
+                Add individual employee profiles—track training progress, view each employee's compliance status at a glance and delegate reminders.
               </p>
               <div className="bg-gray-50 rounded-lg p-6">
                 <div className="bg-gray-800 text-white text-sm font-medium p-2 rounded-t mb-4">
@@ -378,7 +374,7 @@ export default function LandingPage() {
                 <h3 className="text-xl font-bold text-gray-900">Bite-Size, Role-Specific Training</h3>
               </div>
               <p className="text-gray-600">
-                10-minute modules written for CTOs, practice directors, coders, billers, and clinical staff—complete with built-in quizzes and instant certificates.
+                Short videos created for CTOs, practice directors, and clinical staff—complete with built-in quizzes and instant certificates.
               </p>
               <div className="bg-gray-50 rounded-lg p-6">
                 <div className="bg-gray-800 text-white text-sm font-medium p-2 rounded-t mb-4">
@@ -597,14 +593,11 @@ export default function LandingPage() {
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to simplify your HIPAA compliance?</h2>
           <p className="text-xl mb-8 opacity-90">
-            Join thousands of healthcare organizations that trust HIPAA Trainer for their compliance needs.
+            Experience how HIPAA Trainer can transform your compliance process risk-free.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button className="bg-white text-purple-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-lg shadow-lg">
-              Start Free Trial
-            </button>
-            <button className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-purple-600 transition-colors text-lg">
-              Schedule Demo
+              Start For Free
             </button>
           </div>
         </div>
@@ -620,14 +613,13 @@ export default function LandingPage() {
                 <li><a href="#solutions" className="text-gray-300 hover:text-white transition-colors">Solutions</a></li>
                 <li><a href="#features" className="text-gray-300 hover:text-white transition-colors">Features</a></li>
                 <li><a href="#pricing" className="text-gray-300 hover:text-white transition-colors">Pricing</a></li>
-                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Demo</a></li>
+                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Resources</a></li>
               </ul>
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-4 text-purple-400">Company</h3>
               <ul className="space-y-2">
                 <li><a href="#" className="text-gray-300 hover:text-white transition-colors">About</a></li>
-                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Careers</a></li>
                 <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Blog</a></li>
                 <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Contact</a></li>
               </ul>
