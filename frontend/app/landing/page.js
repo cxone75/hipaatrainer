@@ -594,12 +594,16 @@ export default function LandingPage() {
                   {tier.plan === "Founding Member" && (
                     <div className="text-sm text-gray-300">
                       <p className="mb-1">1-Year Money-Back Guarantee</p>
-                      <p>For the first 10 users</p>
                     </div>
                   )}
                   {tier.plan === "Early Bird" && (
                     <p className="text-sm text-gray-300">
                       1-Year Money-Back Guarantee
+                    </p>
+                  )}
+                  {tier.plan === "Regular" && (
+                    <p className="text-sm text-gray-300">
+                      for first 10 users
                     </p>
                   )}
                 </div>
