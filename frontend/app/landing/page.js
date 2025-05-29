@@ -529,8 +529,15 @@ export default function LandingPage() {
             <p className="text-xl text-gray-600">Join our exclusive early community—shape the product with zero risk and lock in lifetime access.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
             {[
+              {
+                plan: "Free",
+                price: "$0",
+                period: "/mo",
+                popular: false,
+                features: ["Up to 2 users", "Compliance Dashboard", "Risk Assessment", "Training Tool", "Community support"]
+              },
               {
                 plan: "Founding Member",
                 price: "$297",
