@@ -1,10 +1,36 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [countdown, setCountdown] = useState('');
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const difference = +new Date("2024-12-25") - +new Date(); // Target date 90 days from now
+
+      if (difference > 0) {
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((difference / 1000 / 60) % 60);
+        const seconds = Math.floor((difference / 1000) % 60);
+
+        setCountdown(
+          `${days}d ${hours}h ${minutes}m ${seconds}s`
+        );
+      } else {
+        setCountdown("Offer expired!");
+      }
+    };
+
+    calculateTimeLeft();
+    const intervalId = setInterval(calculateTimeLeft, 1000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -399,7 +425,7 @@ export default function LandingPage() {
                         <span className="text-purple-600 text-xs">🏥</span>
                       </div>
                       <div>
-                        <div className="font-medium text-gray-900">Patient Privacy Basics</div>
+                        <div className="font-medium text-gray-900">Patient Privacy Basics</div>```python
                         <div className="text-gray-500 text-xs">8 min | For clinical staff</div>
                       </div>
                     </div>
@@ -523,6 +549,11 @@ export default function LandingPage() {
       {/* Pricing */}
       <section id="pricing" className="py-20 bg-white pt-32">
         <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+           <div className="text-center mb-4">
+            <div className="text-2xl text-gray-700 font-semibold">
+              {countdown}
+            </div>
+          </div>
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">HIPAA Trainer Pre-Sale Program
             </h2>
