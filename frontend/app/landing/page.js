@@ -8,9 +8,17 @@ export default function LandingPage() {
   const [countdown, setCountdown] = useState('');
 
   useEffect(() => {
-    // Set the target date once when component mounts (90 days from initial load)
-    const targetDate = new Date();
-    targetDate.setDate(targetDate.getDate() + 90);
+    // Get or set the target date (90 days from first visit)
+    let targetDate;
+    const storedTargetDate = localStorage.getItem('countdownTargetDate');
+    
+    if (storedTargetDate) {
+      targetDate = new Date(storedTargetDate);
+    } else {
+      targetDate = new Date();
+      targetDate.setDate(targetDate.getDate() + 90);
+      localStorage.setItem('countdownTargetDate', targetDate.toISOString());
+    }
 
     const calculateTimeLeft = () => {
       const now = new Date();
