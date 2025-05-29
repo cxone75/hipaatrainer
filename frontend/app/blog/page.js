@@ -7,9 +7,21 @@ import Link from 'next/link';
 export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState('All');
 
-  const categories = ['All', 'HIPAA Compliance', 'Training', 'Risk Management', 'Policy Updates', 'Best Practices'];
+  const categories = ['All', 'Product Updates', 'HIPAA Compliance', 'Training', 'Risk Management', 'Policy Updates', 'Best Practices'];
 
   const blogPosts = [
+    {
+      id: 0,
+      title: "Introducing HIPAA Trainer",
+      excerpt: "An innovative AI-powered platform designed to transform your business operations and skyrocket productivity.",
+      category: "Product Updates",
+      author: "HIPAA Trainer Team",
+      date: "August 24, 2024",
+      readTime: "8 min read",
+      featured: true,
+      image: "/api/placeholder/600/300",
+      slug: "introducing-hipaa-trainer"
+    },
     {
       id: 1,
       title: "HIPAA Training Requirements for 2025: What Healthcare Organizations Need to Know",
@@ -164,9 +176,11 @@ export default function BlogPage() {
                       </span>
                       <span className="text-gray-500 text-sm ml-3">{post.readTime}</span>
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-3 hover:text-purple-800 transition-colors cursor-pointer">
-                      {post.title}
-                    </h3>
+                    <Link href={post.slug ? `/blog/${post.slug}` : '/blog'}>
+                      <h3 className="text-xl font-bold text-gray-900 mb-3 hover:text-purple-800 transition-colors cursor-pointer">
+                        {post.title}
+                      </h3>
+                    </Link>
                     <p className="text-gray-600 mb-4">{post.excerpt}</p>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
@@ -226,9 +240,11 @@ export default function BlogPage() {
                     </span>
                     <span className="text-gray-500 text-sm ml-3">{post.readTime}</span>
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2 hover:text-purple-800 transition-colors cursor-pointer">
-                    {post.title}
-                  </h3>
+                  <Link href={post.slug ? `/blog/${post.slug}` : '/blog'}>
+                    <h3 className="text-lg font-bold text-gray-900 mb-2 hover:text-purple-800 transition-colors cursor-pointer">
+                      {post.title}
+                    </h3>
+                  </Link>
                   <p className="text-gray-600 text-sm mb-4">{post.excerpt}</p>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
