@@ -8,6 +8,13 @@ export default function LandingPage() {
   const [countdown, setCountdown] = useState('');
   const [expandedFAQ, setExpandedFAQ] = useState(0);
 
+  const scrollToPricing = () => {
+    const pricingSection = document.getElementById('pricing');
+    if (pricingSection) {
+      pricingSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   useEffect(() => {
     // Fixed target date: 90 days from June 1st, 2025
     const startDate = new Date('2025-06-01');
@@ -72,7 +79,10 @@ export default function LandingPage() {
 
             {/* CTA Button */}
             <div className="hidden md:block">
-              <button className="bg-purple-800 text-white px-6 py-2 rounded-lg font-medium hover:bg-purple-900 transition-colors shadow-md">
+              <button 
+                onClick={scrollToPricing}
+                className="bg-purple-800 text-white px-6 py-2 rounded-lg font-medium hover:bg-purple-900 transition-colors shadow-md"
+              >
                 Start For Free
               </button>
             </div>
@@ -99,8 +109,11 @@ export default function LandingPage() {
                 <a href="#pricing" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Pricing</a>
                 <a href="#resources" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Resources</a>
                 <Link href="/onboarding" className="text-gray-600 hover:text-purple-800 block px-3 py-2 text-base font-medium">Login</Link>
-                <button className="w-full bg-purple-800 text-white px-6 py-2 rounded-lg font-medium hover:bg-purple-900 transition-colors mt-4">
-                  Start Free Trial
+                <button 
+                  onClick={scrollToPricing}
+                  className="w-full bg-purple-800 text-white px-6 py-2 rounded-lg font-medium hover:bg-purple-900 transition-colors mt-4"
+                >
+                  Start For Free
                 </button>
               </div>
             </div>
@@ -125,7 +138,10 @@ export default function LandingPage() {
               Automate HIPAA training, policy updates, risk assessments & audit bundles—so you trade late-night spreadsheets for clear dashboards and real confidence.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <button className="bg-gradient-to-r from-purple-600 to-purple-800 text-white px-8 py-4 rounded-lg font-semibold hover:from-purple-700 hover:to-purple-900 transition-all duration-300 text-lg shadow-lg transform hover:scale-105">
+              <button 
+                onClick={scrollToPricing}
+                className="bg-gradient-to-r from-purple-600 to-purple-800 text-white px-8 py-4 rounded-lg font-semibold hover:from-purple-700 hover:to-purple-900 transition-all duration-300 text-lg shadow-lg transform hover:scale-105"
+              >
                 Start For Free
               </button>
               <button className="border-2 border-purple-600 text-purple-600 px-8 py-4 rounded-lg font-semibold hover:bg-purple-600 hover:text-white transition-all duration-300 text-lg">
@@ -839,7 +855,10 @@ export default function LandingPage() {
             Experience how HIPAA Trainer can transform your compliance process risk-free.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-purple-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-lg shadow-lg">
+            <button 
+              onClick={scrollToPricing}
+              className="bg-white text-purple-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-lg shadow-lg"
+            >
               Start For Free
             </button>
           </div>
