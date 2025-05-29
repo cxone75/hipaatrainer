@@ -10,10 +10,11 @@ export default function LandingPage() {
   useEffect(() => {
     const calculateTimeLeft = () => {
       // Calculate 90 days from now
-      const targetDate = new Date();
+      const now = new Date();
+      const targetDate = new Date(now);
       targetDate.setDate(targetDate.getDate() + 90);
       
-      const difference = +targetDate - +new Date();
+      const difference = targetDate.getTime() - now.getTime();
 
       if (difference > 0) {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
