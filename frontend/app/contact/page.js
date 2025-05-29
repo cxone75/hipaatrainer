@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { LandingFooter } from '../components/LandingFooter';
+import LandingFooter from '../components/Layout/LandingFooter';
 
 export default function ContactPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
