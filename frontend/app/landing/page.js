@@ -72,7 +72,7 @@ export default function LandingPage() {
                 <a href="#solutions" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Solutions</a>
                 <a href="#features" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Features</a>
                 <a href="#pricing" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Pricing</a>
-                <a href="#blog" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Blog</a>
+                <Link href="/blog" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Blog</Link>
                 <Link href="/onboarding" className="text-gray-600 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Login</Link>
               </div>
             </div>
@@ -107,7 +107,7 @@ export default function LandingPage() {
                 <a href="#solutions" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Solutions</a>
                 <a href="#features" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Features</a>
                 <a href="#pricing" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Pricing</a>
-                <a href="#blog" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Blog</a>
+                <Link href="/blog" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Blog</Link>
                 <Link href="/onboarding" className="text-gray-600 hover:text-purple-800 block px-3 py-2 text-base font-medium">Login</Link>
                 <button 
                   onClick={scrollToPricing}
@@ -875,7 +875,7 @@ export default function LandingPage() {
                 <li><a href="#solutions" className="text-gray-300 hover:text-white transition-colors">Solutions</a></li>
                 <li><a href="#features" className="text-gray-300 hover:text-white transition-colors">Features</a></li>
                 <li><a href="#pricing" className="text-gray-300 hover:text-white transition-colors">Pricing</a></li>
-                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Blog</a></li>
+                <li><Link href="/blog" className="text-gray-300 hover:text-white transition-colors">Blog</Link></li>
               </ul>
             </div>
             <div>
