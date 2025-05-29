@@ -569,7 +569,7 @@ export default function LandingPage() {
                 disabled: true
               }
             ].map((tier, index) => (
-              <div key={index} className={`rounded-2xl overflow-hidden ${tier.popular ? 'border-2 border-purple-200 relative' : 'border border-gray-200'} shadow-sm flex flex-col h-full`}>
+              <div key={index} className={`rounded-2xl ${tier.popular ? 'border-2 border-purple-200 relative' : 'border border-gray-200'} shadow-sm flex flex-col h-full`}>
                 {tier.popular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-50">
                     <span className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-full text-sm font-medium">
@@ -578,7 +578,7 @@ export default function LandingPage() {
                   </div>
                 )}
                 {/* Dark Header Section */}
-                <div className="bg-gray-900 text-white p-8">
+                <div className="bg-gray-900 text-white p-8 rounded-t-2xl">
                   <h3 className="text-xl font-bold mb-4">{tier.plan}</h3>
                   <div className="mb-0">
                     <span className="text-4xl font-bold">{tier.price}</span>
@@ -586,7 +586,7 @@ export default function LandingPage() {
                   </div>
                 </div>
                 {/* Light Content Section */}
-                <div className={`p-8 flex-1 flex flex-col ${tier.popular ? 'bg-gradient-to-br from-purple-50 to-pink-50' : 'bg-white'}`}>
+                <div className={`p-8 flex-1 flex flex-col rounded-b-2xl ${tier.popular ? 'bg-gradient-to-br from-purple-50 to-pink-50' : 'bg-white'}`}>
                 <ul className="space-y-3 mb-8 flex-grow">
                     {tier.features.map((feature, i) => (
                       <li key={i} className="flex items-center text-gray-600">
