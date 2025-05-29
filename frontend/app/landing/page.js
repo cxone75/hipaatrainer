@@ -10,7 +10,7 @@ export default function LandingPage() {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex items-center">
@@ -75,7 +75,7 @@ export default function LandingPage() {
         <div className="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-purple-200/30 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-pink-200/30 rounded-full blur-3xl"></div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
               From Compliance Chaos<br />
@@ -101,7 +101,7 @@ export default function LandingPage() {
 
       {/* Product Preview Section */}
       <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">See Your Compliance at a Glance</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -122,7 +122,7 @@ export default function LandingPage() {
 
       {/* Logo Strip */}
       {/*<section className="py-12 bg-gray-50 border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-gray-500 text-sm mb-8">Trusted by healthcare organizations worldwide</p>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8 items-center opacity-60">
             {[1,2,3,4,5].map((i) => (
@@ -136,7 +136,7 @@ export default function LandingPage() {
 */}
       {/* Who We Serve */}
       <section id="solutions" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Built for Your Organization</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -225,7 +225,7 @@ export default function LandingPage() {
 
       {/* Features */}
       <section id="features" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">How It Works—Feature by Feature</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -414,7 +414,7 @@ export default function LandingPage() {
 
       {/* Benefits Table */}
       <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Benefits That Resonate</h2>
           </div>
@@ -522,7 +522,7 @@ export default function LandingPage() {
 
       {/* Pricing */}
       <section id="pricing" className="py-20 bg-white pt-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">HIPAA Trainer Pre-Sale Program
             </h2>
@@ -584,7 +584,7 @@ export default function LandingPage() {
                     <span className="text-4xl font-bold">{tier.price}</span>
                     <span className="text-gray-300 ml-1">{tier.period}</span>
                   </div>
-                  
+
                   {/* Tier-specific descriptive text */}
                   {tier.plan === "Free" && (
                     <p className="text-sm text-gray-300">
@@ -658,7 +658,7 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <h3 className="text-lg font-semibold mb-4 text-purple-400">Product</h3>
