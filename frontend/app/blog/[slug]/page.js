@@ -1,9 +1,10 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import LandingHeader from '../../components/Layout/LandingHeader';
+import LandingFooter from '../../components/Layout/LandingFooter';
 
 export default function BlogArticlePage() {
   const params = useParams();
@@ -48,7 +49,7 @@ export default function BlogArticlePage() {
         <blockquote>
           <p>"HIPAA Trainer has revolutionized our compliance approach. It's like having a crystal ball for our healthcare operations." - <em>Dr. Jane Smith, CTO of HealthTech</em></p>
         </blockquote>
-        
+
         <p>Our AI solution isn't just a tool; it's your competitive edge. Here's how we compare:</p>
 
         <div class="comparison-table">
@@ -129,51 +130,7 @@ export default function BlogArticlePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
-        <nav className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <Link href="/landing">
-                  <h1 className="text-2xl font-bold text-purple-800">HIPAA Trainer</h1>
-                </Link>
-              </div>
-            </div>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-8">
-                <Link href="/landing#solutions" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Solutions</Link>
-                <Link href="/landing#features" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Features</Link>
-                <Link href="/landing#pricing" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Pricing</Link>
-                <Link href="/blog" className="text-purple-800 hover:text-purple-900 px-3 py-2 text-sm font-medium transition-colors">Blog</Link>
-                <Link href="/onboarding" className="text-gray-600 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Login</Link>
-              </div>
-            </div>
-
-            {/* CTA Button */}
-            <div className="hidden md:block">
-              <Link 
-                href="/landing#pricing"
-                className="bg-purple-800 text-white px-6 py-2 rounded-lg font-medium hover:bg-purple-900 transition-colors shadow-md"
-              >
-                Start For Free
-              </Link>
-            </div>
-
-            {/* Mobile menu button */}
-            <div className="md:hidden">
-              <button className="text-gray-700 hover:text-purple-800 p-2">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </nav>
-      </header>
+      <LandingHeader />
 
       {/* Article Content */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -193,11 +150,11 @@ export default function BlogArticlePage() {
               {article.category}
             </span>
           </div>
-          
+
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             {article.title}
           </h1>
-          
+
           {article.subtitle && (
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
               {article.subtitle}
@@ -282,7 +239,7 @@ export default function BlogArticlePage() {
                 </div>
               </article>
             </Link>
-            
+
             <Link href="/blog" className="group">
               <article className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
                 <div className="h-32 bg-gradient-to-r from-gray-100 to-gray-200 flex items-center justify-center">
@@ -305,53 +262,7 @@ export default function BlogArticlePage() {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 mt-16">
-        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="text-lg font-semibold mb-4 text-purple-400">Product</h3>
-              <ul className="space-y-2">
-                <li><Link href="/landing#solutions" className="text-gray-300 hover:text-white transition-colors">Solutions</Link></li>
-                <li><Link href="/landing#features" className="text-gray-300 hover:text-white transition-colors">Features</Link></li>
-                <li><Link href="/landing#pricing" className="text-gray-300 hover:text-white transition-colors">Pricing</Link></li>
-                <li><Link href="/blog" className="text-gray-300 hover:text-white transition-colors">Blog</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-4 text-purple-400">Company</h3>
-              <ul className="space-y-2">
-                <li><Link href="/landing" className="text-gray-300 hover:text-white transition-colors">Home</Link></li>
-                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">FAQ</a></li>
-                <li><Link href="/contact" className="text-gray-300 hover:text-white transition-colors">Contact</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-4 text-purple-400">Legal</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Privacy Policy</a></li>
-                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Terms of Service</a></li>
-                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">HIPAA Compliance</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-4 text-purple-400">Connect</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">LinkedIn</a></li>
-                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Twitter</a></li>
-                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Facebook</a></li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-gray-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-300">&copy; 2024 HIPAA Trainer. All rights reserved.</p>
-            <div className="mt-4 md:mt-0">
-              <span className="text-2xl font-bold text-purple-400">HIPAA Trainer</span>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <LandingFooter />
 
       <style jsx>{`
         .article-content h2 {
@@ -361,7 +272,7 @@ export default function BlogArticlePage() {
           margin-top: 2rem;
           margin-bottom: 1rem;
         }
-        
+
         .article-content h3 {
           font-size: 1.5rem;
           font-weight: 600;
@@ -369,23 +280,23 @@ export default function BlogArticlePage() {
           margin-top: 1.5rem;
           margin-bottom: 0.75rem;
         }
-        
+
         .article-content p {
           margin-bottom: 1rem;
           line-height: 1.7;
           color: #374151;
         }
-        
+
         .article-content ul, .article-content ol {
           margin-bottom: 1rem;
           padding-left: 1.5rem;
         }
-        
+
         .article-content li {
           margin-bottom: 0.5rem;
           color: #374151;
         }
-        
+
         .article-content blockquote {
           border-left: 4px solid #7c3aed;
           padding-left: 1rem;
@@ -396,45 +307,45 @@ export default function BlogArticlePage() {
           padding: 1rem;
           border-radius: 0.5rem;
         }
-        
+
         .article-content strong {
           font-weight: 600;
           color: #1f2937;
         }
-        
+
         .comparison-table {
           margin: 2rem 0;
           border: 1px solid #e5e7eb;
           border-radius: 0.5rem;
           overflow: hidden;
         }
-        
+
         .table-header {
           display: grid;
           grid-template-columns: 2fr 1fr 1fr;
           background: #f9fafb;
           font-weight: 600;
         }
-        
+
         .table-row {
           display: grid;
           grid-template-columns: 2fr 1fr 1fr;
           border-top: 1px solid #e5e7eb;
         }
-        
+
         .feature-col, .hipaa-trainer-col, .traditional-col {
           padding: 0.75rem 1rem;
         }
-        
+
         .hipaa-trainer-col, .traditional-col {
           text-align: center;
         }
-        
+
         .article-content a {
           color: #7c3aed;
           text-decoration: none;
         }
-        
+
         .article-content a:hover {
           color: #5b21b6;
           text-decoration: underline;
