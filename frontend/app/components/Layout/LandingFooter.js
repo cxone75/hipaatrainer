@@ -28,7 +28,7 @@ export default function LandingFooter() {
             <ul className="space-y-2">
               <li><Link href="/privacy" className="text-gray-300 hover:text-white transition-colors">Privacy Policy</Link></li>
               <li><Link href="/terms" className="text-gray-300 hover:text-white transition-colors">Terms of Service</Link></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">HIPAA Compliance</a></li>
+              <li><Link href="/hipaa-compliance" className="text-gray-300 hover:text-white transition-colors">HIPAA Compliance</Link></li>
             </ul>
           </div>
           <div>
