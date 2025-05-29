@@ -529,7 +529,7 @@ export default function LandingPage() {
             <p className="text-xl text-gray-600">Join our exclusive early community—shape the product with zero risk and lock in lifetime access.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12 mt-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12 mt-12 pt-6">
             {[
               {
                 plan: "Free",
