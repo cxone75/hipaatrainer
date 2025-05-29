@@ -608,7 +608,6 @@ export default function LandingPage() {
                         tier.disabled 
                           ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                           : tier.popular 
-                            ? 'bg-gradient-to-r from-purple-600 to-purple-800 text-white hover:from-purple-700 hover:to-purple-900 shadow-lg transform hover:scale-105' 
                             ? 'bg-gradient-to-r from-purple-600 to-purple-800 text-white hover:from-purple-700 hover:to-purple-900 shadow-lg transform hover:scale-105'
                             : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
                       }`}
