@@ -103,8 +103,42 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Product Preview Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">See Your Compliance at a Glance</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Our intuitive dashboard gives you real-time visibility into your organization's HIPAA compliance status
+            </p>
+          </div>
+          <div className="relative max-w-6xl mx-auto">
+            <div className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl p-8 shadow-2xl">
+              <img 
+                src="/attached_assets/Screenshot 2025-05-28 171920.png" 
+                alt="HIPAA Trainer Dashboard Preview" 
+                className="w-full h-auto rounded-lg shadow-lg border border-gray-200"
+              />
+            </div>
+            {/* Floating feature callouts */}
+            <div className="absolute -top-4 -left-4 bg-white rounded-lg shadow-lg p-4 border border-gray-200 hidden lg:block">
+              <div className="flex items-center">
+                <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                <span className="text-sm font-medium text-gray-900">85% Compliant</span>
+              </div>
+            </div>
+            <div className="absolute -bottom-4 -right-4 bg-white rounded-lg shadow-lg p-4 border border-gray-200 hidden lg:block">
+              <div className="flex items-center">
+                <div className="w-3 h-3 bg-purple-500 rounded-full mr-2"></div>
+                <span className="text-sm font-medium text-gray-900">Real-time Updates</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Logo Strip */}
-      <section className="py-12 bg-white border-b border-gray-200">
+      <section className="py-12 bg-gray-50 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-gray-500 text-sm mb-8">Trusted by healthcare organizations worldwide</p>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8 items-center opacity-60">
