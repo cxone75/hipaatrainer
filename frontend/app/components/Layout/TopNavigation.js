@@ -27,9 +27,11 @@ export default function TopNavigation() {
   return (
     <nav className="bg-gray-900 border-b border-gray-400 px-6 py-3">
       <div className="flex items-center justify-between">
-        {/* Left side - Organization Switcher */}
-        <div className="flex items-center space-x-6">
-          {/* Organization Switcher */}
+        {/* Left spacer */}
+        <div className="flex-1"></div>
+
+        {/* Center - Organization Switcher */}
+        <div className="flex items-center">
           <div className="relative">
             <button
               onClick={() => setShowOrgDropdown(!showOrgDropdown)}
@@ -42,7 +44,7 @@ export default function TopNavigation() {
             </button>
             
             {showOrgDropdown && (
-              <div className="absolute top-full left-0 mt-1 w-64 bg-gray-800 border border-gray-600 rounded shadow-lg z-50">
+              <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 w-64 bg-gray-800 border border-gray-600 rounded shadow-lg z-50">
                 <div className="p-2">
                   {organizations.map((org) => (
                     <div
@@ -74,10 +76,8 @@ export default function TopNavigation() {
           </div>
         </div>
 
-        
-
         {/* Right side - Notifications and User Menu */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 flex-1 justify-end">
           {/* Notifications */}
           <div className="relative">
             <button
