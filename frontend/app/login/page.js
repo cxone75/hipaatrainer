@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -22,7 +21,7 @@ export default function LoginPage() {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
-    
+
     // Clear error when user starts typing
     if (error) {
       setError('');
@@ -33,10 +32,10 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
     setError('');
-    
+
     try {
       // Call backend API to authenticate with Supabase
-      const response = await fetch('http://localhost:3001/api/users/login', {
+      const response = await fetch('http://localhost:3001/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,15 +48,15 @@ export default function LoginPage() {
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (!response.ok) {
+        setError(data.error || 'Login failed');
+      } else {
         // Store auth token
         localStorage.setItem('authToken', data.token);
         localStorage.setItem('userData', JSON.stringify(data.user));
-        
+
         // Redirect to app
         router.push('/app');
-      } else {
-        setError(data.error || 'Login failed');
       }
     } catch (error) {
       console.error('Login error:', error);
@@ -69,7 +68,7 @@ export default function LoginPage() {
 
   const handleSocialLogin = async (provider) => {
     setSocialLoading(provider);
-    
+
     try {
       // Redirect to backend OAuth endpoint
       window.location.href = `http://localhost:3001/api/auth/oauth/${provider}`;

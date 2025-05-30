@@ -57,19 +57,18 @@ router.post('/register', async (req, res) => {
       throw new Error(`Failed to create organization: ${orgError.message}`);
     }
 
-    // Get default admin role
-    const adminRole = await roleModel.getRoleByName('Admin');
+    // Get or create default admin role for this organization
+    let adminRole = await roleModel.getRoleByName('Admin', organization.id);
     if (!adminRole) {
-      // Create default admin role if it doesn't exist
-      const defaultRole = await roleModel.createRole({
+      // Create default admin role for this organization
+      adminRole = await roleModel.createRole({
         name: 'Admin',
         description: 'Full system administrator',
-        organizationId: organization.id
+        organizationId: organization.id,
+        createdBy: authUser.user.id
       });
-      var roleId = defaultRole.id;
-    } else {
-      var roleId = adminRole.id;
     }
+    const roleId = adminRole.id;
 
     // Create user record in database
     const userData = {

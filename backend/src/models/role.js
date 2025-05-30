@@ -43,6 +43,30 @@ class RoleModel {
     return role;
   }
 
+  async getRoleByName(name, organizationId = null) {
+    let query = this.supabase
+      .from('roles')
+      .select(`
+        *,
+        permissions:role_permissions(
+          permission:permissions(*)
+        )
+      `)
+      .eq('name', name);
+
+    if (organizationId) {
+      query = query.eq('organization_id', organizationId);
+    }
+
+    const { data: role, error } = await query.single();
+
+    if (error && error.code !== 'PGRST116') {
+      throw new Error(`Failed to fetch role: ${error.message}`);
+    }
+
+    return role;
+  }
+
   async createRole(roleData) {
     const {
       name,

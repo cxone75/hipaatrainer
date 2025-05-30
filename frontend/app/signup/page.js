@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -27,7 +26,7 @@ export default function SignupPage() {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
@@ -36,7 +35,7 @@ export default function SignupPage() {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
     if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
     if (!formData.email.trim()) newErrors.email = 'Email is required';
@@ -46,33 +45,32 @@ export default function SignupPage() {
     }
     if (!formData.organizationName.trim()) newErrors.organizationName = 'Organization name is required';
     if (!formData.agreeToTerms) newErrors.agreeToTerms = 'You must agree to the terms and conditions';
-    
+
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (formData.email && !emailRegex.test(formData.email)) {
       newErrors.email = 'Please enter a valid email address';
     }
-    
+
     // Password validation
     if (formData.password && formData.password.length < 8) {
       newErrors.password = 'Password must be at least 8 characters long';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     setIsLoading(true);
     setErrors({});
-    
+
     try {
-      // Call backend API to create user with Supabase
-      const response = await fetch('http://localhost:3001/api/users/register', {
+      const response = await fetch('http://localhost:3001/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -83,17 +81,26 @@ export default function SignupPage() {
           firstName: formData.firstName,
           lastName: formData.lastName,
           organizationName: formData.organizationName,
-          jobTitle: formData.jobTitle,
+          jobTitle: formData.jobTitle
         }),
       });
 
       const data = await response.json();
 
+      if (!response.ok) {
+        if (data.errors) {
+          setErrors(data.errors);
+        } else {
+          setErrors({ general: data.error || 'Registration failed' });
+        }
+        return;
+      }
+
       if (response.ok) {
         // Store auth token
         localStorage.setItem('authToken', data.token);
         localStorage.setItem('userData', JSON.stringify(data.user));
-        
+
         // Redirect to app
         router.push('/app');
       } else {
@@ -109,7 +116,7 @@ export default function SignupPage() {
 
   const handleSocialSignup = async (provider) => {
     setSocialLoading(provider);
-    
+
     try {
       // Redirect to backend OAuth endpoint
       window.location.href = `http://localhost:3001/api/auth/oauth/${provider}`;
