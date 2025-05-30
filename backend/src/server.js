@@ -3,6 +3,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 require('dotenv').config();
 
+// Import routes
+const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const roleRoutes = require('./routes/roleRoutes');
 const orgRoutes = require('./routes/orgRoutes');
@@ -59,7 +61,8 @@ app.get('/health', (req, res) => {
   });
 });
 
-// API routes
+// Mount routes
+app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/organizations', orgRoutes);

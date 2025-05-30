@@ -77,8 +77,8 @@ router.put('/me/profile',
   }
 );
 
-// Auth verification endpoint (no auth required for this specific route)
-router.get('/auth/verify', authMiddleware.requireAuth.bind(authMiddleware), async (req, res) => {
+// Auth verification endpoint 
+router.get('/verify', authMiddleware.requireAuth.bind(authMiddleware), async (req, res) => {
   try {
     // If we reach here, the token is valid (verified by middleware)
     res.json({
@@ -98,7 +98,7 @@ router.get('/auth/verify', authMiddleware.requireAuth.bind(authMiddleware), asyn
   }
 });
 
-// Apply authentication middleware to all other routes
+// Apply authentication middleware to all other routes except auth endpoints
 router.use(authMiddleware.requireAuth.bind(authMiddleware));
 
 module.exports = router;
