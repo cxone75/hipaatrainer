@@ -1,4 +1,3 @@
-
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -77,6 +76,7 @@ router.post('/register', async (req, res) => {
       });
     }
     const roleId = adminRole.id;
+    const organizationId = organization.id;
 
     // Create user record in database
     const userData = {
@@ -85,7 +85,7 @@ router.post('/register', async (req, res) => {
       firstName,
       lastName,
       jobTitle,
-      organizationId: organization.id,
+      organizationId: organizationId,
       roleId: roleId,
       status: 'active'
     };
@@ -97,7 +97,7 @@ router.post('/register', async (req, res) => {
       { 
         userId: user.id, 
         email: user.email,
-        organizationId: user.organization_id,
+        organizationId: organizationId,
         roleId: user.role_id
       },
       process.env.JWT_SECRET,
@@ -112,7 +112,7 @@ router.post('/register', async (req, res) => {
         email: user.email,
         firstName: user.first_name,
         lastName: user.last_name,
-        organizationId: user.organization_id,
+        organizationId: organizationId,
         roleId: user.role_id,
         status: user.status
       }
@@ -131,12 +131,12 @@ router.post('/login', async (req, res) => {
   console.log('Request Method:', req.method);
   console.log('Request Headers:', JSON.stringify(req.headers, null, 2));
   console.log('Request Body:', JSON.stringify(req.body, null, 2));
-  
+
   try {
     const { email, password } = req.body;
     console.log('Login attempt for email:', email);
     console.log('Password provided:', !!password);
-    
+
     console.log('Environment check:', {
       hasSupabaseUrl: !!process.env.SUPABASE_URL,
       hasSupabaseKey: !!process.env.SUPABASE_ANON_KEY,
@@ -235,7 +235,7 @@ router.post('/forgot-password', async (req, res) => {
 router.get('/oauth/:provider', async (req, res) => {
   try {
     const { provider } = req.params;
-    
+
     const supabase = createClient();
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: provider,
@@ -262,7 +262,7 @@ router.get('/oauth/:provider', async (req, res) => {
 router.get('/callback', async (req, res) => {
   try {
     const { code } = req.query;
-    
+
     if (!code) {
       return res.status(400).json({ error: 'Authorization code required' });
     }
@@ -277,7 +277,7 @@ router.get('/callback', async (req, res) => {
 
     // Check if user exists in our database
     let user = await userModel.getUserById(data.user.id);
-    
+
     if (!user) {
       // Create new user record for OAuth users
       // This would need additional logic to handle organization creation
