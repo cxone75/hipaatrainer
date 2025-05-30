@@ -144,7 +144,7 @@ export default function RegulatoryUpdates() {
   };
 
   return (
-    
+
       <div className="p-8">
         {/* Header */}
         <div className="mb-8">
