@@ -3,12 +3,11 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { createClient, createAdminClient } = require('../services/supabase');
-const UserModel = require('../models/user');
+const userModel = require('../models/user');
 const OrganizationModel = require('../models/organization');
 const RoleModel = require('../models/role');
 
 const router = express.Router();
-const userModel = new UserModel();
 const orgModel = new OrganizationModel();
 const roleModel = new RoleModel();
 

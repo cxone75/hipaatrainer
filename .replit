@@ -18,3 +18,19 @@ externalPort = 3002
 
 [deployment]
 run = ["sh", "-c", "concurrently \"npm run dev:frontend\" \"npm run dev:backend\""]
+
+[workflows]
+runButton = "Start Application"
+
+[[workflows.workflow]]
+name = "Start Application"
+author = 43157120
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd backend && npm start"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd frontend && npm run dev"
