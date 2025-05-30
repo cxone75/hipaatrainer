@@ -39,7 +39,7 @@ export default function LandingHeader() {
               <Link href="/landing#features" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Features</Link>
               <Link href="/landing#pricing" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Pricing</Link>
               <Link href="/blog" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Blog</Link>
-              <Link href="/onboarding" className="text-gray-600 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Login</Link>
+              <Link href="/login" className="text-gray-600 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Login</Link>
             </div>
           </div>
 
@@ -74,7 +74,7 @@ export default function LandingHeader() {
               <Link href="/landing#features" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Features</Link>
               <Link href="/landing#pricing" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Pricing</Link>
               <Link href="/blog" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Blog</Link>
-              <Link href="/onboarding" className="text-gray-600 hover:text-purple-800 block px-3 py-2 text-base font-medium">Login</Link>
+              <Link href="/login" className="text-gray-600 hover:text-purple-800 block px-3 py-2 text-base font-medium">Login</Link>
               <Link 
                 href="/landing#pricing"
                 className="block w-full bg-purple-800 text-white px-6 py-2 rounded-lg font-medium hover:bg-purple-900 transition-colors mt-4 text-center"
