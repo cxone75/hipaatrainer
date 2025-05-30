@@ -128,9 +128,11 @@ export default function Sidebar({ collapsed = false, onToggleCollapse, isMobile 
       <div className="p-4 border-b border-gray-700 flex items-center justify-between">
         {!isCollapsed && (
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-purple-800 rounded flex items-center justify-center">
-              <span className="text-white font-bold text-sm">HT</span>
-            </div>
+            <img 
+              src="/hipaatrainer-logo.png" 
+              alt="HIPAA Trainer" 
+              className="h-8 w-auto"
+            />
             <span className="text-white font-medium text-lg">HIPAA Trainer</span>
           </div>
         )}
