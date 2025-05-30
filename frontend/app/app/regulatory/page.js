@@ -3,10 +3,10 @@
 
 import { useState } from 'react';
 import MainLayout from '../../components/Layout/MainLayout';
-import UpdateCard from '../../regulatory/components/UpdateCard';
-import ReminderModal from '../../regulatory/components/ReminderModal';
-import SuccessModal from '../../regulatory/components/SuccessModal';
-import ErrorModal from '../../regulatory/components/ErrorModal';
+import UpdateCard from './components/UpdateCard';
+import ReminderModal from './components/ReminderModal';
+import SuccessModal from './components/SuccessModal';
+import ErrorModal from './components/ErrorModal';
 
 export default function RegulatoryUpdates() {
   const [expandedCard, setExpandedCard] = useState(null);
