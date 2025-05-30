@@ -9,6 +9,15 @@ const roleModel = require('../models/role');
 
 const router = express.Router();
 
+// Handle preflight requests
+router.options('*', (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+  res.header('Access-Control-Allow-Credentials', true);
+  res.sendStatus(200);
+});
+
 // User registration
 router.post('/register', async (req, res) => {
   try {
@@ -119,9 +128,11 @@ router.post('/register', async (req, res) => {
 // User login
 router.post('/login', async (req, res) => {
   try {
+    console.log('Login attempt for:', req.body.email);
     const { email, password } = req.body;
 
     if (!email || !password) {
+      console.log('Missing email or password');
       return res.status(400).json({ error: 'Email and password are required' });
     }
 
@@ -133,6 +144,7 @@ router.post('/login', async (req, res) => {
     });
 
     if (authError) {
+      console.log('Supabase auth error:', authError);
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
