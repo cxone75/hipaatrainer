@@ -26,8 +26,18 @@ export default function TopNavigation() {
   return (
     <nav className="bg-gray-900 border-b border-gray-400 px-6 py-3">
       <div className="flex items-center justify-between">
-        {/* Left side - Organization Switcher */}
+        {/* Left side - Logo and Organization Switcher */}
         <div className="flex items-center space-x-6">
+          {/* Logo */}
+          <div className="flex items-center space-x-3">
+            <img 
+              src="/hipaatrainer-logo.png" 
+              alt="HIPAA Trainer" 
+              className="h-8 w-auto"
+            />
+            <span className="text-xl font-bold text-white">HIPAA TRAINER</span>
+          </div>
+          
           {/* Organization Switcher */}
           <div className="relative">
             <button
