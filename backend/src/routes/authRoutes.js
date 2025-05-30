@@ -68,7 +68,20 @@ router.post('/register', async (req, res) => {
       throw new Error('Failed to set up organization: No result returned');
     }
 
-    const { organization_id: organizationId, admin_role_id: roleId } = setupResult[0];
+    if (!setupResult || setupResult.length === 0) {
+      // Clean up auth user if setup fails
+      await supabase.auth.admin.deleteUser(authUser.user.id);
+      throw new Error('Failed to set up organization: No result returned');
+    }
+
+    const setupData = setupResult[0];
+    if (!setupData || !setupData.organization_id || !setupData.admin_role_id) {
+      // Clean up auth user if setup fails
+      await supabase.auth.admin.deleteUser(authUser.user.id);
+      throw new Error('Failed to set up organization: Invalid result structure');
+    }
+
+    const { organization_id: organizationId, admin_role_id: roleId } = setupData;
 
     // Get the created user record
     const user = await userModel.getUserById(authUser.user.id);
