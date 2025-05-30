@@ -23,7 +23,7 @@ export default function AuthGuard({ children }) {
         }
 
         // Verify token with backend
-        const response = await fetch('http://localhost:3001/api/users/verify', {
+        const response = await fetch('http://0.0.0.0:3001/api/users/verify', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
