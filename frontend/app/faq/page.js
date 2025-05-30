@@ -1,6 +1,7 @@
 
 'use client';
 
+import Link from 'next/link';
 import LandingHeader from '../components/Layout/LandingHeader';
 import LandingFooter from '../components/Layout/LandingFooter';
 import { useState } from 'react';
