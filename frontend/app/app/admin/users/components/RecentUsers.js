@@ -1,6 +1,6 @@
 
-import UserAvatar from '../../../components/UserAvatar';
-import RoleBadge from '../../../components/RoleBadge';
+import UserAvatar from '../../../../components/UserAvatar';
+import RoleBadge from '../../../../components/RoleBadge';
 
 export default function RecentUsers() {
   const recentUsers = [

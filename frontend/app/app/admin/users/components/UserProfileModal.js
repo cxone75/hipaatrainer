@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import UserAvatar from '../../../components/UserAvatar';
-import RoleBadge from '../../../components/RoleBadge';
+import UserAvatar from '../../../../components/UserAvatar';
+import RoleBadge from '../../../../components/RoleBadge';
 import ActivityMonitor from './ActivityMonitor';
 
 export default function UserProfileModal({ user, isOpen, onClose, initialEditMode = false }) {

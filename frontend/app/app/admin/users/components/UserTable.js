@@ -2,9 +2,9 @@
 'use client';
 
 import { useState } from 'react';
-import UserAvatar from '../../../components/UserAvatar';
-import RoleBadge from '../../../components/RoleBadge';
-import StatusIndicator from '../../../components/StatusIndicator';
+import UserAvatar from '../../../../components/UserAvatar';
+import RoleBadge from '../../../../components/RoleBadge';
+import StatusIndicator from '../../../../components/StatusIndicator';
 import UserProfileModal from './UserProfileModal';
 import UserSearch from './UserSearch';
 
