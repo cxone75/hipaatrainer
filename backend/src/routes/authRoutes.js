@@ -45,52 +45,33 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ error: authError.message });
     }
 
-    // Create organization first
-    const orgData = {
-      name: organizationName,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    };
-
-    const { data: organization, error: orgError } = await supabase
-      .from('organizations')
-      .insert(orgData)
-      .select()
-      .single();
-
-    if (orgError) {
-      // Clean up auth user if org creation fails
-      await supabase.auth.admin.deleteUser(authUser.user.id);
-      throw new Error(`Failed to create organization: ${orgError.message}`);
-    }
-
-    // Get or create default admin role for this organization
-    let adminRole = await roleModel.getRoleByName('Admin', organization.id);
-    if (!adminRole) {
-      // Create default admin role for this organization
-      adminRole = await roleModel.createRole({
-        name: 'Admin',
-        description: 'Full system administrator',
-        organizationId: organization.id,
-        createdBy: authUser.user.id
+    // Use the setup_new_organization function to create everything with proper privileges
+    const { data: setupResult, error: setupError } = await supabase
+      .rpc('setup_new_organization', {
+        p_org_name: organizationName,
+        p_admin_user_id: authUser.user.id,
+        p_admin_email: email.toLowerCase(),
+        p_admin_first_name: firstName,
+        p_admin_last_name: lastName,
+        p_admin_job_title: jobTitle || null
       });
+
+    if (setupError) {
+      // Clean up auth user if setup fails
+      await supabase.auth.admin.deleteUser(authUser.user.id);
+      throw new Error(`Failed to set up organization: ${setupError.message}`);
     }
-    const roleId = adminRole.id;
-    const organizationId = organization.id;
 
-    // Create user record in database
-    const userData = {
-      id: authUser.user.id,
-      email: email.toLowerCase(),
-      firstName,
-      lastName,
-      jobTitle,
-      organizationId: organizationId,
-      roleId: roleId,
-      status: 'active'
-    };
+    if (!setupResult || setupResult.length === 0) {
+      // Clean up auth user if setup fails
+      await supabase.auth.admin.deleteUser(authUser.user.id);
+      throw new Error('Failed to set up organization: No result returned');
+    }
 
-    const user = await userModel.createUser(userData);
+    const { organization_id: organizationId, admin_role_id: roleId } = setupResult[0];
+
+    // Get the created user record
+    const user = await userModel.getUserById(authUser.user.id);
 
     // Generate JWT token
     const token = jwt.sign(
