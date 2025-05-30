@@ -280,7 +280,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900">Phone Support</h3>
-                      <p className="text-gray-600">(555) 123-HIPAA</p>
+                      <p className="text-gray-600">(214) 937-0985</p>
                       <p className="text-sm text-gray-500">Mon-Fri, 9am-6pm EST</p>
                     </div>
                   </div>
@@ -314,9 +314,9 @@ export default function ContactPage() {
                     <div>
                       <h3 className="font-semibold text-gray-900">Address</h3>
                       <p className="text-gray-600">
-                        123 Healthcare Blvd<br />
-                        Suite 456<br />
-                        Medical City, HC 12345
+                        10109 Lake Creek Pkwy<br />
+                        #171315<br />
+                        Austin, TX 78717
                       </p>
                     </div>
                   </div>
