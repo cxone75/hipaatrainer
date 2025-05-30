@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 
 export default function TopNavigation() {
@@ -19,7 +18,7 @@ export default function TopNavigation() {
     // Here you would typically make an API call to switch the organization context
     // and then reload the page or update the global state
     console.log('Switching to organization:', orgName);
-    
+
     // Optionally show a success message or reload the page
     // window.location.reload(); // Uncomment if you need to reload the page
   };
@@ -40,7 +39,7 @@ export default function TopNavigation() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
-            
+
             {showOrgDropdown && (
               <div className="absolute top-full left-0 mt-1 w-64 bg-gray-800 border border-gray-600 rounded shadow-lg z-50">
                 <div className="p-2">
