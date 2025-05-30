@@ -19,8 +19,6 @@ router.options('*', (req, res) => {
 // User registration
 router.post('/register', async (req, res) => {
   const supabase = createAdminClient();
-  let authUser = null;
-  let organizationCreated = false;
 
   try {
     const { email, password, firstName, lastName, organizationName, jobTitle } = req.body;
@@ -30,13 +28,7 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    // Check if user already exists in both auth and database
-    const existingUser = await userModel.getUserByEmail(email);
-    if (existingUser) {
-      return res.status(400).json({ error: 'User already exists with this email' });
-    }
-
-    // Also check Supabase auth
+    // Check if user already exists in auth
     const { data: authUsers, error: authCheckError } = await supabase.auth.admin.listUsers();
     if (!authCheckError) {
       const existingAuthUser = authUsers.users.find(u => u.email === email.toLowerCase());
@@ -45,12 +37,17 @@ router.post('/register', async (req, res) => {
       }
     }
 
-    // Start transaction-like behavior
-    // Step 1: Create Supabase user first
+    // Create Supabase user with metadata - triggers will handle the rest
     const { data: authUserData, error: authError } = await supabase.auth.admin.createUser({
-      email,
+      email: email.toLowerCase(),
       password,
-      email_confirm: true
+      email_confirm: true,
+      user_metadata: {
+        firstName,
+        lastName,
+        organizationName,
+        jobTitle: jobTitle || null
+      }
     });
 
     if (authError) {
@@ -61,47 +58,20 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ error: authError.message });
     }
 
-    authUser = authUserData;
+    // Wait a moment for triggers to complete
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-    // Step 2: Use the setup_new_organization function in a database transaction
-    // This function handles all database operations atomically
-    const { data: setupResult, error: setupError } = await supabase
-      .rpc('setup_new_organization', {
-        p_org_name: organizationName,
-        p_admin_user_id: authUser.user.id,
-        p_admin_email: email.toLowerCase(),
-        p_admin_first_name: firstName,
-        p_admin_last_name: lastName,
-        p_admin_job_title: jobTitle || null
-      });
-
-    if (setupError) {
-      throw new Error(`Failed to set up organization: ${setupError.message}`);
-    }
-
-    if (!setupResult || setupResult.length === 0) {
-      throw new Error('Failed to set up organization: No result returned');
-    }
-
-    const setupData = setupResult[0];
-    if (!setupData || !setupData.organization_id || !setupData.admin_role_id) {
-      throw new Error('Failed to set up organization: Invalid result structure');
-    }
-
-    organizationCreated = true;
-    const { organization_id: organizationId, admin_role_id: roleId } = setupData;
-
-    // Step 3: Verify user creation with retry logic
+    // Get the created user record (should be created by trigger)
     let user = null;
     let retryCount = 0;
-    const maxRetries = 3;
+    const maxRetries = 5;
     
     while (!user && retryCount < maxRetries) {
       try {
-        user = await userModel.getUserById(authUser.user.id);
+        user = await userModel.getUserById(authUserData.user.id);
         if (user) break;
         
-        // Wait a bit before retrying
+        // Wait before retrying
         await new Promise(resolve => setTimeout(resolve, 500));
         retryCount++;
       } catch (error) {
@@ -114,33 +84,24 @@ router.post('/register', async (req, res) => {
     }
 
     if (!user) {
-      // Try to query directly with admin client as fallback
-      const { data: directUser, error: directError } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', authUser.user.id)
-        .single();
-      
-      if (directError || !directUser) {
-        throw new Error(`Failed to retrieve created user after ${maxRetries} attempts. Direct query error: ${directError?.message || 'User not found'}`);
-      }
-      
-      user = directUser;
+      // Cleanup auth user and return error
+      await supabase.auth.admin.deleteUser(authUserData.user.id);
+      throw new Error('Failed to create user records. Please try again.');
     }
 
-    // Step 4: Generate JWT token (only after all operations succeed)
+    // Generate JWT token
     const token = jwt.sign(
       { 
         userId: user.id, 
         email: user.email,
-        organizationId: organizationId,
+        organizationId: user.organization_id,
         roleId: user.role_id
       },
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
 
-    // Success - all operations completed
+    // Success
     res.status(201).json({
       message: 'User created successfully',
       token,
@@ -149,7 +110,7 @@ router.post('/register', async (req, res) => {
         email: user.email,
         firstName: user.first_name,
         lastName: user.last_name,
-        organizationId: organizationId,
+        organizationId: user.organization_id,
         roleId: user.role_id,
         status: user.status
       }
@@ -158,53 +119,13 @@ router.post('/register', async (req, res) => {
   } catch (error) {
     console.error('Registration error:', error);
     
-    // Transaction rollback: Clean up any created resources
-    const cleanupPromises = [];
-
-    // Clean up auth user if it was created
-    if (authUser?.user?.id) {
-      const authCleanup = supabase.auth.admin.deleteUser(authUser.user.id)
-        .then(() => console.log('Successfully cleaned up auth user:', authUser.user.id))
-        .catch(cleanupError => console.error('Failed to cleanup auth user:', cleanupError));
-      cleanupPromises.push(authCleanup);
-    }
-
-    // Clean up database records if organization was created
-    if (organizationCreated && authUser?.user?.id) {
-      const dbCleanup = (async () => {
-        try {
-          // Delete user record
-          await supabase.from('users').delete().eq('id', authUser.user.id);
-          
-          // Delete organization and related records (cascading deletes will handle roles, permissions, etc.)
-          const { data: userData } = await supabase
-            .from('users')
-            .select('organization_id')
-            .eq('id', authUser.user.id)
-            .single();
-          
-          if (userData?.organization_id) {
-            await supabase.from('organizations').delete().eq('id', userData.organization_id);
-          }
-          
-          console.log('Successfully cleaned up database records');
-        } catch (cleanupError) {
-          console.error('Failed to cleanup database records:', cleanupError);
-        }
-      })();
-      cleanupPromises.push(dbCleanup);
-    }
-
-    // Wait for all cleanup operations to complete
-    await Promise.allSettled(cleanupPromises);
-
     // Return appropriate error message
     if (error.message.includes('duplicate key value violates unique constraint') || 
         error.message.includes('already exists') ||
         error.message.includes('already been registered')) {
       res.status(400).json({ error: 'User already exists with this email' });
     } else {
-      res.status(500).json({ error: 'Registration failed' });
+      res.status(500).json({ error: 'Registration failed. Please try again.' });
     }
   }
 });
