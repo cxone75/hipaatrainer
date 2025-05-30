@@ -4,7 +4,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { createClient, createAdminClient } = require('../services/supabase');
 const userModel = require('../models/user');
-const orgModel = require('../models/organization');
 const roleModel = require('../models/role');
 
 const router = express.Router();
@@ -129,6 +128,12 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     console.log('Login attempt for:', req.body.email);
+    console.log('Environment check:', {
+      hasSupabaseUrl: !!process.env.SUPABASE_URL,
+      hasSupabaseKey: !!process.env.SUPABASE_ANON_KEY,
+      hasJwtSecret: !!process.env.JWT_SECRET
+    });
+    
     const { email, password } = req.body;
 
     if (!email || !password) {
