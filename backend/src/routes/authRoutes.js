@@ -20,6 +20,7 @@ router.options('*', (req, res) => {
 router.post('/register', async (req, res) => {
   const supabase = createAdminClient();
   let authUser = null;
+  let organizationCreated = false;
 
   try {
     const { email, password, firstName, lastName, organizationName, jobTitle } = req.body;
@@ -44,7 +45,8 @@ router.post('/register', async (req, res) => {
       }
     }
 
-    // Create Supabase user first
+    // Start transaction-like behavior
+    // Step 1: Create Supabase user first
     const { data: authUserData, error: authError } = await supabase.auth.admin.createUser({
       email,
       password,
@@ -61,8 +63,8 @@ router.post('/register', async (req, res) => {
 
     authUser = authUserData;
 
-    // Use the setup_new_organization function in a transaction
-    // The function itself handles the transaction internally
+    // Step 2: Use the setup_new_organization function in a database transaction
+    // This function handles all database operations atomically
     const { data: setupResult, error: setupError } = await supabase
       .rpc('setup_new_organization', {
         p_org_name: organizationName,
@@ -86,9 +88,10 @@ router.post('/register', async (req, res) => {
       throw new Error('Failed to set up organization: Invalid result structure');
     }
 
+    organizationCreated = true;
     const { organization_id: organizationId, admin_role_id: roleId } = setupData;
 
-    // Get the created user record with retry logic
+    // Step 3: Verify user creation with retry logic
     let user = null;
     let retryCount = 0;
     const maxRetries = 3;
@@ -125,7 +128,7 @@ router.post('/register', async (req, res) => {
       user = directUser;
     }
 
-    // Generate JWT token
+    // Step 4: Generate JWT token (only after all operations succeed)
     const token = jwt.sign(
       { 
         userId: user.id, 
@@ -137,6 +140,7 @@ router.post('/register', async (req, res) => {
       { expiresIn: '7d' }
     );
 
+    // Success - all operations completed
     res.status(201).json({
       message: 'User created successfully',
       token,
@@ -154,15 +158,45 @@ router.post('/register', async (req, res) => {
   } catch (error) {
     console.error('Registration error:', error);
     
+    // Transaction rollback: Clean up any created resources
+    const cleanupPromises = [];
+
     // Clean up auth user if it was created
     if (authUser?.user?.id) {
-      try {
-        await supabase.auth.admin.deleteUser(authUser.user.id);
-        console.log('Successfully cleaned up auth user:', authUser.user.id);
-      } catch (cleanupError) {
-        console.error('Failed to cleanup auth user:', cleanupError);
-      }
+      const authCleanup = supabase.auth.admin.deleteUser(authUser.user.id)
+        .then(() => console.log('Successfully cleaned up auth user:', authUser.user.id))
+        .catch(cleanupError => console.error('Failed to cleanup auth user:', cleanupError));
+      cleanupPromises.push(authCleanup);
     }
+
+    // Clean up database records if organization was created
+    if (organizationCreated && authUser?.user?.id) {
+      const dbCleanup = (async () => {
+        try {
+          // Delete user record
+          await supabase.from('users').delete().eq('id', authUser.user.id);
+          
+          // Delete organization and related records (cascading deletes will handle roles, permissions, etc.)
+          const { data: userData } = await supabase
+            .from('users')
+            .select('organization_id')
+            .eq('id', authUser.user.id)
+            .single();
+          
+          if (userData?.organization_id) {
+            await supabase.from('organizations').delete().eq('id', userData.organization_id);
+          }
+          
+          console.log('Successfully cleaned up database records');
+        } catch (cleanupError) {
+          console.error('Failed to cleanup database records:', cleanupError);
+        }
+      })();
+      cleanupPromises.push(dbCleanup);
+    }
+
+    // Wait for all cleanup operations to complete
+    await Promise.allSettled(cleanupPromises);
 
     // Return appropriate error message
     if (error.message.includes('duplicate key value violates unique constraint') || 

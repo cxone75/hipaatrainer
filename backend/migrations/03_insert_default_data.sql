@@ -65,17 +65,34 @@ DECLARE
     v_user_role_id UUID;
     v_viewer_role_id UUID;
     v_existing_user UUID;
+    v_existing_org UUID;
 BEGIN
-    -- Check if user already exists
+    -- Start explicit transaction (redundant but clear intent)
+    -- PostgreSQL functions are already atomic, but being explicit
+    
+    -- Check if user already exists in database
     SELECT id INTO v_existing_user FROM users WHERE email = p_admin_email;
     IF v_existing_user IS NOT NULL THEN
-        RAISE EXCEPTION 'User with email % already exists', p_admin_email;
+        RAISE EXCEPTION 'User with email % already exists in database', p_admin_email;
     END IF;
 
     -- Check if organization name already exists
-    SELECT id INTO v_org_id FROM organizations WHERE name = p_org_name;
-    IF v_org_id IS NOT NULL THEN
+    SELECT id INTO v_existing_org FROM organizations WHERE name = p_org_name;
+    IF v_existing_org IS NOT NULL THEN
         RAISE EXCEPTION 'Organization with name % already exists', p_org_name;
+    END IF;
+
+    -- Additional validation
+    IF p_admin_user_id IS NULL THEN
+        RAISE EXCEPTION 'Admin user ID cannot be null';
+    END IF;
+    
+    IF p_admin_email IS NULL OR p_admin_email = '' THEN
+        RAISE EXCEPTION 'Admin email cannot be null or empty';
+    END IF;
+    
+    IF p_org_name IS NULL OR p_org_name = '' THEN
+        RAISE EXCEPTION 'Organization name cannot be null or empty';
     END IF;
 
     -- Create organization
@@ -173,6 +190,23 @@ BEGIN
         NOW()
     );
 
+    -- Final verification that all records were created successfully
+    IF NOT EXISTS (SELECT 1 FROM organizations WHERE id = v_org_id) THEN
+        RAISE EXCEPTION 'Organization creation failed - organization not found';
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM roles WHERE id = v_admin_role_id) THEN
+        RAISE EXCEPTION 'Organization creation failed - admin role not found';
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM users WHERE id = p_admin_user_id) THEN
+        RAISE EXCEPTION 'Organization creation failed - user not found';
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM subscriptions WHERE organization_id = v_org_id) THEN
+        RAISE EXCEPTION 'Organization creation failed - subscription not found';
+    END IF;
+
     -- Log the organization creation
     PERFORM create_audit_log(
         v_org_id,
@@ -180,11 +214,21 @@ BEGIN
         'CREATE_ORGANIZATION',
         'organizations',
         v_org_id,
-        jsonb_build_object('organization_name', p_org_name),
+        jsonb_build_object(
+            'organization_name', p_org_name,
+            'admin_email', p_admin_email,
+            'transaction_completed', true
+        ),
         NULL,
         NULL
     );
 
+    -- Return success with all IDs
     RETURN QUERY SELECT v_org_id, v_admin_role_id, p_admin_user_id;
+    
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Log the failure
+        RAISE EXCEPTION 'Organization setup transaction failed: %', SQLERRM;
 END;
 $$ LANGUAGE plpgsql;
