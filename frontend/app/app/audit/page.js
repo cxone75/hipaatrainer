@@ -2,7 +2,6 @@
 'use client';
 
 import { useState } from 'react';
-import MainLayout from '../../components/Layout/MainLayout';
 import DocumentList from './components/DocumentList';
 import CorrectiveActions from './components/CorrectiveActions';
 import MockAudit from './components/MockAudit';
@@ -103,7 +102,6 @@ export default function AuditPreparation() {
   ];
 
   return (
-    <MainLayout breadcrumbItems={breadcrumbItems}>
       <div className="p-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
@@ -294,6 +292,5 @@ export default function AuditPreparation() {
           onClose={() => setAlertModal({ ...alertModal, isOpen: false })}
         />
       </div>
-    </MainLayout>
   );
 }

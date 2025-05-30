@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -45,7 +44,7 @@ export default function CorrectiveActionModal({ isOpen, onClose, action, onSave 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     const updatedAction = {
       id: action?.id || `ca-${Date.now()}`,
       ...formData,
@@ -196,7 +195,7 @@ export default function CorrectiveActionModal({ isOpen, onClose, action, onSave 
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Action Steps
             </label>
-            
+
             <div className="space-y-2 mb-3">
               {formData.steps.map((step) => (
                 <div key={step.id} className="flex items-center space-x-2 p-2 bg-gray-50 rounded">
