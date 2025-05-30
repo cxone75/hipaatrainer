@@ -64,7 +64,20 @@ DECLARE
     v_admin_role_id UUID;
     v_user_role_id UUID;
     v_viewer_role_id UUID;
+    v_existing_user UUID;
 BEGIN
+    -- Check if user already exists
+    SELECT id INTO v_existing_user FROM users WHERE email = p_admin_email;
+    IF v_existing_user IS NOT NULL THEN
+        RAISE EXCEPTION 'User with email % already exists', p_admin_email;
+    END IF;
+
+    -- Check if organization name already exists
+    SELECT id INTO v_org_id FROM organizations WHERE name = p_org_name;
+    IF v_org_id IS NOT NULL THEN
+        RAISE EXCEPTION 'Organization with name % already exists', p_org_name;
+    END IF;
+
     -- Create organization
     INSERT INTO organizations (name, created_at, updated_at)
     VALUES (p_org_name, NOW(), NOW())

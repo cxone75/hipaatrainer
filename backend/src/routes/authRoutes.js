@@ -18,6 +18,9 @@ router.options('*', (req, res) => {
 
 // User registration
 router.post('/register', async (req, res) => {
+  const supabase = createAdminClient();
+  let authUser = null;
+
   try {
     const { email, password, firstName, lastName, organizationName, jobTitle } = req.body;
 
@@ -26,15 +29,23 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    // Check if user already exists
+    // Check if user already exists in both auth and database
     const existingUser = await userModel.getUserByEmail(email);
     if (existingUser) {
       return res.status(400).json({ error: 'User already exists with this email' });
     }
 
-    // Create Supabase user
-    const supabase = createAdminClient();
-    const { data: authUser, error: authError } = await supabase.auth.admin.createUser({
+    // Also check Supabase auth
+    const { data: authUsers, error: authCheckError } = await supabase.auth.admin.listUsers();
+    if (!authCheckError) {
+      const existingAuthUser = authUsers.users.find(u => u.email === email.toLowerCase());
+      if (existingAuthUser) {
+        return res.status(400).json({ error: 'User already exists with this email' });
+      }
+    }
+
+    // Create Supabase user first
+    const { data: authUserData, error: authError } = await supabase.auth.admin.createUser({
       email,
       password,
       email_confirm: true
@@ -42,10 +53,16 @@ router.post('/register', async (req, res) => {
 
     if (authError) {
       console.error('Supabase auth error:', authError);
+      if (authError.message.includes('already been registered')) {
+        return res.status(400).json({ error: 'User already exists with this email' });
+      }
       return res.status(400).json({ error: authError.message });
     }
 
-    // Use the setup_new_organization function to create everything with proper privileges
+    authUser = authUserData;
+
+    // Use the setup_new_organization function in a transaction
+    // The function itself handles the transaction internally
     const { data: setupResult, error: setupError } = await supabase
       .rpc('setup_new_organization', {
         p_org_name: organizationName,
@@ -57,27 +74,15 @@ router.post('/register', async (req, res) => {
       });
 
     if (setupError) {
-      // Clean up auth user if setup fails
-      await supabase.auth.admin.deleteUser(authUser.user.id);
       throw new Error(`Failed to set up organization: ${setupError.message}`);
     }
 
     if (!setupResult || setupResult.length === 0) {
-      // Clean up auth user if setup fails
-      await supabase.auth.admin.deleteUser(authUser.user.id);
-      throw new Error('Failed to set up organization: No result returned');
-    }
-
-    if (!setupResult || setupResult.length === 0) {
-      // Clean up auth user if setup fails
-      await supabase.auth.admin.deleteUser(authUser.user.id);
       throw new Error('Failed to set up organization: No result returned');
     }
 
     const setupData = setupResult[0];
     if (!setupData || !setupData.organization_id || !setupData.admin_role_id) {
-      // Clean up auth user if setup fails
-      await supabase.auth.admin.deleteUser(authUser.user.id);
       throw new Error('Failed to set up organization: Invalid result structure');
     }
 
@@ -85,6 +90,9 @@ router.post('/register', async (req, res) => {
 
     // Get the created user record
     const user = await userModel.getUserById(authUser.user.id);
+    if (!user) {
+      throw new Error('Failed to retrieve created user');
+    }
 
     // Generate JWT token
     const token = jwt.sign(
@@ -114,7 +122,25 @@ router.post('/register', async (req, res) => {
 
   } catch (error) {
     console.error('Registration error:', error);
-    res.status(500).json({ error: 'Registration failed' });
+    
+    // Clean up auth user if it was created
+    if (authUser?.user?.id) {
+      try {
+        await supabase.auth.admin.deleteUser(authUser.user.id);
+        console.log('Successfully cleaned up auth user:', authUser.user.id);
+      } catch (cleanupError) {
+        console.error('Failed to cleanup auth user:', cleanupError);
+      }
+    }
+
+    // Return appropriate error message
+    if (error.message.includes('duplicate key value violates unique constraint') || 
+        error.message.includes('already exists') ||
+        error.message.includes('already been registered')) {
+      res.status(400).json({ error: 'User already exists with this email' });
+    } else {
+      res.status(500).json({ error: 'Registration failed' });
+    }
   }
 });
 
