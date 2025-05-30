@@ -1,8 +1,6 @@
-
 'use client';
 
 import { useState } from 'react';
-import MainLayout from '../../components/Layout/MainLayout';
 import UpdateCard from './components/UpdateCard';
 import ReminderModal from './components/ReminderModal';
 import SuccessModal from './components/SuccessModal';
@@ -146,7 +144,7 @@ export default function RegulatoryUpdates() {
   };
 
   return (
-    <MainLayout breadcrumbItems={breadcrumbItems}>
+    
       <div className="p-8">
         {/* Header */}
         <div className="mb-8">
@@ -204,6 +202,5 @@ export default function RegulatoryUpdates() {
           message={modalMessage}
         />
       </div>
-    </MainLayout>
   );
 }
