@@ -120,7 +120,7 @@ BEGIN
     FROM permissions p
     WHERE p.action = 'read';
 
-    -- Create admin user record
+    -- Create admin user record and verify it was created
     INSERT INTO users (
         id,
         organization_id,
@@ -144,6 +144,11 @@ BEGIN
         NOW(),
         NOW()
     );
+
+    -- Verify user was created
+    IF NOT EXISTS (SELECT 1 FROM users WHERE id = p_admin_user_id) THEN
+        RAISE EXCEPTION 'Failed to create admin user';
+    END IF;
 
     -- Create default subscription (trial)
     INSERT INTO subscriptions (

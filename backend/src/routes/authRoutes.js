@@ -88,10 +88,41 @@ router.post('/register', async (req, res) => {
 
     const { organization_id: organizationId, admin_role_id: roleId } = setupData;
 
-    // Get the created user record
-    const user = await userModel.getUserById(authUser.user.id);
+    // Get the created user record with retry logic
+    let user = null;
+    let retryCount = 0;
+    const maxRetries = 3;
+    
+    while (!user && retryCount < maxRetries) {
+      try {
+        user = await userModel.getUserById(authUser.user.id);
+        if (user) break;
+        
+        // Wait a bit before retrying
+        await new Promise(resolve => setTimeout(resolve, 500));
+        retryCount++;
+      } catch (error) {
+        console.log(`Retry ${retryCount + 1} failed:`, error.message);
+        retryCount++;
+        if (retryCount < maxRetries) {
+          await new Promise(resolve => setTimeout(resolve, 500));
+        }
+      }
+    }
+
     if (!user) {
-      throw new Error('Failed to retrieve created user');
+      // Try to query directly with admin client as fallback
+      const { data: directUser, error: directError } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', authUser.user.id)
+        .single();
+      
+      if (directError || !directUser) {
+        throw new Error(`Failed to retrieve created user after ${maxRetries} attempts. Direct query error: ${directError?.message || 'User not found'}`);
+      }
+      
+      user = directUser;
     }
 
     // Generate JWT token
