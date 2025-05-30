@@ -35,9 +35,9 @@ export default function LandingHeader() {
           {/* Desktop Navigation */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">
-              <a href="#solutions" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Solutions</a>
-              <a href="#features" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Features</a>
-              <a href="#pricing" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Pricing</a>
+              <Link href="/landing#solutions" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Solutions</Link>
+              <Link href="/landing#features" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Features</Link>
+              <Link href="/landing#pricing" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Pricing</Link>
               <Link href="/blog" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Blog</Link>
               <Link href="/onboarding" className="text-gray-600 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Login</Link>
             </div>
@@ -45,12 +45,12 @@ export default function LandingHeader() {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <button 
-              onClick={scrollToPricing}
-              className="bg-purple-800 text-white px-6 py-2 rounded-lg font-medium hover:bg-purple-900 transition-colors shadow-md"
+            <Link 
+              href="/landing#pricing"
+              className="bg-purple-800 text-white px-6 py-2 rounded-lg font-medium hover:bg-purple-900 transition-colors shadow-md inline-block"
             >
               Start For Free
-            </button>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -70,17 +70,17 @@ export default function LandingHeader() {
         {mobileMenuOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t border-gray-200">
-              <a href="#solutions" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Solutions</a>
-              <a href="#features" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Features</a>
-              <a href="#pricing" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Pricing</a>
+              <Link href="/landing#solutions" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Solutions</Link>
+              <Link href="/landing#features" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Features</Link>
+              <Link href="/landing#pricing" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Pricing</Link>
               <Link href="/blog" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Blog</Link>
               <Link href="/onboarding" className="text-gray-600 hover:text-purple-800 block px-3 py-2 text-base font-medium">Login</Link>
-              <button 
-                onClick={scrollToPricing}
-                className="w-full bg-purple-800 text-white px-6 py-2 rounded-lg font-medium hover:bg-purple-900 transition-colors mt-4"
+              <Link 
+                href="/landing#pricing"
+                className="block w-full bg-purple-800 text-white px-6 py-2 rounded-lg font-medium hover:bg-purple-900 transition-colors mt-4 text-center"
               >
                 Start For Free
-              </button>
+              </Link>
             </div>
           </div>
         )}

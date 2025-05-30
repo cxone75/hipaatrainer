@@ -9,9 +9,9 @@ export default function LandingFooter() {
           <div>
             <h3 className="text-lg font-semibold mb-4 text-purple-400">Product</h3>
             <ul className="space-y-2">
-              <li><a href="#solutions" className="text-gray-300 hover:text-white transition-colors">Solutions</a></li>
-              <li><a href="#features" className="text-gray-300 hover:text-white transition-colors">Features</a></li>
-              <li><a href="#pricing" className="text-gray-300 hover:text-white transition-colors">Pricing</a></li>
+              <li><Link href="/landing#solutions" className="text-gray-300 hover:text-white transition-colors">Solutions</Link></li>
+              <li><Link href="/landing#features" className="text-gray-300 hover:text-white transition-colors">Features</Link></li>
+              <li><Link href="/landing#pricing" className="text-gray-300 hover:text-white transition-colors">Pricing</Link></li>
               <li><Link href="/blog" className="text-gray-300 hover:text-white transition-colors">Blog</Link></li>
             </ul>
           </div>
