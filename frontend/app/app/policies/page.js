@@ -2,7 +2,6 @@
 'use client';
 
 import { useState } from 'react';
-import MainLayout from '../../components/Layout/MainLayout';
 import PolicyCard from './components/PolicyCard';
 import DistributionModal from './components/DistributionModal';
 import AttestationModal from './components/AttestationModal';
@@ -126,8 +125,7 @@ export default function PolicyManagement() {
   const statusCounts = getStatusCounts();
 
   return (
-    <MainLayout breadcrumbItems={breadcrumbItems}>
-      <div className="p-8">
+    <div className="p-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
           <div>
@@ -280,6 +278,5 @@ export default function PolicyManagement() {
           />
         )}
       </div>
-    </MainLayout>
   );
 }
