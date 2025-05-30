@@ -77,4 +77,28 @@ router.put('/me/profile',
   }
 );
 
+// Auth verification endpoint (no auth required for this specific route)
+router.get('/auth/verify', authMiddleware.requireAuth.bind(authMiddleware), async (req, res) => {
+  try {
+    // If we reach here, the token is valid (verified by middleware)
+    res.json({
+      success: true,
+      user: {
+        id: req.user.id,
+        email: req.user.email,
+        organizationId: req.user.organizationId,
+        roleId: req.user.roleId,
+        role: req.user.role,
+        status: req.user.status,
+      }
+    });
+  } catch (error) {
+    console.error('Auth verification error:', error);
+    res.status(500).json({ error: 'Verification failed' });
+  }
+});
+
+// Apply authentication middleware to all other routes
+router.use(authMiddleware.requireAuth.bind(authMiddleware));
+
 module.exports = router;
