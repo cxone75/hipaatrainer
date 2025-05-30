@@ -36,18 +36,28 @@ export async function GET(request, { params }) {
 
 export async function POST(request, { params }) {
   const { slug } = params;
-  const body = await request.text();
+  let body;
+  
+  try {
+    // Parse JSON body properly
+    const requestBody = await request.json();
+    body = JSON.stringify(requestBody);
+    console.log('Parsed request body:', requestBody);
+  } catch (error) {
+    console.error('Error parsing request body:', error);
+    body = '{}';
+  }
+  
   const backendUrl = `${BACKEND_URL}/api/auth/${slug.join('/')}`;
   
   console.log('Proxying POST request to:', backendUrl);
-  console.log('Request body:', body);
+  console.log('Request body to send:', body);
   
   try {
     const response = await fetch(backendUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        ...Object.fromEntries(request.headers.entries()),
       },
       body,
     });
@@ -73,7 +83,17 @@ export async function POST(request, { params }) {
 
 export async function PUT(request, { params }) {
   const { slug } = params;
-  const body = await request.text();
+  let body;
+  
+  try {
+    // Parse JSON body properly
+    const requestBody = await request.json();
+    body = JSON.stringify(requestBody);
+  } catch (error) {
+    console.error('Error parsing PUT request body:', error);
+    body = '{}';
+  }
+  
   const backendUrl = `${BACKEND_URL}/api/auth/${slug.join('/')}`;
   
   console.log('Proxying PUT request to:', backendUrl);
@@ -83,7 +103,6 @@ export async function PUT(request, { params }) {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        ...Object.fromEntries(request.headers.entries()),
       },
       body,
     });
