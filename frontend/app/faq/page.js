@@ -190,12 +190,12 @@ export default function FAQPage() {
             <p className="mb-6 opacity-90">
               Our compliance experts are here to help. Reach out to us for personalized assistance.
             </p>
-            <a 
-              href="mailto:info@hipaatrainer.net"
+            <Link 
+              href="/contact"
               className="bg-white text-purple-600 px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors inline-block"
             >
               Contact Support
-            </a>
+            </Link>
           </div>
         </div>
       </section>
