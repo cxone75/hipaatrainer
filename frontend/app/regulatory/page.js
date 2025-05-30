@@ -2,7 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import MainLayout from '../../components/Layout/MainLayout';
+import MainLayout from '../components/Layout/MainLayout';
 import UpdateCard from './components/UpdateCard';
 import ReminderModal from './components/ReminderModal';
 import SuccessModal from './components/SuccessModal';
