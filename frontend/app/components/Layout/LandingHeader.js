@@ -21,12 +21,13 @@ export default function LandingHeader() {
           {/* Logo */}
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <Link href="/landing">
+              <Link href="/landing" className="flex items-center space-x-3">
                 <img 
                   src="/hipaatrainer-logo.png" 
                   alt="HIPAA Trainer" 
                   className="h-8 w-auto"
                 />
+                <span className="text-2xl font-bold text-purple-800">HIPAA TRAINER</span>
               </Link>
             </div>
           </div>
