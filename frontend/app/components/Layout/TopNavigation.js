@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 
 export default function TopNavigation() {
@@ -18,7 +19,7 @@ export default function TopNavigation() {
     // Here you would typically make an API call to switch the organization context
     // and then reload the page or update the global state
     console.log('Switching to organization:', orgName);
-
+    
     // Optionally show a success message or reload the page
     // window.location.reload(); // Uncomment if you need to reload the page
   };
@@ -26,18 +27,8 @@ export default function TopNavigation() {
   return (
     <nav className="bg-gray-900 border-b border-gray-400 px-6 py-3">
       <div className="flex items-center justify-between">
-        {/* Left side - Logo and Organization Switcher */}
+        {/* Left side - Organization Switcher */}
         <div className="flex items-center space-x-6">
-          {/* Logo */}
-          <div className="flex items-center space-x-3">
-            <img 
-              src="/hipaatrainer-logo.png" 
-              alt="HIPAA Trainer" 
-              className="h-8 w-auto"
-            />
-            <span className="text-xl font-bold text-white">HIPAA TRAINER</span>
-          </div>
-          
           {/* Organization Switcher */}
           <div className="relative">
             <button
@@ -49,7 +40,7 @@ export default function TopNavigation() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
-
+            
             {showOrgDropdown && (
               <div className="absolute top-full left-0 mt-1 w-64 bg-gray-800 border border-gray-600 rounded shadow-lg z-50">
                 <div className="p-2">
