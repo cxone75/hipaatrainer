@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import LandingHeader from '../components/Layout/LandingHeader';
 import LandingFooter from '../components/Layout/LandingFooter';
 
 export default function ContactPage() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -35,25 +35,7 @@ export default function ContactPage() {
   if (submitted) {
     return (
       <div className="min-h-screen bg-gray-50">
-        {/* Header */}
-        <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
-          <nav className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-              {/* Logo */}
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <Link href="/landing">
-                    <img 
-                      src="/hipaatrainer-logo.png" 
-                      alt="HIPAA Trainer" 
-                      className="h-8 w-auto"
-                    />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </nav>
-        </header>
+        <LandingHeader />
 
         {/* Success Message */}
         <div className="min-h-screen flex items-center justify-center px-4">
@@ -81,57 +63,7 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
-        <nav className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <Link href="/landing">
-                  <img 
-                    src="/hipaatrainer-logo.png" 
-                    alt="HIPAA Trainer" 
-                    className="h-8 w-auto"
-                  />
-                </Link>
-              </div>
-            </div>
-
-            {/* Mobile menu button */}
-            <div className="md:hidden">
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="text-gray-700 hover:text-purple-800 p-2"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          {/* Mobile Navigation */}
-          {mobileMenuOpen && (
-            <div className="md:hidden">
-              <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t border-gray-200">
-                <Link href="/landing#solutions" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Solutions</Link>
-                <Link href="/landing#features" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Features</Link>
-                <Link href="/landing#pricing" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Pricing</Link>
-                <a href="#resources" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Resources</a>
-                <Link href="/contact" className="text-purple-800 font-semibold block px-3 py-2 text-base font-medium">Contact</Link>
-                <Link href="/onboarding" className="text-gray-600 hover:text-purple-800 block px-3 py-2 text-base font-medium">Login</Link>
-                <Link 
-                  href="/landing#pricing"
-                  className="w-full bg-purple-800 text-white px-6 py-2 rounded-lg font-medium hover:bg-purple-900 transition-colors mt-4 block text-center"
-                >
-                  Start For Free
-                </Link>
-              </div>
-            </div>
-          )}
-        </nav>
-      </header>
+      <LandingHeader />
 
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 py-16">
@@ -272,31 +204,7 @@ export default function ContactPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                      <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900">Phone Support</h3>
-                      <p className="text-gray-600">(214) 937-0985</p>
-                      <p className="text-sm text-gray-500">Mon-Fri, 9am-6pm EST</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                      <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900">Live Chat</h3>
-                      <p className="text-gray-600">Available on our website</p>
-                      <p className="text-sm text-gray-500">Mon-Fri, 9am-6pm EST</p>
-                    </div>
-                  </div>
+                  
                 </div>
               </div>
 
