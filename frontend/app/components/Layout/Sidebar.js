@@ -86,8 +86,9 @@ export default function Sidebar({ collapsed = false, onToggleCollapse, isMobile 
   ];
 
   const isActive = (href) => {
+    if (href === '/app' && pathname === '/app') return true;
     if (href === '/' && pathname === '/') return true;
-    if (href !== '/' && pathname.startsWith(href)) return true;
+    if (href !== '/' && href !== '/app' && pathname.startsWith(href)) return true;
     return false;
   };
 
