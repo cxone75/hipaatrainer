@@ -20,8 +20,10 @@ app.set('trust proxy', 1);
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: ['http://0.0.0.0:3000', 'http://localhost:3000', process.env.FRONTEND_URL || 'http://localhost:3000'],
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
 }));
 
 // Body parsing middleware
@@ -31,10 +33,20 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Global rate limiting
 app.use(rateLimit.apiLimiter);
 
+// Request logging middleware for debugging
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  console.log('Headers:', req.headers);
+  if (req.body && Object.keys(req.body).length > 0) {
+    console.log('Body:', JSON.stringify(req.body, null, 2));
+  }
+  next();
+});
+
 // Global audit logging
 app.use(auditLogMiddleware.logRequest());
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 3001;
 
 // Root endpoint
 app.get('/', (req, res) => {

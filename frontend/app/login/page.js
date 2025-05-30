@@ -33,6 +33,10 @@ export default function LoginPage() {
     setIsLoading(true);
     setError('');
 
+    console.log('=== FRONTEND LOGIN ATTEMPT ===');
+    console.log('Form data:', { email: formData.email, hasPassword: !!formData.password });
+    console.log('Making request to: http://0.0.0.0:3001/api/auth/login');
+
     try {
       // Call backend API to authenticate with Supabase
       const response = await fetch('http://0.0.0.0:3001/api/auth/login', {
@@ -46,7 +50,11 @@ export default function LoginPage() {
         }),
       });
 
+      console.log('Response status:', response.status);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+      
       const data = await response.json();
+      console.log('Response data:', data);
 
       if (!response.ok) {
         setError(data.error || 'Login failed');
@@ -59,7 +67,10 @@ export default function LoginPage() {
         router.push('/app');
       }
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('=== LOGIN ERROR ===');
+      console.error('Error type:', error.constructor.name);
+      console.error('Error message:', error.message);
+      console.error('Full error:', error);
       setError('Login failed. Please try again.');
     } finally {
       setIsLoading(false);

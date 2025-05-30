@@ -126,15 +126,22 @@ router.post('/register', async (req, res) => {
 
 // User login
 router.post('/login', async (req, res) => {
+  console.log('=== LOGIN REQUEST RECEIVED ===');
+  console.log('Request URL:', req.originalUrl);
+  console.log('Request Method:', req.method);
+  console.log('Request Headers:', JSON.stringify(req.headers, null, 2));
+  console.log('Request Body:', JSON.stringify(req.body, null, 2));
+  
   try {
-    console.log('Login attempt for:', req.body.email);
+    const { email, password } = req.body;
+    console.log('Login attempt for email:', email);
+    console.log('Password provided:', !!password);
+    
     console.log('Environment check:', {
       hasSupabaseUrl: !!process.env.SUPABASE_URL,
       hasSupabaseKey: !!process.env.SUPABASE_ANON_KEY,
       hasJwtSecret: !!process.env.JWT_SECRET
     });
-    
-    const { email, password } = req.body;
 
     if (!email || !password) {
       console.log('Missing email or password');
