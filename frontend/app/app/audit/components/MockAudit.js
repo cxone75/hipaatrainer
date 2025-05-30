@@ -1,41 +1,33 @@
-
 'use client';
 
 import { useState } from 'react';
 
 export default function MockAudit() {
-  const [isRunning, setIsRunning] = useState(false);
-  const [auditResults, setAuditResults] = useState(null);
   const [selectedAuditType, setSelectedAuditType] = useState('comprehensive');
+  const [auditResults, setAuditResults] = useState(null);
+  const [isRunning, setIsRunning] = useState(false);
 
   const auditTypes = [
     {
       id: 'comprehensive',
-      name: 'Comprehensive Audit',
-      description: 'Full HIPAA compliance audit covering all requirements',
-      duration: '15-20 minutes',
-      checks: 45
+      name: 'Comprehensive HIPAA Audit',
+      description: 'Complete evaluation of all HIPAA requirements',
+      duration: '45-60 minutes',
+      sections: ['Administrative Safeguards', 'Physical Safeguards', 'Technical Safeguards', 'Privacy Rules']
     },
     {
-      id: 'security',
-      name: 'Security Focused',
-      description: 'Focus on security safeguards and technical requirements',
-      duration: '8-12 minutes',
-      checks: 25
+      id: 'technical',
+      name: 'Technical Safeguards Audit',
+      description: 'Focus on technical security measures',
+      duration: '20-30 minutes',
+      sections: ['Access Control', 'Audit Logs', 'Integrity', 'Transmission Security']
     },
     {
       id: 'privacy',
-      name: 'Privacy Rules',
-      description: 'Privacy rule compliance and patient rights',
-      duration: '10-15 minutes',
-      checks: 20
-    },
-    {
-      id: 'administrative',
-      name: 'Administrative Safeguards',
-      description: 'Administrative requirements and policies',
-      duration: '6-10 minutes',
-      checks: 18
+      name: 'Privacy Rules Audit',
+      description: 'Review privacy policies and procedures',
+      duration: '30-40 minutes',
+      sections: ['Individual Rights', 'Privacy Notices', 'Minimum Necessary', 'Business Associates']
     }
   ];
 
@@ -44,92 +36,89 @@ export default function MockAudit() {
     setAuditResults(null);
 
     try {
-      // Simulate API call to run mock audit
-      const response = await fetch('/api/audit/mock', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          auditType: selectedAuditType,
-        }),
-      });
+      // Simulate audit execution
+      await new Promise(resolve => setTimeout(resolve, 3000));
 
-      if (response.ok) {
-        const data = await response.json();
-        setAuditResults(data);
-      } else {
-        // Fallback to mock data if API fails
-        generateMockResults();
-      }
+      // Generate mock results
+      const mockResults = {
+        auditType: selectedAuditType,
+        completedAt: new Date().toISOString(),
+        overallScore: Math.floor(Math.random() * 20) + 75, // 75-95%
+        sections: auditTypes.find(t => t.id === selectedAuditType).sections.map(section => ({
+          name: section,
+          score: Math.floor(Math.random() * 30) + 65, // 65-95%
+          issues: Math.floor(Math.random() * 5),
+          recommendations: Math.floor(Math.random() * 3) + 1
+        })),
+        findings: [
+          {
+            id: 1,
+            severity: 'high',
+            title: 'Incomplete Access Controls',
+            description: 'Some user accounts lack proper role-based access restrictions',
+            section: 'Technical Safeguards'
+          },
+          {
+            id: 2,
+            severity: 'medium',
+            title: 'Audit Log Retention',
+            description: 'Audit logs are not being retained for the required 6-year period',
+            section: 'Technical Safeguards'
+          },
+          {
+            id: 3,
+            severity: 'low',
+            title: 'Privacy Notice Updates',
+            description: 'Privacy notice should be updated to reflect current practices',
+            section: 'Privacy Rules'
+          }
+        ]
+      };
+
+      setAuditResults(mockResults);
     } catch (error) {
-      console.error('Error running mock audit:', error);
-      // Fallback to mock data if API fails
-      generateMockResults();
+      console.error('Mock audit failed:', error);
     } finally {
       setIsRunning(false);
     }
   };
 
-  const generateMockResults = () => {
-    const selectedType = auditTypes.find(t => t.id === selectedAuditType);
-    const mockResults = {
-      auditType: selectedType.name,
-      completedAt: new Date().toISOString(),
-      overallScore: Math.floor(Math.random() * 30) + 70, // 70-100%
-      checksPerformed: selectedType.checks,
-      findings: [
-        {
-          id: 'finding-1',
-          category: 'Administrative Safeguards',
-          severity: 'medium',
-          title: 'Missing workforce training documentation',
-          description: 'Some employees lack documented HIPAA training completion records',
-          recommendation: 'Implement a training tracking system and ensure all staff complete annual training'
-        },
-        {
-          id: 'finding-2',
-          category: 'Technical Safeguards',
-          severity: 'high',
-          title: 'Insufficient access controls',
-          description: 'User access privileges are not regularly reviewed and updated',
-          recommendation: 'Establish quarterly access reviews and implement role-based access controls'
-        }
-      ],
-      passed: [
-        'Encryption of PHI at rest and in transit',
-        'Business Associate Agreements in place',
-        'Incident response procedures documented',
-        'Risk assessment conducted within required timeframe'
-      ],
-      recommendations: [
-        'Implement automated access review processes',
-        'Enhance workforce training tracking',
-        'Consider additional technical safeguards for mobile devices',
-        'Develop more detailed incident response procedures'
-      ]
-    };
+  const getSeverityColor = (severity) => {
+    switch (severity) {
+      case 'high': return 'bg-red-100 text-red-800';
+      case 'medium': return 'bg-yellow-100 text-yellow-800';
+      case 'low': return 'bg-green-100 text-green-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
 
-    // Simulate processing time
-    setTimeout(() => {
-      setAuditResults(mockResults);
-    }, 3000);
+  const getScoreColor = (score) => {
+    if (score >= 90) return 'text-green-600';
+    if (score >= 75) return 'text-yellow-600';
+    return 'text-red-600';
   };
 
   return (
     <div>
-      {!auditResults ? (
-        <div>
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-2">Mock Audit</h2>
+        <p className="text-gray-600">
+          Run simulated HIPAA compliance audits to identify potential issues before real audits.
+        </p>
+      </div>
+
+      {!auditResults && (
+        <div className="space-y-6">
           {/* Audit Type Selection */}
-          <div className="mb-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Select Audit Type</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <h3 className="text-lg font-medium text-gray-900 mb-4">Select Audit Type</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {auditTypes.map((type) => (
                 <div
                   key={type.id}
-                  className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
+                  className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
                     selectedAuditType === type.id
-                      ? 'border-purple-800 bg-purple-50'
+                      ? 'border-purple-500 bg-purple-50'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                   onClick={() => setSelectedAuditType(type.id)}
@@ -137,21 +126,18 @@ export default function MockAudit() {
                   <div className="flex items-center mb-2">
                     <input
                       type="radio"
-                      id={type.id}
                       name="auditType"
                       value={type.id}
                       checked={selectedAuditType === type.id}
                       onChange={() => setSelectedAuditType(type.id)}
-                      className="h-4 w-4 text-purple-800 focus:ring-purple-800 border-gray-300"
+                      className="w-4 h-4 text-purple-600 focus:ring-purple-500"
                     />
-                    <label htmlFor={type.id} className="ml-3 text-lg font-medium text-gray-900">
-                      {type.name}
-                    </label>
+                    <label className="ml-2 font-medium text-gray-900">{type.name}</label>
                   </div>
-                  <p className="text-gray-600 text-sm mb-3">{type.description}</p>
-                  <div className="flex items-center justify-between text-sm text-gray-500">
-                    <span>Duration: {type.duration}</span>
-                    <span>{type.checks} checks</span>
+                  <p className="text-sm text-gray-600 mb-3">{type.description}</p>
+                  <div className="text-xs text-gray-500 mb-2">Duration: {type.duration}</div>
+                  <div className="text-xs text-gray-500">
+                    Sections: {type.sections.join(', ')}
                   </div>
                 </div>
               ))}
@@ -163,139 +149,99 @@ export default function MockAudit() {
             <button
               onClick={runMockAudit}
               disabled={isRunning}
-              className="bg-purple-800 text-white px-8 py-4 rounded-lg font-medium hover:bg-purple-900 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-3 mx-auto"
+              className="bg-purple-800 text-white px-8 py-3 rounded-lg font-medium hover:bg-purple-900 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 mx-auto"
             >
               {isRunning ? (
                 <>
                   <svg className="animate-spin w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                   </svg>
-                  <span>Running Mock Audit...</span>
+                  <span>Running Audit...</span>
                 </>
               ) : (
                 <>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
-                  <span>Run Mock Audit</span>
+                  <span>Start Mock Audit</span>
                 </>
               )}
             </button>
-            {isRunning && (
-              <p className="mt-4 text-gray-600">
-                Running {auditTypes.find(t => t.id === selectedAuditType).name}...
-                <br />
-                This may take a few minutes to complete.
-              </p>
-            )}
           </div>
         </div>
-      ) : (
-        <div>
-          {/* Audit Results */}
-          <div className="mb-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold text-gray-900">Mock Audit Results</h2>
-              <button
-                onClick={() => setAuditResults(null)}
-                className="text-purple-800 hover:text-purple-900 font-medium"
-              >
-                Run New Audit
-              </button>
-            </div>
-            <p className="text-gray-600">
-              Completed: {new Date(auditResults.completedAt).toLocaleString()}
-            </p>
+      )}
+
+      {/* Audit Results */}
+      {auditResults && (
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-medium text-gray-900">Audit Results</h3>
+            <button
+              onClick={() => setAuditResults(null)}
+              className="text-purple-600 hover:text-purple-800 font-medium"
+            >
+              Run New Audit
+            </button>
           </div>
 
           {/* Overall Score */}
-          <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6">
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
             <div className="text-center">
-              <div className="text-4xl font-bold text-purple-800 mb-2">{auditResults.overallScore}%</div>
-              <div className="text-lg text-gray-600">Overall Compliance Score</div>
-              <div className="text-sm text-gray-500 mt-2">
-                Based on {auditResults.checksPerformed} compliance checks
+              <div className={`text-4xl font-bold mb-2 ${getScoreColor(auditResults.overallScore)}`}>
+                {auditResults.overallScore}%
+              </div>
+              <div className="text-gray-600">Overall Compliance Score</div>
+              <div className="text-sm text-gray-500 mt-1">
+                Completed: {new Date(auditResults.completedAt).toLocaleString()}
               </div>
             </div>
           </div>
 
+          {/* Section Scores */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {auditResults.sections.map((section, index) => (
+              <div key={index} className="bg-white border border-gray-200 rounded-lg p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="font-medium text-gray-900">{section.name}</h4>
+                  <span className={`text-lg font-semibold ${getScoreColor(section.score)}`}>
+                    {section.score}%
+                  </span>
+                </div>
+                <div className="flex justify-between text-sm text-gray-600">
+                  <span>{section.issues} issues found</span>
+                  <span>{section.recommendations} recommendations</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
           {/* Findings */}
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Findings Requiring Attention</h3>
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
+            <h4 className="font-medium text-gray-900 mb-4">Key Findings</h4>
             <div className="space-y-4">
               {auditResults.findings.map((finding) => (
-                <div
-                  key={finding.id}
-                  className={`border rounded-lg p-4 ${
-                    finding.severity === 'high' ? 'border-red-200 bg-red-50' :
-                    finding.severity === 'medium' ? 'border-yellow-200 bg-yellow-50' :
-                    'border-blue-200 bg-blue-50'
-                  }`}
-                >
-                  <div className="flex items-start justify-between mb-2">
-                    <h4 className={`font-semibold ${
-                      finding.severity === 'high' ? 'text-red-800' :
-                      finding.severity === 'medium' ? 'text-yellow-800' :
-                      'text-blue-800'
-                    }`}>
-                      {finding.title}
-                    </h4>
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      finding.severity === 'high' ? 'bg-red-100 text-red-800' :
-                      finding.severity === 'medium' ? 'bg-yellow-100 text-yellow-800' :
-                      'bg-blue-100 text-blue-800'
-                    }`}>
+                <div key={finding.id} className="border-l-4 border-gray-200 pl-4">
+                  <div className="flex items-center space-x-2 mb-1">
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getSeverityColor(finding.severity)}`}>
                       {finding.severity.toUpperCase()}
                     </span>
+                    <span className="text-sm text-gray-500">{finding.section}</span>
                   </div>
-                  <p className={`text-sm mb-3 ${
-                    finding.severity === 'high' ? 'text-red-700' :
-                    finding.severity === 'medium' ? 'text-yellow-700' :
-                    'text-blue-700'
-                  }`}>
-                    {finding.description}
-                  </p>
-                  <div className={`text-sm ${
-                    finding.severity === 'high' ? 'text-red-700' :
-                    finding.severity === 'medium' ? 'text-yellow-700' :
-                    'text-blue-700'
-                  }`}>
-                    <strong>Recommendation:</strong> {finding.recommendation}
-                  </div>
+                  <h5 className="font-medium text-gray-900 mb-1">{finding.title}</h5>
+                  <p className="text-sm text-gray-600">{finding.description}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Passed Items */}
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Areas of Compliance</h3>
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <ul className="space-y-2">
-                {auditResults.passed.map((item, index) => (
-                  <li key={index} className="flex items-center text-green-800">
-                    <svg className="w-5 h-5 text-green-600 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* Recommendations */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-blue-900 mb-4">Recommendations</h3>
-            <ul className="space-y-2">
-              {auditResults.recommendations.map((recommendation, index) => (
-                <li key={index} className="flex items-start space-x-2">
-                  <svg className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <span className="text-blue-800">{recommendation}</span>
-                </li>
-              ))}
+          {/* Actions */}
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <h4 className="font-medium text-blue-900 mb-2">Next Steps</h4>
+            <ul className="text-sm text-blue-800 space-y-1">
+              <li>• Review and address high-severity findings immediately</li>
+              <li>• Create corrective action plans for identified issues</li>
+              <li>• Schedule follow-up audits to track improvements</li>
+              <li>• Update documentation and policies as needed</li>
             </ul>
           </div>
         </div>
