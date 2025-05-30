@@ -201,4 +201,3 @@ export default function Sidebar({ collapsed = false, onToggleCollapse, isMobile 
     </div>
   );
 }
-``````javascript
