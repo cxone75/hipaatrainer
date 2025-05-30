@@ -4,12 +4,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { createClient, createAdminClient } = require('../services/supabase');
 const userModel = require('../models/user');
-const OrganizationModel = require('../models/organization');
-const RoleModel = require('../models/role');
+const orgModel = require('../models/organization');
+const roleModel = require('../models/role');
 
 const router = express.Router();
-const orgModel = new OrganizationModel();
-const roleModel = new RoleModel();
 
 // User registration
 router.post('/register', async (req, res) => {
