@@ -1,5 +1,6 @@
-
 'use client';
+
+import { useState } from 'react';
 
 export default function UpdateCard({ 
   update, 
@@ -8,6 +9,17 @@ export default function UpdateCard({
   onViewDetails, 
   getImpactColor 
 }) {
+  const [isSettingReminder, setIsSettingReminder] = useState(false);
+
+  const handleSetReminder = async () => {
+    setIsSettingReminder(true);
+    try {
+      await onSetReminder(update);
+    } finally {
+      setIsSettingReminder(false);
+    }
+  };
+
   return (
     <div 
       className="bg-white rounded-lg shadow border border-gray-200 overflow-hidden"
@@ -18,177 +30,129 @@ export default function UpdateCard({
       <div className="p-6">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
           <div className="flex-1">
-            <div className="flex flex-wrap items-center gap-2 mb-2">
+            <div className="flex items-start gap-3 mb-3">
               <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getImpactColor(update.impact)}`}>
                 {update.impact} Impact
               </span>
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-blue-600 bg-blue-100">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                 {update.category}
               </span>
             </div>
 
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2 leading-tight">
               {update.title}
             </h3>
 
-            <p className="text-gray-600 mb-3">
+            <p className="text-gray-600 text-sm leading-relaxed">
+              {update.summary}
+            </p>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-2">
+            <button
+              onClick={handleSetReminder}
+              disabled={isSettingReminder}
+              className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              aria-label="Add to Calendar"
+            >
+              {isSettingReminder ? (
+                <>
+                  <svg className="animate-spin w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  Setting...
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2v12a2 2 0 002 2z" />
+                  </svg>
+                  Add to Calendar
+                </>
+              )}
+            </button>
+
+            <button
+              onClick={() => onViewDetails(update)}
+              className="flex items-center justify-center px-4 py-2 bg-purple-600 text-white rounded-md text-sm font-medium hover:bg-purple-700 transition-colors"
+              aria-label="View Details"
+            >
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              View Details
+            </button>
+          </div>
+        </div>
+
+        {/* Metadata */}
+        <div className="mt-4 pt-4 border-t border-gray-100">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+            <div className="flex items-center">
+              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2v12a2 2 0 002 2z" />
+              </svg>
+              Effective: {new Date(update.effectiveDate).toLocaleDateString()}
+            </div>
+            <div className="flex items-center">
+              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Published: {new Date(update.publishedDate).toLocaleDateString()}
+            </div>
+            {update.source && (
+              <div className="flex items-center">
+                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                </svg>
+                Source: {update.source}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Expanded Content */}
+      {isExpanded && (
+        <div className="px-6 pb-6 border-t border-gray-100">
+          <div className="pt-4">
+            <h4 className="font-medium text-gray-900 mb-2">Full Description</h4>
+            <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-wrap">
               {update.description}
             </p>
 
-            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
-              <div className="flex items-center">
-                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                Effective: {new Date(update.effectiveDate).toLocaleDateString()}
-              </div>
-              <div className="flex items-center">
-                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                {update.source}
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-2">
-            <button
-              onClick={() => onSetReminder(update)}
-              className="px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-            >
-              <svg className="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              Add to Calendar
-            </button>
-            <button
-              onClick={() => onViewDetails(update.id)}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
-            >
-              {isExpanded ? 'Hide Details' : 'View Details'}
-            </button>
-          </div>
-        </div>
-
-        {/* Expanded Details */}
-        {isExpanded && update.guidance && (
-          <div className="mt-6 pt-6 border-t border-gray-200">
-            <div className="space-y-4">
-              <div>
-                <h4 className="font-medium text-gray-900 mb-2">Overview</h4>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {update.guidance.overview}
-                </p>
-              </div>
-
-              <div>
-                <h4 className="font-medium text-gray-900 mb-2">Requirements</h4>
-                <ul className="list-disc list-inside space-y-1 text-sm text-gray-600">
-                  {update.guidance.requirements.map((requirement, index) => (
-                    <li key={index}>{requirement}</li>
+            {update.complianceActions && update.complianceActions.length > 0 && (
+              <div className="mt-4">
+                <h4 className="font-medium text-gray-900 mb-2">Required Actions</h4>
+                <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
+                  {update.complianceActions.map((action, index) => (
+                    <li key={index}>{action}</li>
                   ))}
                 </ul>
               </div>
+            )}
 
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <h4 className="font-medium text-gray-900 mb-2">Timeline</h4>
-                  <p className="text-sm text-gray-600">{update.guidance.timeline}</p>
-                </div>
-                <div>
-                  <h4 className="font-medium text-gray-900 mb-2">Penalties</h4>
-                  <p className="text-sm text-gray-600">{update.guidance.penalties}</p>
-                </div>
+            {update.references && update.references.length > 0 && (
+              <div className="mt-4">
+                <h4 className="font-medium text-gray-900 mb-2">References</h4>
+                <ul className="space-y-1">
+                  {update.references.map((ref, index) => (
+                    <li key={index}>
+                      <a 
+                        href={ref.url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-sm text-purple-600 hover:text-purple-800 underline"
+                      >
+                        {ref.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
               </div>
-
-              <div className="pt-2">
-                <p className="text-xs text-gray-500">
-                  Last updated: {new Date(update.lastUpdated).toLocaleDateString()}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-'use client';
-
-export default function UpdateCard({ 
-  update, 
-  expanded, 
-  onToggle, 
-  onSetReminder, 
-  onMarkComplete 
-}) {
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'urgent': return 'text-red-600 bg-red-50';
-      case 'important': return 'text-orange-600 bg-orange-50';
-      case 'informational': return 'text-blue-600 bg-blue-50';
-      default: return 'text-gray-600 bg-gray-50';
-    }
-  };
-
-  return (
-    <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-      <div className="flex justify-between items-start mb-4">
-        <div className="flex-1">
-          <div className="flex items-center gap-3 mb-2">
-            <h3 className="text-lg font-semibold text-gray-900">{update.title}</h3>
-            <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(update.status)}`}>
-              {update.status}
-            </span>
-          </div>
-          <p className="text-sm text-gray-600 mb-2">{update.source} • {update.date}</p>
-        </div>
-        <button
-          onClick={() => onToggle(update.id)}
-          className="text-gray-400 hover:text-gray-600"
-        >
-          <svg className={`w-5 h-5 transform transition-transform ${expanded ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-      </div>
-      
-      <p className="text-gray-700 text-sm mb-4">{update.summary}</p>
-      
-      {expanded && (
-        <div className="space-y-4 border-t pt-4">
-          <div>
-            <h4 className="font-medium text-gray-900 mb-2">Full Details</h4>
-            <p className="text-gray-700 text-sm">{update.fullText}</p>
-          </div>
-          
-          {update.actionItems && update.actionItems.length > 0 && (
-            <div>
-              <h4 className="font-medium text-gray-900 mb-2">Action Items</h4>
-              <ul className="space-y-1">
-                {update.actionItems.map((item, index) => (
-                  <li key={index} className="text-sm text-gray-700 flex items-start">
-                    <span className="text-purple-600 mr-2">•</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-          
-          <div className="flex gap-3 pt-4">
-            <button
-              onClick={() => onSetReminder(update)}
-              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
-            >
-              Set Reminder
-            </button>
-            <button
-              onClick={() => onMarkComplete(update.id)}
-              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
-            >
-              Mark as Complete
-            </button>
+            )}
           </div>
         </div>
       )}

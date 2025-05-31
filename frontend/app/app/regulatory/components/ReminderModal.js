@@ -1,176 +1,83 @@
-
-'use client';
-
-export default function ReminderModal({ 
-  isOpen, 
-  onClose, 
-  onConfirm, 
-  update, 
-  isLoading 
-}) {
-  if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
-      <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        {/* Background overlay */}
-        <div 
-          className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-          onClick={onClose}
-        />
-
-        {/* Modal panel */}
-        <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
-          <div>
-            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100">
-              <svg className="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div className="mt-3 text-center sm:mt-5">
-              <h3 className="text-lg leading-6 font-medium text-gray-900">
-                Set Compliance Reminder
-              </h3>
-              <div className="mt-2">
-                <p className="text-sm text-gray-500">
-                  Set a reminder for: <strong>{update?.title}</strong>
-                </p>
-                <p className="text-sm text-gray-600 mb-6">
-                  A reminder will be added to your calendar with the regulatory update details and effective date.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
-            <button
-              type="button"
-              onClick={onConfirm}
-              disabled={isLoading}
-              className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:col-start-2 sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isLoading ? (
-                <>
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Setting Reminder...
-                </>
-              ) : (
-                'Set Reminder'
-              )}
-            </button>
-            <button
-              type="button"
-              onClick={onClose}
-              disabled={isLoading}
-              className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 'use client';
 
 import { useState } from 'react';
 
-export default function ReminderModal({ isOpen, onClose, update, onSetReminder }) {
-  const [reminderDate, setReminderDate] = useState('');
-  const [reminderTime, setReminderTime] = useState('');
-  const [notes, setNotes] = useState('');
-
+export default function ReminderModal({ isOpen, onClose, onConfirm, update, isLoading }) {
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSetReminder({
-      updateId: update.id,
-      date: reminderDate,
-      time: reminderTime,
-      notes
-    });
-    onClose();
-  };
-
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg max-w-md w-full p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold">Set Reminder</h3>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg max-w-md w-full overflow-hidden shadow-2xl">
+        {/* Header */}
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-purple-50 to-blue-50">
+          <div className="flex items-center">
+            <svg className="w-6 h-6 text-purple-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2z" />
+            </svg>
+            <h2 className="text-xl font-semibold text-gray-900">Add Calendar Reminder</h2>
+          </div>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
+            disabled={isLoading}
+            className="text-gray-400 hover:text-gray-600 text-2xl p-1 hover:bg-gray-100 rounded-full transition-colors disabled:opacity-50"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            ×
           </button>
         </div>
 
-        <div className="mb-4">
-          <p className="text-sm text-gray-600 mb-2">Update: {update?.title}</p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Reminder Date
-            </label>
-            <input
-              type="date"
-              value={reminderDate}
-              onChange={(e) => setReminderDate(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              required
-            />
+        {/* Content */}
+        <div className="p-6">
+          <div className="mb-4">
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              {update?.title}
+            </h3>
+            <p className="text-sm text-gray-600">
+              Add this regulatory update to your calendar to stay compliant with the effective date.
+            </p>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Reminder Time
-            </label>
-            <input
-              type="time"
-              value={reminderTime}
-              onChange={(e) => setReminderTime(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Notes (Optional)
-            </label>
-            <textarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              placeholder="Add any additional notes..."
-            />
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+            <div className="flex items-start">
+              <svg className="w-5 h-5 text-blue-600 mt-0.5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <p className="text-sm font-medium text-blue-800">Calendar Integration</p>
+                <p className="text-sm text-blue-700 mt-1">
+                  This will create a calendar event with the update details and effective date.
+                </p>
+              </div>
+            </div>
           </div>
 
           <div className="flex gap-3">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+              disabled={isLoading}
+              className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
             >
               Cancel
             </button>
             <button
-              type="submit"
-              className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+              type="button"
+              onClick={onConfirm}
+              disabled={isLoading}
+              className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Set Reminder
+              {isLoading ? (
+                <>
+                  <svg className="animate-spin w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  Adding...
+                </>
+              ) : (
+                'Add to Calendar'
+              )}
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );
