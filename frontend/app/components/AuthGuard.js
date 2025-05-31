@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -15,7 +14,7 @@ export default function AuthGuard({ children }) {
       try {
         // Check for token in localStorage
         const token = localStorage.getItem('authToken');
-        
+
         if (!token) {
           setIsAuthenticated(false);
           setIsLoading(false);

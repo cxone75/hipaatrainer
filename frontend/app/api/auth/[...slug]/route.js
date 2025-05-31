@@ -42,16 +42,11 @@ export async function POST(request, { params }) {
     // Parse JSON body properly
     const requestBody = await request.json();
     body = JSON.stringify(requestBody);
-    console.log('Parsed request body:', requestBody);
   } catch (error) {
-    console.error('Error parsing request body:', error);
     body = '{}';
   }
   
   const backendUrl = `${BACKEND_URL}/api/auth/${slug.join('/')}`;
-  
-  console.log('Proxying POST request to:', backendUrl);
-  console.log('Request body to send:', body);
   
   try {
     const response = await fetch(backendUrl, {
@@ -63,8 +58,6 @@ export async function POST(request, { params }) {
     });
 
     const data = await response.text();
-    console.log('Backend response status:', response.status);
-    console.log('Backend response:', data);
     
     return new Response(data, {
       status: response.status,
@@ -73,7 +66,6 @@ export async function POST(request, { params }) {
       },
     });
   } catch (error) {
-    console.error('Proxy error:', error);
     return new Response(JSON.stringify({ error: 'Internal server error' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },

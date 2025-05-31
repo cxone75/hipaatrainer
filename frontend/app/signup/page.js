@@ -107,7 +107,6 @@ export default function SignupPage() {
         setErrors({ submit: data.error || 'Registration failed' });
       }
     } catch (error) {
-      console.error('Registration error:', error);
       setErrors({ submit: 'Registration failed. Please try again.' });
     } finally {
       setIsLoading(false);
@@ -121,7 +120,6 @@ export default function SignupPage() {
       // Redirect to backend OAuth endpoint
       window.location.href = `http://localhost:3001/api/auth/oauth/${provider}`;
     } catch (error) {
-      console.error(`${provider} signup error:`, error);
       setSocialLoading('');
     }
   };

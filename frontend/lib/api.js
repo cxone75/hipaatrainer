@@ -30,7 +30,6 @@ class ApiClient {
 
       return await response.text();
     } catch (error) {
-      console.error('API request failed:', error);
       throw error;
     }
   }
