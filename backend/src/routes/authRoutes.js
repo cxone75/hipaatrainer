@@ -58,35 +58,56 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ error: authError.message });
     }
 
-    // Wait a moment for triggers to complete
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    console.log('Auth user created successfully:', authUserData.user.id);
+    console.log('User metadata:', authUserData.user.user_metadata);
+
+    // Wait longer for triggers to complete
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
     // Get the created user record (should be created by trigger)
     let user = null;
     let retryCount = 0;
-    const maxRetries = 5;
+    const maxRetries = 8; // Increased retries
     
     while (!user && retryCount < maxRetries) {
       try {
+        console.log(`Attempt ${retryCount + 1} to retrieve user:`, authUserData.user.id);
         user = await userModel.getUserById(authUserData.user.id);
-        if (user) break;
+        if (user) {
+          console.log('User found:', user);
+          break;
+        }
         
-        // Wait before retrying
-        await new Promise(resolve => setTimeout(resolve, 500));
+        // Wait before retrying (increasing delay)
+        const delay = 500 + (retryCount * 200);
+        await new Promise(resolve => setTimeout(resolve, delay));
         retryCount++;
       } catch (error) {
         console.log(`Retry ${retryCount + 1} failed:`, error.message);
         retryCount++;
         if (retryCount < maxRetries) {
-          await new Promise(resolve => setTimeout(resolve, 500));
+          const delay = 500 + (retryCount * 200);
+          await new Promise(resolve => setTimeout(resolve, delay));
         }
       }
     }
 
     if (!user) {
+      console.error('Failed to find user after trigger execution');
+      
+      // Try direct query to see if user exists anywhere
+      const { data: directUser, error: directError } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', authUserData.user.id)
+        .single();
+      
+      console.log('Direct query result:', { directUser, directError });
+      
       // Cleanup auth user and return error
+      console.log('Cleaning up auth user:', authUserData.user.id);
       await supabase.auth.admin.deleteUser(authUserData.user.id);
-      throw new Error('Failed to create user records. Please try again.');
+      throw new Error('Failed to create user records. The organization setup may have failed. Please try again.');
     }
 
     // Generate JWT token

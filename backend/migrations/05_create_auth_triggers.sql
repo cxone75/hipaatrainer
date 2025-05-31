@@ -9,15 +9,28 @@ DECLARE
     v_viewer_role_id UUID;
     v_org_name VARCHAR;
     v_user_metadata JSONB;
+    v_first_name VARCHAR;
+    v_last_name VARCHAR;
+    v_job_title VARCHAR;
 BEGIN
+    -- Log the trigger execution for debugging
+    RAISE NOTICE 'handle_new_user trigger fired for user: %', NEW.id;
+    
     -- Get user metadata from auth.users
     v_user_metadata := NEW.raw_user_meta_data;
     
+    -- Log metadata for debugging
+    RAISE NOTICE 'User metadata: %', v_user_metadata;
+    
     -- Extract organization name from metadata
     v_org_name := v_user_metadata->>'organizationName';
+    v_first_name := COALESCE(v_user_metadata->>'firstName', '');
+    v_last_name := COALESCE(v_user_metadata->>'lastName', '');
+    v_job_title := v_user_metadata->>'jobTitle';
     
     -- Only proceed if organization name is provided (signup flow)
     IF v_org_name IS NOT NULL AND v_org_name != '' THEN
+        RAISE NOTICE 'Processing new organization signup for: %', v_org_name;
         -- Check if organization already exists
         SELECT id INTO v_org_id FROM organizations WHERE name = v_org_name;
         
@@ -118,13 +131,15 @@ BEGIN
             v_org_id,
             COALESCE(v_admin_role_id, v_user_role_id), -- Admin role for new org, user role for existing
             NEW.email,
-            COALESCE(v_user_metadata->>'firstName', ''),
-            COALESCE(v_user_metadata->>'lastName', ''),
-            v_user_metadata->>'jobTitle',
+            v_first_name,
+            v_last_name,
+            v_job_title,
             'active',
             NOW(),
             NOW()
         );
+        
+        RAISE NOTICE 'Successfully created user record for: %', NEW.email;
 
         -- Log the organization creation if new org
         IF v_admin_role_id IS NOT NULL THEN
@@ -145,11 +160,15 @@ BEGIN
         END IF;
     END IF;
 
+    RAISE NOTICE 'Successfully completed handle_new_user for: %', NEW.email;
     RETURN NEW;
 EXCEPTION
     WHEN OTHERS THEN
-        -- Log error but don't fail the auth user creation
-        RAISE WARNING 'Failed to create organization records for user %: %', NEW.id, SQLERRM;
+        -- Log detailed error information
+        RAISE WARNING 'Failed to create organization records for user % (email: %): % - SQL State: %', NEW.id, NEW.email, SQLERRM, SQLSTATE;
+        
+        -- For critical errors, we might want to fail the auth user creation
+        -- But for now, we'll let it succeed and handle cleanup in the application
         RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
