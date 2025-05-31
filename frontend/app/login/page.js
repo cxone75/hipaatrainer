@@ -58,14 +58,18 @@ export default function LoginPage() {
       console.log('Response data:', data);
 
       if (!response.ok) {
+        console.error('Login failed with status:', response.status);
+        console.error('Error data:', data);
         setError(data.error || 'Login failed');
       } else {
+        console.log('Login successful, storing token and redirecting...');
         // Store auth token
         localStorage.setItem('authToken', data.token);
         localStorage.setItem('userData', JSON.stringify(data.user));
 
-        // Redirect to app
-        router.push('/app');
+        // Force redirect to app
+        console.log('Redirecting to /app...');
+        window.location.href = '/app';
       }
     } catch (error) {
       console.error('=== LOGIN ERROR ===');
