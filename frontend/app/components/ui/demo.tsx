@@ -1,5 +1,5 @@
 
-import { BorderBeam } from "@/components/ui/border-beam";
+import { BorderBeam } from "@/app/components/ui/border-beam";
 
 export function BorderBeamDemo() {
   return (
