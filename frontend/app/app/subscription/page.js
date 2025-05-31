@@ -2,7 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import MainLayout from '../components/Layout/MainLayout';
+import MainLayout from '../../components/Layout/MainLayout';
 
 export default function SubscriptionPage() {
   const [currentPlan] = useState({
