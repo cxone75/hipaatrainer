@@ -1,10 +1,11 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import MainLayout from '../components/Layout/MainLayout';
 import StatusCard from './components/StatusCard';
-import CalendarView from './components/CalendarView';
 import ProgressChart from './components/ProgressChart';
+import CalendarView from './components/CalendarView';
 
 export default function ComplianceDashboard() {
   const [showReminderModal, setShowReminderModal] = useState(false);

@@ -184,7 +184,10 @@ router.post('/login', async (req, res) => {
 
     if (authError) {
       console.log('Supabase auth error:', authError);
-      return res.status(401).json({ error: 'Invalid credentials' });
+      if (authError.message.includes('Invalid login credentials')) {
+        return res.status(401).json({ error: 'Invalid email or password' });
+      }
+      return res.status(401).json({ error: 'Authentication failed' });
     }
 
     // Get user data from database
@@ -209,6 +212,7 @@ router.post('/login', async (req, res) => {
       { expiresIn: '7d' }
     );
 
+    res.header('Access-Control-Allow-Credentials', 'true');
     res.json({
       message: 'Login successful',
       token,
