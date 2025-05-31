@@ -1,8 +1,6 @@
-
 'use client';
 
 import { useState } from 'react';
-import MainLayout from '../../components/Layout/MainLayout';
 import AlertModal from '../../components/AlertModal';
 
 export default function SettingsPage() {
@@ -106,7 +104,6 @@ export default function SettingsPage() {
   ];
 
   return (
-    <MainLayout breadcrumbItems={breadcrumbItems}>
       <div className="p-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -323,15 +320,5 @@ export default function SettingsPage() {
           </div>
         )}
       </div>
-
-      {/* Alert Modal */}
-      <AlertModal
-        isOpen={alertModal.isOpen}
-        onClose={() => setAlertModal({ ...alertModal, isOpen: false })}
-        title={alertModal.title}
-        message={alertModal.message}
-        type={alertModal.type}
-      />
-    </MainLayout>
   );
 }
