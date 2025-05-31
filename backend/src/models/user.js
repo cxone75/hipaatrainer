@@ -57,30 +57,31 @@ class UserModel {
     };
   }
 
-  async getUserById(id) {
-    const { data: user, error } = await this.supabase
-      .from('users')
-      .select(`
-        *,
-        role:role_id(
-          id,
-          name,
-          description,
-          organization_id,
-          is_default,
-          created_at,
-          updated_at
-        ),
-        organization:organization_id(name)
-      `)
-      .eq('id', id)
-      .single();
+  async getUserById(userId) {
+    try {
+      // Use admin client to bypass RLS for user lookup during registration
+      const adminSupabase = require('../services/supabase').createAdminClient();
 
-    if (error && error.code !== 'PGRST116') {
-      throw new Error(`Failed to fetch user: ${error.message}`);
+      const { data: user, error } = await adminSupabase
+        .from('users')
+        .select(`
+          *,
+          role:roles(*),
+          organization:organizations(*)
+        `)
+        .eq('id', userId)
+        .single();
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('User lookup error:', error);
+        throw new Error(`Failed to fetch user: ${error.message}`);
+      }
+
+      return user;
+    } catch (error) {
+      console.error('Failed to get user by ID:', error);
+      throw error;
     }
-
-    return user;
   }
 
   async getUserByEmail(email) {
