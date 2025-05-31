@@ -10,22 +10,22 @@ $$ language 'plpgsql';
 
 -- Create triggers for updated_at columns
 CREATE TRIGGER update_organizations_updated_at 
-    BEFORE UPDATE ON organizations 
+    BEFORE UPDATE ON public.organizations 
     FOR EACH ROW 
     EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER update_users_updated_at 
-    BEFORE UPDATE ON users 
+    BEFORE UPDATE ON public.users 
     FOR EACH ROW 
     EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER update_roles_updated_at 
-    BEFORE UPDATE ON roles 
+    BEFORE UPDATE ON public.roles 
     FOR EACH ROW 
     EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER update_subscriptions_updated_at 
-    BEFORE UPDATE ON subscriptions 
+    BEFORE UPDATE ON public.subscriptions 
     FOR EACH ROW 
     EXECUTE FUNCTION update_updated_at_column();
 
@@ -42,7 +42,7 @@ RETURNS UUID AS $$
 DECLARE
     login_id UUID;
 BEGIN
-    INSERT INTO login_histories (
+    INSERT INTO public.login_histories (
         user_id,
         email,
         success,
@@ -62,7 +62,7 @@ BEGIN
     
     -- Update user's last login time if successful
     IF p_success AND p_user_id IS NOT NULL THEN
-        UPDATE users 
+        UPDATE public.users 
         SET last_login_at = NOW() 
         WHERE id = p_user_id;
     END IF;
@@ -153,9 +153,9 @@ BEGIN
         r.name as role_name,
         r.description as role_description,
         o.name as organization_name
-    FROM users u
-    LEFT JOIN roles r ON u.role_id = r.id
-    LEFT JOIN organizations o ON u.organization_id = o.id
+    FROM public.users u
+    LEFT JOIN public.roles r ON u.role_id = r.id
+    LEFT JOIN public.organizations o ON u.organization_id = o.id
     WHERE u.id = p_user_id;
 END;
 $$ LANGUAGE plpgsql;

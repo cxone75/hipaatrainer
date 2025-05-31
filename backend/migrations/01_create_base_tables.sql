@@ -3,7 +3,7 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Create organizations table
-CREATE TABLE IF NOT EXISTS organizations (
+CREATE TABLE IF NOT EXISTS public.organizations (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT,
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS organizations (
 );
 
 -- Create permissions table
-CREATE TABLE IF NOT EXISTS permissions (
+CREATE TABLE IF NOT EXISTS public.permissions (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     resource VARCHAR(100) NOT NULL,
     action VARCHAR(100) NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS permissions (
 );
 
 -- Create roles table
-CREATE TABLE IF NOT EXISTS roles (
+CREATE TABLE IF NOT EXISTS public.roles (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
     name VARCHAR(100) NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS roles (
 );
 
 -- Create role_permissions junction table
-CREATE TABLE IF NOT EXISTS role_permissions (
+CREATE TABLE IF NOT EXISTS public.role_permissions (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     role_id UUID NOT NULL REFERENCES roles(id) ON DELETE CASCADE,
     permission_id UUID NOT NULL REFERENCES permissions(id) ON DELETE CASCADE,
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS role_permissions (
 );
 
 -- Create users table
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS public.users (
     id UUID PRIMARY KEY, -- This will match Supabase auth.users.id
     organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
     role_id UUID NOT NULL REFERENCES roles(id) ON DELETE RESTRICT,
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 -- Create subscriptions table
-CREATE TABLE IF NOT EXISTS subscriptions (
+CREATE TABLE IF NOT EXISTS public.subscriptions (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
     plan_name VARCHAR(100) NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS subscriptions (
 );
 
 -- Create audit_logs table
-CREATE TABLE IF NOT EXISTS audit_logs (
+CREATE TABLE IF NOT EXISTS public.audit_logs (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
     user_id UUID REFERENCES users(id) ON DELETE SET NULL,
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS audit_logs (
 );
 
 -- Create login_histories table
-CREATE TABLE IF NOT EXISTS login_histories (
+CREATE TABLE IF NOT EXISTS public.login_histories (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     user_id UUID REFERENCES users(id) ON DELETE CASCADE,
     email VARCHAR(255) NOT NULL,
@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS login_histories (
 );
 
 -- Create compliance_reports table
-CREATE TABLE IF NOT EXISTS compliance_reports (
+CREATE TABLE IF NOT EXISTS public.compliance_reports (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
     type VARCHAR(100) NOT NULL,
@@ -117,40 +117,40 @@ CREATE TABLE IF NOT EXISTS compliance_reports (
 );
 
 -- Create indexes for better performance
-CREATE INDEX IF NOT EXISTS idx_users_organization_id ON users(organization_id);
-CREATE INDEX IF NOT EXISTS idx_users_role_id ON users(role_id);
-CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
-CREATE INDEX IF NOT EXISTS idx_users_status ON users(status);
-CREATE INDEX IF NOT EXISTS idx_roles_organization_id ON roles(organization_id);
-CREATE INDEX IF NOT EXISTS idx_audit_logs_organization_id ON audit_logs(organization_id);
-CREATE INDEX IF NOT EXISTS idx_audit_logs_user_id ON audit_logs(user_id);
-CREATE INDEX IF NOT EXISTS idx_audit_logs_created_at ON audit_logs(created_at);
-CREATE INDEX IF NOT EXISTS idx_login_histories_user_id ON login_histories(user_id);
-CREATE INDEX IF NOT EXISTS idx_login_histories_created_at ON login_histories(created_at);
+CREATE INDEX IF NOT EXISTS idx_users_organization_id ON public.users(organization_id);
+CREATE INDEX IF NOT EXISTS idx_users_role_id ON public.users(role_id);
+CREATE INDEX IF NOT EXISTS idx_users_email ON public.users(email);
+CREATE INDEX IF NOT EXISTS idx_users_status ON public.users(status);
+CREATE INDEX IF NOT EXISTS idx_roles_organization_id ON public.roles(organization_id);
+CREATE INDEX IF NOT EXISTS idx_audit_logs_organization_id ON public.audit_logs(organization_id);
+CREATE INDEX IF NOT EXISTS idx_audit_logs_user_id ON public.audit_logs(user_id);
+CREATE INDEX IF NOT EXISTS idx_audit_logs_created_at ON public.audit_logs(created_at);
+CREATE INDEX IF NOT EXISTS idx_login_histories_user_id ON public.login_histories(user_id);
+CREATE INDEX IF NOT EXISTS idx_login_histories_created_at ON public.login_histories(created_at);
 
 -- Enable Row Level Security
-ALTER TABLE organizations ENABLE ROW LEVEL SECURITY;
-ALTER TABLE users ENABLE ROW LEVEL SECURITY;
-ALTER TABLE roles ENABLE ROW LEVEL SECURITY;
-ALTER TABLE role_permissions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE permissions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE subscriptions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
-ALTER TABLE login_histories ENABLE ROW LEVEL SECURITY;
-ALTER TABLE compliance_reports ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.organizations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.roles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.role_permissions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.permissions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.subscriptions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.audit_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.login_histories ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.compliance_reports ENABLE ROW LEVEL SECURITY;
 
 -- Create RLS policies
-CREATE POLICY users_organization_isolation ON users
+CREATE POLICY users_organization_isolation ON public.users
     USING (organization_id = current_setting('app.current_organization_id', true)::UUID);
 
-CREATE POLICY roles_organization_isolation ON roles
+CREATE POLICY roles_organization_isolation ON public.roles
     USING (organization_id = current_setting('app.current_organization_id', true)::UUID);
 
-CREATE POLICY audit_logs_organization_isolation ON audit_logs
+CREATE POLICY audit_logs_organization_isolation ON public.audit_logs
     USING (organization_id = current_setting('app.current_organization_id', true)::UUID);
 
-CREATE POLICY subscriptions_organization_isolation ON subscriptions
+CREATE POLICY subscriptions_organization_isolation ON public.subscriptions
     USING (organization_id = current_setting('app.current_organization_id', true)::UUID);
 
-CREATE POLICY compliance_reports_organization_isolation ON compliance_reports
+CREATE POLICY compliance_reports_organization_isolation ON public.compliance_reports
     USING (organization_id = current_setting('app.current_organization_id', true)::UUID);

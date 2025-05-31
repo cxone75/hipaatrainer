@@ -1,6 +1,6 @@
 
 -- Insert default permissions
-INSERT INTO permissions (resource, action, description) VALUES
+INSERT INTO public.permissions (resource, action, description) VALUES
 ('users', 'create', 'Create new users'),
 ('users', 'read', 'View user information'),
 ('users', 'update', 'Update user information'),
@@ -71,13 +71,13 @@ BEGIN
     -- PostgreSQL functions are already atomic, but being explicit
     
     -- Check if user already exists in database
-    SELECT id INTO v_existing_user FROM users WHERE email = p_admin_email;
+    SELECT id INTO v_existing_user FROM public.users WHERE email = p_admin_email;
     IF v_existing_user IS NOT NULL THEN
         RAISE EXCEPTION 'User with email % already exists in database', p_admin_email;
     END IF;
 
     -- Check if organization name already exists
-    SELECT id INTO v_existing_org FROM organizations WHERE name = p_org_name;
+    SELECT id INTO v_existing_org FROM public.organizations WHERE name = p_org_name;
     IF v_existing_org IS NOT NULL THEN
         RAISE EXCEPTION 'Organization with name % already exists', p_org_name;
     END IF;
@@ -96,34 +96,34 @@ BEGIN
     END IF;
 
     -- Create organization
-    INSERT INTO organizations (name, created_at, updated_at)
+    INSERT INTO public.organizations (name, created_at, updated_at)
     VALUES (p_org_name, NOW(), NOW())
     RETURNING id INTO v_org_id;
 
     -- Create default Admin role with all permissions
-    INSERT INTO roles (organization_id, name, description, is_default, created_by, created_at, updated_at)
+    INSERT INTO public.roles (organization_id, name, description, is_default, created_by, created_at, updated_at)
     VALUES (v_org_id, 'Admin', 'Full system administrator with all permissions', false, p_admin_user_id, NOW(), NOW())
     RETURNING id INTO v_admin_role_id;
 
     -- Create default User role with limited permissions
-    INSERT INTO roles (organization_id, name, description, is_default, created_by, created_at, updated_at)
+    INSERT INTO public.roles (organization_id, name, description, is_default, created_by, created_at, updated_at)
     VALUES (v_org_id, 'User', 'Standard user with basic permissions', true, p_admin_user_id, NOW(), NOW())
     RETURNING id INTO v_user_role_id;
 
     -- Create default Viewer role with read-only permissions
-    INSERT INTO roles (organization_id, name, description, is_default, created_by, created_at, updated_at)
+    INSERT INTO public.roles (organization_id, name, description, is_default, created_by, created_at, updated_at)
     VALUES (v_org_id, 'Viewer', 'Read-only access to most resources', false, p_admin_user_id, NOW(), NOW())
     RETURNING id INTO v_viewer_role_id;
 
     -- Assign all permissions to Admin role
-    INSERT INTO role_permissions (role_id, permission_id, created_at)
+    INSERT INTO public.role_permissions (role_id, permission_id, created_at)
     SELECT v_admin_role_id, p.id, NOW()
-    FROM permissions p;
+    FROM public.permissions p;
 
     -- Assign basic permissions to User role
-    INSERT INTO role_permissions (role_id, permission_id, created_at)
+    INSERT INTO public.role_permissions (role_id, permission_id, created_at)
     SELECT v_user_role_id, p.id, NOW()
-    FROM permissions p
+    FROM public.permissions p
     WHERE (p.resource, p.action) IN (
         ('training', 'read'),
         ('policies', 'read'),
@@ -132,13 +132,13 @@ BEGIN
     );
 
     -- Assign read-only permissions to Viewer role
-    INSERT INTO role_permissions (role_id, permission_id, created_at)
+    INSERT INTO public.role_permissions (role_id, permission_id, created_at)
     SELECT v_viewer_role_id, p.id, NOW()
-    FROM permissions p
+    FROM public.permissions p
     WHERE p.action = 'read';
 
     -- Create admin user record and verify it was created
-    INSERT INTO users (
+    INSERT INTO public.users (
         id,
         organization_id,
         role_id,
@@ -163,12 +163,12 @@ BEGIN
     );
 
     -- Verify user was created
-    IF NOT EXISTS (SELECT 1 FROM users WHERE id = p_admin_user_id) THEN
+    IF NOT EXISTS (SELECT 1 FROM public.users WHERE id = p_admin_user_id) THEN
         RAISE EXCEPTION 'Failed to create admin user';
     END IF;
 
     -- Create default subscription (trial)
-    INSERT INTO subscriptions (
+    INSERT INTO public.subscriptions (
         organization_id,
         plan_name,
         status,
@@ -191,19 +191,19 @@ BEGIN
     );
 
     -- Final verification that all records were created successfully
-    IF NOT EXISTS (SELECT 1 FROM organizations WHERE id = v_org_id) THEN
+    IF NOT EXISTS (SELECT 1 FROM public.organizations WHERE id = v_org_id) THEN
         RAISE EXCEPTION 'Organization creation failed - organization not found';
     END IF;
     
-    IF NOT EXISTS (SELECT 1 FROM roles WHERE id = v_admin_role_id) THEN
+    IF NOT EXISTS (SELECT 1 FROM public.roles WHERE id = v_admin_role_id) THEN
         RAISE EXCEPTION 'Organization creation failed - admin role not found';
     END IF;
     
-    IF NOT EXISTS (SELECT 1 FROM users WHERE id = p_admin_user_id) THEN
+    IF NOT EXISTS (SELECT 1 FROM public.users WHERE id = p_admin_user_id) THEN
         RAISE EXCEPTION 'Organization creation failed - user not found';
     END IF;
     
-    IF NOT EXISTS (SELECT 1 FROM subscriptions WHERE organization_id = v_org_id) THEN
+    IF NOT EXISTS (SELECT 1 FROM public.subscriptions WHERE organization_id = v_org_id) THEN
         RAISE EXCEPTION 'Organization creation failed - subscription not found';
     END IF;
 

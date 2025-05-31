@@ -34,39 +34,39 @@ BEGIN
     IF v_org_name IS NOT NULL AND v_org_name != '' THEN
         RAISE WARNING 'Processing new organization signup for: %', v_org_name;
         -- Check if organization already exists
-        SELECT id INTO v_org_id FROM organizations WHERE name = v_org_name;
+        SELECT id INTO v_org_id FROM public.organizations WHERE name = v_org_name;
         
         IF v_org_id IS NULL THEN
             -- Create new organization
-            INSERT INTO organizations (name, created_at, updated_at)
+            INSERT INTO public.organizations (name, created_at, updated_at)
             VALUES (v_org_name, NOW(), NOW())
             RETURNING id INTO v_org_id;
 RAISE WARNING 'v_org_id: %', v_org_id;
 
             -- Create default Admin role
-            INSERT INTO roles (organization_id, name, description, is_default, created_by, created_at, updated_at)
+            INSERT INTO public.roles (organization_id, name, description, is_default, created_by, created_at, updated_at)
             VALUES (v_org_id, 'Admin', 'Full system administrator with all permissions', false, NEW.id, NOW(), NOW())
             RETURNING id INTO v_admin_role_id;
 
             -- Create default User role
-            INSERT INTO roles (organization_id, name, description, is_default, created_by, created_at, updated_at)
+            INSERT INTO public.roles (organization_id, name, description, is_default, created_by, created_at, updated_at)
             VALUES (v_org_id, 'User', 'Standard user with basic permissions', true, NEW.id, NOW(), NOW())
             RETURNING id INTO v_user_role_id;
 
             -- Create default Viewer role
-            INSERT INTO roles (organization_id, name, description, is_default, created_by, created_at, updated_at)
+            INSERT INTO public.roles (organization_id, name, description, is_default, created_by, created_at, updated_at)
             VALUES (v_org_id, 'Viewer', 'Read-only access to most resources', false, NEW.id, NOW(), NOW())
             RETURNING id INTO v_viewer_role_id;
 
             -- Assign all permissions to Admin role
-            INSERT INTO role_permissions (role_id, permission_id, created_at)
+            INSERT INTO public.role_permissions (role_id, permission_id, created_at)
             SELECT v_admin_role_id, p.id, NOW()
-            FROM permissions p;
+            FROM public.permissions p;
 
             -- Assign basic permissions to User role
-            INSERT INTO role_permissions (role_id, permission_id, created_at)
+            INSERT INTO public.role_permissions (role_id, permission_id, created_at)
             SELECT v_user_role_id, p.id, NOW()
-            FROM permissions p
+            FROM public.permissions p
             WHERE (p.resource, p.action) IN (
                 ('training', 'read'),
                 ('policies', 'read'),
@@ -75,13 +75,13 @@ RAISE WARNING 'v_org_id: %', v_org_id;
             );
 
             -- Assign read-only permissions to Viewer role
-            INSERT INTO role_permissions (role_id, permission_id, created_at)
+            INSERT INTO public.role_permissions (role_id, permission_id, created_at)
             SELECT v_viewer_role_id, p.id, NOW()
-            FROM permissions p
+            FROM public.permissions p
             WHERE p.action = 'read';
 
             -- Create default subscription (trial)
-            INSERT INTO subscriptions (
+            INSERT INTO public.subscriptions (
                 organization_id,
                 plan_name,
                 status,
@@ -104,13 +104,13 @@ RAISE WARNING 'v_org_id: %', v_org_id;
             );
         ELSE
             -- Organization exists, get the default user role
-            SELECT id INTO v_user_role_id FROM roles 
+            SELECT id INTO v_user_role_id FROM public.roles 
             WHERE organization_id = v_org_id AND is_default = true 
             LIMIT 1;
             
             -- If no default role, get any role
             IF v_user_role_id IS NULL THEN
-                SELECT id INTO v_user_role_id FROM roles 
+                SELECT id INTO v_user_role_id FROM public.roles 
                 WHERE organization_id = v_org_id 
                 ORDER BY created_at ASC 
                 LIMIT 1;
@@ -120,7 +120,7 @@ RAISE WARNING 'v_org_id: %', v_org_id;
         RAISE WARNING 'Records created so far: organization_id=%, role_id=%', v_org_id, v_admin_role_id;
 
         -- Create user record in our users table
-        INSERT INTO users (
+        INSERT INTO public.users (
             id,
             organization_id,
             role_id,
@@ -192,18 +192,18 @@ DECLARE
     v_user_count INTEGER;
 BEGIN
     -- Get the user's organization
-    SELECT organization_id INTO v_org_id FROM users WHERE id = OLD.id;
+    SELECT organization_id INTO v_org_id FROM public.users WHERE id = OLD.id;
     
     IF v_org_id IS NOT NULL THEN
         -- Delete user record
-        DELETE FROM users WHERE id = OLD.id;
+        DELETE FROM public.users WHERE id = OLD.id;
         
         -- Check if this was the last user in the organization
-        SELECT COUNT(*) INTO v_user_count FROM users WHERE organization_id = v_org_id;
+        SELECT COUNT(*) INTO v_user_count FROM public.users WHERE organization_id = v_org_id;
         
         -- If no users left, clean up the organization
         IF v_user_count = 0 THEN
-            DELETE FROM organizations WHERE id = v_org_id;
+            DELETE FROM public.organizations WHERE id = v_org_id;
         END IF;
     END IF;
     

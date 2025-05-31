@@ -1,6 +1,6 @@
 
 -- Create documents table for document management
-CREATE TABLE IF NOT EXISTS documents (
+CREATE TABLE IF NOT EXISTS public.documents (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
     name VARCHAR(255) NOT NULL,
@@ -18,16 +18,16 @@ CREATE TABLE IF NOT EXISTS documents (
 );
 
 -- Create indexes for better performance
-CREATE INDEX IF NOT EXISTS idx_documents_organization_id ON documents(organization_id);
-CREATE INDEX IF NOT EXISTS idx_documents_type ON documents(type);
-CREATE INDEX IF NOT EXISTS idx_documents_status ON documents(status);
-CREATE INDEX IF NOT EXISTS idx_documents_created_at ON documents(created_at);
+CREATE INDEX IF NOT EXISTS idx_documents_organization_id ON public.documents(organization_id);
+CREATE INDEX IF NOT EXISTS idx_documents_type ON public.documents(type);
+CREATE INDEX IF NOT EXISTS idx_documents_status ON public.documents(status);
+CREATE INDEX IF NOT EXISTS idx_documents_created_at ON public.documents(created_at);
 
 -- Enable Row Level Security
-ALTER TABLE documents ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.documents ENABLE ROW LEVEL SECURITY;
 
 -- Create RLS policies
-CREATE POLICY documents_organization_isolation ON documents
+CREATE POLICY documents_organization_isolation ON public.documents
     USING (organization_id = current_setting('app.current_organization_id')::UUID);
 
 -- Add trigger for updated_at
