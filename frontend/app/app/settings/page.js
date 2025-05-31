@@ -2,8 +2,8 @@
 'use client';
 
 import { useState } from 'react';
-import MainLayout from '../components/Layout/MainLayout';
-import AlertModal from '../components/AlertModal';
+import MainLayout from '../../components/Layout/MainLayout';
+import AlertModal from '../../components/AlertModal';
 
 export default function SettingsPage() {
   const [settings, setSettings] = useState({
