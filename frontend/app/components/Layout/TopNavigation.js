@@ -1,7 +1,9 @@
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function TopNavigation() {
+  const router = useRouter();
   const [showOrgDropdown, setShowOrgDropdown] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -22,6 +24,18 @@ export default function TopNavigation() {
     
     // Optionally show a success message or reload the page
     // window.location.reload(); // Uncomment if you need to reload the page
+  };
+
+  const handleSignOut = () => {
+    // Clear authentication data
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userData');
+    
+    // Close user menu
+    setShowUserMenu(false);
+    
+    // Redirect to login page
+    router.push('/login');
   };
 
   return (
@@ -139,7 +153,12 @@ export default function TopNavigation() {
                   <a href="/subscription" className="block px-3 py-2 hover:bg-gray-700 rounded text-gray-200">Subscription</a>
                   <a href="/settings" className="block px-3 py-2 hover:bg-gray-700 rounded text-gray-200">Settings</a>
                   <hr className="my-2 border-gray-600" />
-                  <button className="block w-full text-left px-3 py-2 hover:bg-gray-700 rounded text-gray-200">Sign Out</button>
+                  <button 
+                    onClick={handleSignOut}
+                    className="block w-full text-left px-3 py-2 hover:bg-gray-700 rounded text-gray-200"
+                  >
+                    Sign Out
+                  </button>
                 </div>
               </div>
             )}
