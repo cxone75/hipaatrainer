@@ -1,7 +1,9 @@
 
 -- Create a trigger function that sets up organization when a new auth user is created
 CREATE OR REPLACE FUNCTION handle_new_user()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER
+SECURITY DEFINER 
+AS $$
 DECLARE
     v_org_id UUID;
     v_admin_role_id UUID;
@@ -14,13 +16,13 @@ DECLARE
     v_job_title VARCHAR;
 BEGIN
     -- Log the trigger execution for debugging
-    RAISE NOTICE 'handle_new_user trigger fired for user: %', NEW.id;
+    RAISE WARNING 'handle_new_user trigger fired for user: %', NEW.id;
     
     -- Get user metadata from auth.users
     v_user_metadata := NEW.raw_user_meta_data;
     
     -- Log metadata for debugging
-    RAISE NOTICE 'User metadata: %', v_user_metadata;
+    RAISE WARNING 'User metadata: %', v_user_metadata;
     
     -- Extract organization name from metadata
     v_org_name := v_user_metadata->>'organizationName';
@@ -30,7 +32,7 @@ BEGIN
     
     -- Only proceed if organization name is provided (signup flow)
     IF v_org_name IS NOT NULL AND v_org_name != '' THEN
-        RAISE NOTICE 'Processing new organization signup for: %', v_org_name;
+        RAISE WARNING 'Processing new organization signup for: %', v_org_name;
         -- Check if organization already exists
         SELECT id INTO v_org_id FROM organizations WHERE name = v_org_name;
         
@@ -39,6 +41,7 @@ BEGIN
             INSERT INTO organizations (name, created_at, updated_at)
             VALUES (v_org_name, NOW(), NOW())
             RETURNING id INTO v_org_id;
+RAISE WARNING 'v_org_id: %', v_org_id;
 
             -- Create default Admin role
             INSERT INTO roles (organization_id, name, description, is_default, created_by, created_at, updated_at)
@@ -114,6 +117,8 @@ BEGIN
             END IF;
         END IF;
 
+        RAISE WARNING 'Records created so far: organization_id=%, role_id=%', v_org_id, v_admin_role_id;
+
         -- Create user record in our users table
         INSERT INTO users (
             id,
@@ -139,7 +144,7 @@ BEGIN
             NOW()
         );
         
-        RAISE NOTICE 'Successfully created user record for: %', NEW.email;
+        RAISE WARNING 'Successfully created user record for: %', NEW.email;
 
         -- Log the organization creation if new org
         IF v_admin_role_id IS NOT NULL THEN
@@ -160,7 +165,7 @@ BEGIN
         END IF;
     END IF;
 
-    RAISE NOTICE 'Successfully completed handle_new_user for: %', NEW.email;
+    RAISE WARNING 'Successfully completed handle_new_user for: %', NEW.email;
     RETURN NEW;
 EXCEPTION
     WHEN OTHERS THEN
