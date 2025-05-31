@@ -1,11 +1,10 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
 
 export default function ProgressChart() {
   const [timeframe, setTimeframe] = useState('7d');
-  
+
   // Sample data for different timeframes
   const chartData = {
     '7d': [
@@ -50,39 +49,89 @@ export default function ProgressChart() {
         </div>
       </div>
 
-      {/* Chart Area */}
-      <div className="relative h-64">
-        <div className="absolute inset-0 flex items-end justify-between space-x-2">
-          {data.map((item, index) => (
-            <div key={index} className="flex-1 flex flex-col items-center space-y-1">
-              {/* Bars */}
-              <div className="w-full max-w-12 space-y-1">
-                <div className="relative">
-                  <div 
-                    className="bg-purple-200 rounded-t"
-                    style={{ height: `${(item.compliance / maxValue) * 200}px` }}
-                  ></div>
-                  <div 
-                    className="bg-purple-600 rounded-t"
-                    style={{ height: `${(item.training / maxValue) * 200}px` }}
-                  ></div>
-                </div>
-              </div>
-              
-              {/* Labels */}
-              <span className="text-xs text-gray-600 text-center">{item.label}</span>
-            </div>
-          ))}
-        </div>
-        
-        {/* Y-axis labels */}
-        <div className="absolute left-0 top-0 h-full flex flex-col justify-between text-xs text-gray-500 -ml-8">
-          <span>{maxValue}</span>
-          <span>{Math.round(maxValue * 0.75)}</span>
-          <span>{Math.round(maxValue * 0.5)}</span>
-          <span>{Math.round(maxValue * 0.25)}</span>
-          <span>0</span>
-        </div>
+      {/* Chart Container */}
+      <div className="relative h-64 w-full overflow-hidden">
+        <svg 
+          width="100%" 
+          height="100%" 
+          viewBox="0 0 400 240"
+          className="overflow-hidden"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          {data.map((item, index) => {
+            const barHeight = 28;
+            const spacing = 32;
+            const y = index * spacing + 20;
+            const maxBarWidth = 280; // Reduced to fit container
+            const complianceWidth = (item.compliance / maxValue) * maxBarWidth;
+            const trainingWidth = (item.training / maxValue) * maxBarWidth;
+
+            return (
+              <g key={index}>
+                {/* Background bar */}
+                <rect
+                  x="70"
+                  y={y}
+                  width={maxBarWidth}
+                  height={barHeight}
+                  fill="#f3f4f6"
+                  rx="4"
+                />
+
+                {/* Compliance bar */}
+                <rect
+                  x="70"
+                  y={y}
+                  width={complianceWidth}
+                  height={barHeight}
+                  fill="#c084fc"
+                  rx="4"
+                />
+
+                {/* Training bar */}
+                <rect
+                  x="70"
+                  y={y + 4}
+                  width={trainingWidth}
+                  height={barHeight - 8}
+                  fill="#8b5cf6"
+                  rx="2"
+                />
+
+                {/* Day label */}
+                <text
+                  x="60"
+                  y={y + barHeight/2 + 4}
+                  textAnchor="end"
+                  className="text-xs fill-gray-600"
+                  fontSize="11"
+                >
+                  {item.label}
+                </text>
+
+                {/* Values */}
+                <text
+                  x="360"
+                  y={y + 12}
+                  textAnchor="start"
+                  className="text-xs fill-gray-700"
+                  fontSize="10"
+                >
+                  {item.compliance}%
+                </text>
+                <text
+                  x="360"
+                  y={y + 24}
+                  textAnchor="start"
+                  className="text-xs fill-gray-500"
+                  fontSize="10"
+                >
+                  {item.training}%
+                </text>
+              </g>
+            );
+          })}
+        </svg>
       </div>
 
       {/* Legend */}
