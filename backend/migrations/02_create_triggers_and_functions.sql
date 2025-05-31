@@ -86,7 +86,7 @@ RETURNS UUID AS $$
 DECLARE
     audit_id UUID;
 BEGIN
-    INSERT INTO audit_logs (
+    INSERT INTO public.audit_logs (
         organization_id,
         user_id,
         action,
