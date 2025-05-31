@@ -31,7 +31,6 @@ class AuthMiddleware {
         email: user.email,
         organizationId: user.organization_id,
         roleId: user.role_id,
-        role: user.role,
         status: user.status,
       };
 

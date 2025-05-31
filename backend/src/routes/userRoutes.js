@@ -88,7 +88,6 @@ router.get('/verify', async (req, res) => {
         email: req.user.email,
         organizationId: req.user.organizationId,
         roleId: req.user.roleId,
-        role: req.user.role,
         status: req.user.status,
       }
     });

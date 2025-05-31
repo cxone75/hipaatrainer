@@ -51,7 +51,7 @@ router.post('/register', async (req, res) => {
     });
 
     if (authError) {
-      console.error('Supabase auth error:', authError);
+      console.error('Supabase auth error2:', authError);
       if (authError.message.includes('already been registered')) {
         return res.status(400).json({ error: 'User already exists with this email' });
       }
@@ -219,8 +219,7 @@ router.post('/login', async (req, res) => {
         lastName: user.last_name,
         organizationId: user.organization_id,
         roleId: user.role_id,
-        status: user.status,
-        role: user.role
+        status: user.status
       }
     });
 

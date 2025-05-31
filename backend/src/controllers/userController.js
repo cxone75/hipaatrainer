@@ -72,7 +72,7 @@ class UserController {
         action: 'CREATE_USER',
         resource: 'users',
         resourceId: user.id,
-        details: { email: userData.email, role: userData.role },
+        details: { email: userData.email, role_id: userData.role_id },
         ipAddress: req.ip,
         userAgent: req.get('User-Agent'),
       });
