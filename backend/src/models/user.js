@@ -11,8 +11,16 @@ class UserModel {
       .from('users')
       .select(`
         *,
-        role:roles(*),
-        organization:organizations(name)
+        role:role_id(
+          id,
+          name,
+          description,
+          organization_id,
+          is_default,
+          created_at,
+          updated_at
+        ),
+        organization:organization_id(name)
       `);
 
     // Apply filters
@@ -54,8 +62,16 @@ class UserModel {
       .from('users')
       .select(`
         *,
-        role:roles(*),
-        organization:organizations(name)
+        role:role_id(
+          id,
+          name,
+          description,
+          organization_id,
+          is_default,
+          created_at,
+          updated_at
+        ),
+        organization:organization_id(name)
       `)
       .eq('id', id)
       .single();
@@ -120,8 +136,16 @@ class UserModel {
       .insert(userToCreate)
       .select(`
         *,
-        role:roles(*),
-        organization:organizations(name)
+        role:role_id(
+          id,
+          name,
+          description,
+          organization_id,
+          is_default,
+          created_at,
+          updated_at
+        ),
+        organization:organization_id(name)
       `)
       .single();
 
@@ -162,8 +186,16 @@ class UserModel {
       .eq('id', id)
       .select(`
         *,
-        role:roles(*),
-        organization:organizations(name)
+        role:role_id(
+          id,
+          name,
+          description,
+          organization_id,
+          is_default,
+          created_at,
+          updated_at
+        ),
+        organization:organization_id(name)
       `)
       .single();
 
