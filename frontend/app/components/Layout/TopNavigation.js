@@ -1,6 +1,6 @@
-
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function TopNavigation() {
   const router = useRouter();
@@ -21,7 +21,7 @@ export default function TopNavigation() {
     // Here you would typically make an API call to switch the organization context
     // and then reload the page or update the global state
     console.log('Switching to organization:', orgName);
-    
+
     // Optionally show a success message or reload the page
     // window.location.reload(); // Uncomment if you need to reload the page
   };
@@ -30,10 +30,10 @@ export default function TopNavigation() {
     // Clear authentication data
     localStorage.removeItem('authToken');
     localStorage.removeItem('userData');
-    
+
     // Close user menu
     setShowUserMenu(false);
-    
+
     // Redirect to login page
     router.push('/login');
   };
@@ -56,7 +56,7 @@ export default function TopNavigation() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
-            
+
             {showOrgDropdown && (
               <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 w-64 bg-gray-800 border border-gray-600 rounded shadow-lg z-50">
                 <div className="p-2">
@@ -151,7 +151,7 @@ export default function TopNavigation() {
                 <div className="p-2">
                   <a href="/profile" className="block px-3 py-2 hover:bg-gray-700 rounded text-gray-200">Profile</a>
                   <a href="/app/subscription" className="block px-3 py-2 hover:bg-gray-700 rounded text-gray-200">Subscription</a>
-                  <a href="/settings" className="block px-3 py-2 hover:bg-gray-700 rounded text-gray-200">Settings</a>
+                  <a href="/app/settings" className="block px-3 py-2 hover:bg-gray-700 rounded text-gray-200">Settings</a>
                   <hr className="my-2 border-gray-600" />
                   <button 
                     onClick={handleSignOut}
