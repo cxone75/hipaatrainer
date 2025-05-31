@@ -51,15 +51,11 @@ router.post('/register', async (req, res) => {
     });
 
     if (authError) {
-      console.error('Supabase auth error3:', authError);
       if (authError.message.includes('already been registered')) {
         return res.status(400).json({ error: 'User already exists with this email' });
       }
       return res.status(400).json({ error: authError.message });
     }
-
-    console.log('Auth user created successfully:', authUserData.user.id);
-    console.log('User metadata:', authUserData.user.user_metadata);
 
     // Wait longer for triggers to complete
     await new Promise(resolve => setTimeout(resolve, 2000));
@@ -71,10 +67,8 @@ router.post('/register', async (req, res) => {
     
     while (!user && retryCount < maxRetries) {
       try {
-        console.log(`Attempt ${retryCount + 1} to retrieve user:`, authUserData.user.id);
         user = await userModel.getUserById(authUserData.user.id);
         if (user) {
-          console.log('User found:', user);
           break;
         }
         
@@ -83,7 +77,6 @@ router.post('/register', async (req, res) => {
         await new Promise(resolve => setTimeout(resolve, delay));
         retryCount++;
       } catch (error) {
-        console.log(`Retry ${retryCount + 1} failed:`, error.message);
         retryCount++;
         if (retryCount < maxRetries) {
           const delay = 500 + (retryCount * 200);
@@ -93,8 +86,6 @@ router.post('/register', async (req, res) => {
     }
 
     if (!user) {
-      console.error('Failed to find user after trigger execution');
-      
       // Try direct query to see if user exists anywhere
       const { data: directUser, error: directError } = await supabase
         .from('users')
@@ -102,10 +93,7 @@ router.post('/register', async (req, res) => {
         .eq('id', authUserData.user.id)
         .single();
       
-      console.log('Direct query result:', { directUser, directError });
-      
       // Cleanup auth user and return error
-      console.log('Cleaning up auth user:', authUserData.user.id);
       await supabase.auth.admin.deleteUser(authUserData.user.id);
       throw new Error('Failed to create user records. The organization setup may have failed. Please try again.');
     }
@@ -138,8 +126,6 @@ router.post('/register', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Registration error:', error);
-    
     // Return appropriate error message
     if (error.message.includes('duplicate key value violates unique constraint') || 
         error.message.includes('already exists') ||
@@ -153,25 +139,10 @@ router.post('/register', async (req, res) => {
 
 // User login
 router.post('/login', async (req, res) => {
-  console.log('=== LOGIN REQUEST RECEIVED ===');
-  console.log('Request URL:', req.originalUrl);
-  console.log('Request Method:', req.method);
-  console.log('Request Headers:', JSON.stringify(req.headers, null, 2));
-  console.log('Request Body:', JSON.stringify(req.body, null, 2));
-
   try {
     const { email, password } = req.body;
-    console.log('Login attempt for email:', email);
-    console.log('Password provided:', !!password);
-
-    console.log('Environment check:', {
-      hasSupabaseUrl: !!process.env.SUPABASE_URL,
-      hasSupabaseKey: !!process.env.SUPABASE_ANON_KEY,
-      hasJwtSecret: !!process.env.JWT_SECRET
-    });
 
     if (!email || !password) {
-      console.log('Missing email or password');
       return res.status(400).json({ error: 'Email and password are required' });
     }
 
@@ -183,7 +154,6 @@ router.post('/login', async (req, res) => {
     });
 
     if (authError) {
-      console.log('Supabase auth error:', authError);
       if (authError.message.includes('Invalid login credentials')) {
         return res.status(401).json({ error: 'Invalid email or password' });
       }
@@ -228,7 +198,6 @@ router.post('/login', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Login error:', error);
     res.status(500).json({ error: 'Login failed' });
   }
 });
@@ -249,14 +218,12 @@ router.post('/forgot-password', async (req, res) => {
     });
 
     if (error) {
-      console.error('Password reset error:', error);
       return res.status(400).json({ error: error.message });
     }
 
     res.json({ message: 'Password reset email sent' });
 
   } catch (error) {
-    console.error('Forgot password error:', error);
     res.status(500).json({ error: 'Failed to send password reset email' });
   }
 });
@@ -275,7 +242,6 @@ router.get('/oauth/:provider', async (req, res) => {
     });
 
     if (error) {
-      console.error('OAuth error:', error);
       return res.status(400).json({ error: error.message });
     }
 
@@ -283,7 +249,6 @@ router.get('/oauth/:provider', async (req, res) => {
     res.redirect(data.url);
 
   } catch (error) {
-    console.error('OAuth error:', error);
     res.status(500).json({ error: 'OAuth authentication failed' });
   }
 });
@@ -301,7 +266,6 @@ router.get('/callback', async (req, res) => {
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (error) {
-      console.error('OAuth callback error:', error);
       return res.status(400).json({ error: error.message });
     }
 
@@ -331,7 +295,6 @@ router.get('/callback', async (req, res) => {
     res.redirect(`${process.env.FRONTEND_URL}/app?token=${token}`);
 
   } catch (error) {
-    console.error('OAuth callback error:', error);
     res.status(500).json({ error: 'OAuth callback failed' });
   }
 });
@@ -373,7 +336,6 @@ router.get('/verify', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Token verification error:', error);
     if (error.name === 'JsonWebTokenError') {
       return res.status(401).json({ error: 'Invalid token' });
     }
@@ -398,7 +360,6 @@ router.post('/logout', async (req, res) => {
     res.json({ message: 'Logout successful' });
 
   } catch (error) {
-    console.error('Logout error:', error);
     res.status(500).json({ error: 'Logout failed' });
   }
 });
