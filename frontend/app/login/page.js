@@ -39,7 +39,7 @@ export default function LoginPage() {
 
     try {
       // Call backend API to authenticate with Supabase
-      const response = await fetch('http://0.0.0.0:3001/api/auth/login', {
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ export default function LoginPage() {
 
     try {
       // Redirect to backend OAuth endpoint
-      window.location.href = `http://0.0.0.0:3001/api/auth/oauth/${provider}`;
+      window.location.href = `/api/auth/oauth/${provider}`;
     } catch (error) {
       console.error(`${provider} login error:`, error);
       setSocialLoading('');
@@ -97,7 +97,7 @@ export default function LoginPage() {
     }
 
     try {
-      const response = await fetch('http://0.0.0.0:3001/api/auth/forgot-password', {
+      const response = await fetch('/api/auth/forgot-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
