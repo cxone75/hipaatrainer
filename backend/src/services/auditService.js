@@ -43,13 +43,11 @@ class AuditService {
         .single();
 
       if (error) {
-        console.error('Failed to create audit log:', error);
         throw new Error(`Audit logging failed: ${error.message || 'Database connection error'}`);
       }
 
       return data;
     } catch (error) {
-      console.error('Audit service error:', error);
       // Don't throw error to prevent audit logging from breaking the main request
       // Instead, log the error and continue
       this.logAuditError(error, auditData);
@@ -110,7 +108,6 @@ class AuditService {
         totalPages: Math.ceil((count || 0) / limit),
       };
     } catch (error) {
-      console.error('Failed to get audit logs:', error);
       throw error;
     }
   }
@@ -134,7 +131,6 @@ class AuditService {
 
       return auditLog;
     } catch (error) {
-      console.error('Failed to get audit log by ID:', error);
       throw error;
     }
   }
@@ -171,7 +167,6 @@ class AuditService {
         totalPages: Math.ceil((count || 0) / limit),
       };
     } catch (error) {
-      console.error('Failed to get user activity:', error);
       throw error;
     }
   }
@@ -210,7 +205,6 @@ class AuditService {
         totalPages: Math.ceil((count || 0) / limit),
       };
     } catch (error) {
-      console.error('Failed to get resource activity:', error);
       throw error;
     }
   }
@@ -270,7 +264,6 @@ class AuditService {
 
       return stats;
     } catch (error) {
-      console.error('Failed to get audit statistics:', error);
       throw error;
     }
   }
@@ -311,7 +304,6 @@ class AuditService {
           return logs;
       }
     } catch (error) {
-      console.error('Failed to export audit logs:', error);
       throw error;
     }
   }
@@ -370,10 +362,8 @@ class AuditService {
         throw new Error(`Failed to cleanup old audit logs: ${error.message}`);
       }
 
-      console.log(`Cleaned up audit logs older than ${retentionDays} days`);
       return data;
     } catch (error) {
-      console.error('Failed to cleanup old audit logs:', error);
       throw error;
     }
   }
@@ -381,17 +371,12 @@ class AuditService {
   async logAuditError(error, originalAuditData) {
     try {
       // Log audit errors to a separate table or file for debugging
-      console.error('Audit logging error:', {
-        error: error.message,
-        stack: error.stack,
-        originalData: originalAuditData,
-        timestamp: new Date().toISOString(),
-      });
-
+      // Could save error details to a separate error log table here
+      
       // Optionally save to a separate error log table
       // This would require creating an audit_errors table
     } catch (logError) {
-      console.error('Failed to log audit error:', logError);
+      // Silently handle logging errors
     }
   }
 

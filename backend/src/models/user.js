@@ -73,13 +73,11 @@ class UserModel {
         .single();
 
       if (error && error.code !== 'PGRST116') {
-        console.error('User lookup error:', error);
         throw new Error(`Failed to fetch user: ${error.message}`);
       }
 
       return user;
     } catch (error) {
-      console.error('Failed to get user by ID:', error);
       throw error;
     }
   }

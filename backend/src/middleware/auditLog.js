@@ -54,11 +54,9 @@ class AuditLogMiddleware {
               await auditService.log(auditData);
             }
           } catch (error) {
-            console.error('Audit logging failed:', error);
             // Don't fail the request if audit logging fails
           }
         } catch (error) {
-          console.error('Audit logging error:', error);
           // Don't fail the request if audit logging fails
         }
       });

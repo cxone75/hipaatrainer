@@ -10,7 +10,7 @@ class RBACMiddleware {
 
         // Get user permissions
         const permissions = await roleModel.getUserPermissions(req.user.id);
-        
+
         // Check if user has the required permission
         const hasPermission = permissions.some(permission => {
           const permissionString = `${permission.resource}:${permission.action}`;
@@ -26,7 +26,6 @@ class RBACMiddleware {
 
         next();
       } catch (error) {
-        console.error('RBAC middleware error:', error);
         return res.status(500).json({ error: 'Permission check failed' });
       }
     };
@@ -40,7 +39,7 @@ class RBACMiddleware {
         }
 
         const permissions = await roleModel.getUserPermissions(req.user.id);
-        
+
         const hasAnyPermission = requiredPermissions.some(required => {
           return permissions.some(permission => {
             const permissionString = `${permission.resource}:${permission.action}`;
@@ -57,7 +56,6 @@ class RBACMiddleware {
 
         next();
       } catch (error) {
-        console.error('RBAC middleware error:', error);
         return res.status(500).json({ error: 'Permission check failed' });
       }
     };
@@ -71,7 +69,7 @@ class RBACMiddleware {
         }
 
         const permissions = await roleModel.getUserPermissions(req.user.id);
-        
+
         const hasAllPermissions = requiredPermissions.every(required => {
           return permissions.some(permission => {
             const permissionString = `${permission.resource}:${permission.action}`;
@@ -88,7 +86,6 @@ class RBACMiddleware {
 
         next();
       } catch (error) {
-        console.error('RBAC middleware error:', error);
         return res.status(500).json({ error: 'Permission check failed' });
       }
     };
@@ -103,7 +100,7 @@ class RBACMiddleware {
 
         const userRole = req.user.role?.name;
         const rolesArray = Array.isArray(requiredRoles) ? requiredRoles : [requiredRoles];
-        
+
         if (!rolesArray.includes(userRole)) {
           return res.status(403).json({ 
             error: 'Insufficient role privileges', 
@@ -114,7 +111,6 @@ class RBACMiddleware {
 
         next();
       } catch (error) {
-        console.error('Role check error:', error);
         return res.status(500).json({ error: 'Role check failed' });
       }
     };
@@ -128,7 +124,7 @@ class RBACMiddleware {
         }
 
         const targetUserId = req.params.id || req.params.userId;
-        
+
         // Allow if user is accessing their own resource
         if (req.user.id === targetUserId) {
           return next();
@@ -150,7 +146,6 @@ class RBACMiddleware {
 
         next();
       } catch (error) {
-        console.error('Self or permission check error:', error);
         return res.status(500).json({ error: 'Permission check failed' });
       }
     };
@@ -163,14 +158,13 @@ class RBACMiddleware {
       }
 
       const targetOrgId = req.params.orgId || req.query.organizationId;
-      
+
       if (targetOrgId && req.user.organizationId !== targetOrgId) {
         return res.status(403).json({ error: 'Access denied to organization resource' });
       }
 
       next();
     } catch (error) {
-      console.error('Organization access check error:', error);
       return res.status(500).json({ error: 'Organization access check failed' });
     }
   }

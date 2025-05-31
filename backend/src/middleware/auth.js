@@ -43,7 +43,6 @@ class AuthMiddleware {
         return res.status(401).json({ error: 'Token expired' });
       }
       
-      console.error('Auth middleware error:', error);
       return res.status(500).json({ error: 'Authentication failed' });
     }
   }

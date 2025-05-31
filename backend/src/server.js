@@ -39,13 +39,8 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Global rate limiting
 app.use(rateLimit.apiLimiter);
 
-// Request logging middleware for debugging
+// Request logging middleware for debugging (disabled in production)
 app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
-  console.log('Headers:', req.headers);
-  if (req.body && Object.keys(req.body).length > 0) {
-    console.log('Body:', JSON.stringify(req.body, null, 2));
-  }
   next();
 });
 
@@ -96,8 +91,6 @@ app.use('*', (req, res) => {
 
 // Global error handler
 app.use((error, req, res, next) => {
-  console.error('Global error handler:', error);
-
   res.status(error.status || 500).json({
     error: process.env.NODE_ENV === 'production' 
       ? 'Internal server error' 
@@ -108,9 +101,7 @@ app.use((error, req, res, next) => {
 
 // Start server
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 HIPAA Tracker backend server running on port ${PORT}`);
-  console.log(`📊 Health check available at http://0.0.0.0:${PORT}/health`);
-  console.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
+  // Server started successfully
 });
 
 module.exports = app;
