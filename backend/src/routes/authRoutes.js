@@ -336,6 +336,54 @@ router.get('/callback', async (req, res) => {
   }
 });
 
+// Verify token
+router.get('/verify', async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) {
+      return res.status(401).json({ error: 'No token provided' });
+    }
+
+    // Verify JWT token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    
+    // Get user data from database
+    const user = await userModel.getUserById(decoded.userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    if (user.status !== 'active') {
+      return res.status(403).json({ error: 'Account is not active' });
+    }
+
+    res.json({
+      valid: true,
+      user: {
+        id: user.id,
+        email: user.email,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        organizationId: user.organization_id,
+        roleId: user.role_id,
+        status: user.status
+      }
+    });
+
+  } catch (error) {
+    console.error('Token verification error:', error);
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: 'Token expired' });
+    }
+    res.status(500).json({ error: 'Token verification failed' });
+  }
+});
+
 // Logout
 router.post('/logout', async (req, res) => {
   try {

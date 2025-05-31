@@ -23,7 +23,7 @@ export default function AuthGuard({ children }) {
         }
 
         // Verify token with backend
-        const response = await fetch('http://0.0.0.0:3001/api/users/verify', {
+        const response = await fetch('/api/auth/verify', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -31,10 +31,17 @@ export default function AuthGuard({ children }) {
         });
 
         if (response.ok) {
-          const userData = await response.json();
-          setIsAuthenticated(true);
-          // Store user data if needed
-          localStorage.setItem('userData', JSON.stringify(userData));
+          const data = await response.json();
+          if (data.valid && data.user) {
+            setIsAuthenticated(true);
+            // Store user data if needed
+            localStorage.setItem('userData', JSON.stringify(data.user));
+          } else {
+            // Token is invalid, remove it
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('userData');
+            setIsAuthenticated(false);
+          }
         } else {
           // Token is invalid, remove it
           localStorage.removeItem('authToken');
