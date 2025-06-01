@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import LandingHeader from '../components/Layout/LandingHeader';
 import LandingFooter from '../components/Layout/LandingFooter';
+import { BorderBeam } from '../components/ui/border-beam';
 
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -103,12 +104,13 @@ export default function LandingPage() {
             </p>
           </div>
           <div className="relative max-w-6xl mx-auto">
-            <div className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl p-8 shadow-2xl">
+            <div className="relative bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl p-8 shadow-2xl">
               <img 
                 src="/attached_assets/Screenshot 2025-05-28 171920.png" 
                 alt="HIPAA Trainer Dashboard Preview" 
                 className="w-full h-auto rounded-lg shadow-lg border border-gray-200"
               />
+              <BorderBeam size={300} duration={10} delay={2} />
             </div>
           </div>
         </div>
