@@ -14,48 +14,48 @@ import {
 export function FeaturesSectionWithHoverEffects() {
   const features = [
     {
-      title: "Built for developers",
+      title: "Dental Practices",
       description:
-        "Built for engineers, developers, dreamers, thinkers and doers.",
+        "Automate staff training and patient privacy compliance for your dental practice.",
       icon: <IconTerminal2 />,
     },
     {
-      title: "Ease of use",
+      title: "Medical Clinics",
       description:
-        "It's as easy as using an Apple, and as expensive as buying one.",
+        "Track physician and nurse certifications effortlessly across your clinic.",
       icon: <IconEaseInOut />,
     },
     {
-      title: "Pricing like no other",
+      title: "Healthtech Startups",
       description:
-        "Our prices are best in the market. No cap, no lock, no credit card required.",
+        "Integrate compliance into your development workflow from day one.",
       icon: <IconCurrencyDollar />,
     },
     {
-      title: "100% Uptime guarantee",
-      description: "We just cannot be taken down by anyone.",
+      title: "Mental Health",
+      description: "Navigate telehealth PHI rules with complete confidence.",
       icon: <IconCloud />,
     },
     {
-      title: "Multi-tenant Architecture",
-      description: "You can simply share passwords instead of buying new seats",
+      title: "Home Healthcare",
+      description: "Coordinate compliance across distributed caregivers seamlessly.",
       icon: <IconRouteAltLeft />,
     },
     {
-      title: "24/7 Customer Support",
+      title: "Specialty Practices",
       description:
-        "We are available a 100% of the time. Atleast our AI Agents are.",
+        "Custom compliance solutions for specialized healthcare providers.",
       icon: <IconHelp />,
     },
     {
-      title: "Money back guarantee",
+      title: "Multi-Location Groups",
       description:
-        "If you donot like EveryAI, we will convince you to like us.",
+        "Centralized compliance management across multiple healthcare facilities.",
       icon: <IconAdjustmentsBolt />,
     },
     {
-      title: "And everything else",
-      description: "I just ran out of copy ideas. Accept my sincere apologies",
+      title: "All Healthcare",
+      description: "Comprehensive compliance for any healthcare organization.",
       icon: <IconHeart />,
     },
   ];
