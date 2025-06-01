@@ -1,14 +1,14 @@
 
 import { cn } from "@/lib/utils";
 import {
-  IconAdjustmentsBolt,
-  IconCloud,
-  IconCurrencyDollar,
-  IconEaseInOut,
-  IconHeart,
-  IconHelp,
-  IconRouteAltLeft,
-  IconTerminal2,
+  IconStethoscope,
+  IconBuildingHospital,
+  IconCode,
+  IconBrain,
+  IconHome,
+  IconMicroscope,
+  IconBuildings,
+  IconMedicalCross,
 } from "@tabler/icons-react";
 
 export function FeaturesSectionWithHoverEffects() {
@@ -17,46 +17,46 @@ export function FeaturesSectionWithHoverEffects() {
       title: "Dental Practices",
       description:
         "Automate staff training and patient privacy compliance for your dental practice.",
-      icon: <IconTerminal2 />,
+      icon: <IconMedicalCross className="text-purple-600" />,
     },
     {
       title: "Medical Clinics",
       description:
         "Track physician and nurse certifications effortlessly across your clinic.",
-      icon: <IconEaseInOut />,
+      icon: <IconStethoscope className="text-purple-600" />,
     },
     {
       title: "Healthtech Startups",
       description:
         "Integrate compliance into your development workflow from day one.",
-      icon: <IconCurrencyDollar />,
+      icon: <IconCode className="text-purple-600" />,
     },
     {
       title: "Mental Health",
       description: "Navigate telehealth PHI rules with complete confidence.",
-      icon: <IconCloud />,
+      icon: <IconBrain className="text-purple-600" />,
     },
     {
       title: "Home Healthcare",
       description: "Coordinate compliance across distributed caregivers seamlessly.",
-      icon: <IconRouteAltLeft />,
+      icon: <IconHome className="text-purple-600" />,
     },
     {
       title: "Specialty Practices",
       description:
         "Custom compliance solutions for specialized healthcare providers.",
-      icon: <IconHelp />,
+      icon: <IconMicroscope className="text-purple-600" />,
     },
     {
       title: "Multi-Location Groups",
       description:
         "Centralized compliance management across multiple healthcare facilities.",
-      icon: <IconAdjustmentsBolt />,
+      icon: <IconBuildings className="text-purple-600" />,
     },
     {
       title: "All Healthcare",
       description: "Comprehensive compliance for any healthcare organization.",
-      icon: <IconHeart />,
+      icon: <IconBuildingHospital className="text-purple-600" />,
     },
   ];
   return (
@@ -93,7 +93,7 @@ const Feature = ({
       {index >= 4 && (
         <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-gradient-to-b from-neutral-100 dark:from-neutral-800 to-transparent pointer-events-none" />
       )}
-      <div className="mb-4 relative z-10 px-10 text-neutral-600 dark:text-neutral-400">
+      <div className="mb-4 relative z-10 px-10">
         {icon}
       </div>
       <div className="text-lg font-bold mb-2 relative z-10 px-10">
