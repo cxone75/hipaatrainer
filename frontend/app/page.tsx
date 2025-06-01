@@ -3,6 +3,7 @@
 
 import LandingHeader from './components/Layout/LandingHeader';
 import LandingFooter from './components/Layout/LandingFooter';
+import { AuroraBackground } from './components/ui/aurora-background';
 import Link from 'next/link';
 
 export default function LandingPage() {
@@ -10,13 +11,13 @@ export default function LandingPage() {
     <div className="min-h-screen bg-white">
       <LandingHeader />
       
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-purple-50 to-pink-50 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Hero Section with Aurora Background */}
+      <AuroraBackground className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-pink-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-              HIPAA Compliance Made
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600"> Simple</span>
+              From Compliance Chaos to
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600"> Complete Control</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
               Streamline your healthcare compliance with automated training, risk assessments, and audit preparation. 
@@ -25,20 +26,20 @@ export default function LandingPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link 
                 href="/login"
-                className="bg-purple-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-purple-700 transition-colors text-lg"
+                className="bg-purple-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-purple-700 transition-colors text-lg shadow-lg"
               >
                 Get Started Free
               </Link>
               <Link 
                 href="#features"
-                className="border border-purple-600 text-purple-600 px-8 py-4 rounded-lg font-semibold hover:bg-purple-50 transition-colors text-lg"
+                className="border border-purple-600 text-purple-600 px-8 py-4 rounded-lg font-semibold hover:bg-purple-50 hover:bg-opacity-80 transition-colors text-lg backdrop-blur-sm"
               >
                 Learn More
               </Link>
             </div>
           </div>
         </div>
-      </section>
+      </AuroraBackground>
 
       {/* Features Section */}
       <section id="features" className="py-20">
