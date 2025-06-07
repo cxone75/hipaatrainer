@@ -40,7 +40,7 @@ export default function TermsPage() {
                   By accessing and using HIPAA Trainer ("the Service"), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
                 </p>
                 <p className="text-gray-700">
-                  These Terms of Service constitute a legal agreement between you and HIPAA Trainer, Inc. ("Company," "we," "us," or "our") regarding your use of our healthcare compliance training platform.
+                  These Terms of Service constitute a legal agreement between you and Loganbee, LLC ("Company," "we," "us," or "our") regarding your use of our healthcare compliance training platform.
                 </p>
               </section>
 
@@ -104,7 +104,7 @@ export default function TermsPage() {
               <section className="mb-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">6. Intellectual Property Rights</h2>
                 <p className="text-gray-700 mb-4">
-                  The Service and its original content, features, and functionality are owned by HIPAA Trainer, Inc. and are protected by international copyright, trademark, patent, trade secret, and other intellectual property laws.
+                  The Service and its original content, features, and functionality are owned by Loganbee LLC. and are protected by international copyright, trademark, patent, trade secret, and other intellectual property laws.
                 </p>
                 <p className="text-gray-700">
                   You are granted a limited, non-exclusive, non-transferable license to access and use the Service for your organization's compliance training purposes only.
@@ -178,10 +178,10 @@ export default function TermsPage() {
                 </p>
                 <div className="bg-gray-50 p-6 rounded-lg">
                   <p className="text-gray-700 mb-2"><strong>Email:</strong> info@hipaatrainer.net</p>
-                  <p className="text-gray-700 mb-2"><strong>Address:</strong> HIPAA Trainer, Inc.</p>
-                  <p className="text-gray-700 mb-2">123 Healthcare Compliance Way</p>
-                  <p className="text-gray-700 mb-2">Legal Department, Suite 200</p>
-                  <p className="text-gray-700">Compliance City, CC 12345</p>
+                  <p className="text-gray-700 mb-2"><strong>Address:</strong> HIPAA Trainer</p>
+                  <p className="text-gray-700 mb-2">10109 Lake Creek Pkwy</p>
+                  <p className="text-gray-700 mb-2">#171315</p>
+                  <p className="text-gray-700">Austin, TX 78717</p>
                 </div>
               </section>
             </div>

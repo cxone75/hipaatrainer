@@ -18,7 +18,7 @@ export default function FAQPage() {
         },
         {
           question: "How quickly can we get started with HIPAA Trainer?",
-          answer: "Most organizations are up and running within hours. Our onboarding process takes about 30-60 minutes, and your team can begin training immediately. We provide setup assistance and can have you audit-ready within 2-4 weeks."
+          answer: "Most organizations are up and running within hours. Our onboarding process takes about 30-60 minutes, and your team can begin training immediately."
         },
         {
           question: "Do we need any special IT setup or software?",
@@ -35,7 +35,7 @@ export default function FAQPage() {
         },
         {
           question: "How do you stay current with HIPAA regulations?",
-          answer: "Our compliance team continuously monitors regulatory changes and updates. When regulations change, we automatically update your policies and training materials, and notify you of any required actions."
+          answer: "Our compliance team continuously monitors regulatory changes and updates."
         },
         {
           question: "What if we're audited? How does HIPAA Trainer help?",
@@ -43,7 +43,7 @@ export default function FAQPage() {
         },
         {
           question: "Can HIPAA Trainer help with Business Associate Agreements (BAAs)?",
-          answer: "Yes, we provide BAA templates and management tools to track all your business associate relationships. We also maintain our own BAA with you as part of our service."
+          answer: "Yes, we provide BAA templates and management tools to track all your business associate relationships."
         }
       ]
     },
@@ -52,7 +52,7 @@ export default function FAQPage() {
       questions: [
         {
           question: "How long does HIPAA training take for each employee?",
-          answer: "Our core HIPAA training typically takes 45-60 minutes per employee. We offer role-specific modules that can add 15-30 minutes depending on the employee's responsibilities. All training is self-paced."
+          answer: "Our core HIPAA training typically takes 45-60 minutes per employee. All training is self-paced."
         },
         {
           question: "Can we track who has completed training?",
@@ -73,11 +73,11 @@ export default function FAQPage() {
       questions: [
         {
           question: "What's included in the lifetime deal?",
-          answer: "The lifetime deal includes unlimited users, all training modules, policy templates, audit tools, risk assessments, and ongoing regulatory updates. You pay once and have access forever with no recurring fees."
+          answer: "The lifetime deal includes 50 users, all training modules, policy templates, audit tools, risk assessments, and ongoing regulatory updates. You pay once and have access forever with no recurring fees."
         },
         {
           question: "Are there any hidden fees or limitations?",
-          answer: "No hidden fees. The lifetime deal includes everything: unlimited users, unlimited training, all features, and ongoing updates. The only limitation is our fair use policy for API usage."
+          answer: "No hidden fees. The lifetime deal includes everything: 50 users, unlimited training, all features, and ongoing updates."
         },
         {
           question: "What if we need to cancel or get a refund?",
@@ -92,10 +92,6 @@ export default function FAQPage() {
     {
       category: "Security & Data",
       questions: [
-        {
-          question: "Is HIPAA Trainer itself HIPAA compliant?",
-          answer: "Yes, we're fully HIPAA compliant and SOC 2 certified. We undergo regular security audits, use enterprise-grade encryption, and maintain strict access controls. We practice what we preach."
-        },
         {
           question: "Where is our data stored and how is it protected?",
           answer: "Your data is stored in secure, HIPAA-compliant data centers with encryption at rest and in transit. We use multi-factor authentication, regular backups, and have comprehensive disaster recovery procedures."

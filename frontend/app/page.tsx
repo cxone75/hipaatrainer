@@ -593,7 +593,7 @@ export default function LandingPage() {
               },
               {
                 plan: "Founding Member",
-                price: "$297",
+                price: "$199",
                 period: "lifetime",
                 popular: true,
                 features: ["Up to 50 users", "All core features", "1-year money-back guarantee", "Priority support"],
@@ -602,7 +602,7 @@ export default function LandingPage() {
               },
               {
                 plan: "Early Bird",
-                price: "$397",
+                price: "$299",
                 period: "lifetime", 
                 popular: false,
                 features: ["Up to 50 users", "All core features", "1-year money-back guarantee", "Standard support"],
@@ -611,10 +611,10 @@ export default function LandingPage() {
               },
               {
                 plan: "Regular",
-                price: "$30",
+                price: "$19",
                 period: "/month",
                 popular: false,
-                features: ["First 10 users", "$20/mo per 10 additional", "All features", "Standard support"],
+                features: ["First 10 users", "$15/mo per 10 additional", "All features", "Standard support"],
                 buttonText: "Coming Soon",
                 promoText: "Your compliance nightmare will soon be over",
                 disabled: true

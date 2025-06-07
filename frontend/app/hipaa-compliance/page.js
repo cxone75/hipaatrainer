@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import LandingHeader from '../components/Layout/LandingHeader';
 import LandingFooter from '../components/Layout/LandingFooter';
+import Link from 'next/link';
 
 export default function HIPAACompliancePage() {
   const [expandedSection, setExpandedSection] = useState(null);
@@ -160,7 +161,7 @@ export default function HIPAACompliancePage() {
                 <div className="bg-purple-50 border border-purple-200 rounded-lg p-6">
                   <h3 className="text-lg font-semibold text-purple-800 mb-3">Comprehensive Training</h3>
                   <p className="text-purple-700">
-                    Interactive modules covering all HIPAA requirements, tailored to different roles within your organization.
+                    HIPAA training delivered through interactive, bite-sized modules that ensure maximum retention and practical understanding of all compliance requirements.
                   </p>
                 </div>
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
@@ -192,7 +193,7 @@ export default function HIPAACompliancePage() {
                 <div className="bg-pink-50 border border-pink-200 rounded-lg p-6">
                   <h3 className="text-lg font-semibold text-pink-800 mb-3">Expert Support</h3>
                   <p className="text-pink-700">
-                    Access to HIPAA compliance experts and regular updates on regulatory changes.
+                    Regular updates on regulatory changes.
                   </p>
                 </div>
               </div>
@@ -205,12 +206,7 @@ export default function HIPAACompliancePage() {
             <p className="text-lg mb-6">
               Let HIPAA Trainer guide your organization through every step of HIPAA compliance with our comprehensive platform.
             </p>
-            <a
-              href="/#pricing"
-              className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-block"
-            >
-              Start Your Compliance Journey
-            </a>
+            <Link href="/#pricing" className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-block">Start Your Compliance Journey</Link>
           </div>
 
           {/* Contact Information */}

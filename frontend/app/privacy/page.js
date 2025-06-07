@@ -224,10 +224,10 @@ export default function PrivacyPolicyPage() {
             </p>
             <div className="bg-gray-50 p-6 rounded-lg">
               <p className="text-gray-700 mb-2"><strong>Email:</strong> info@hipaatrainer.net</p>
-              <p className="text-gray-700 mb-2"><strong>Address:</strong> HIPAA Trainer, Inc.</p>
-              <p className="text-gray-700 mb-2">123 Healthcare Compliance Way</p>
-              <p className="text-gray-700">Privacy Department, Suite 100</p>
-              <p className="text-gray-700">Compliance City, CC 12345</p>
+              <p className="text-gray-700 mb-2"><strong>Address:</strong> HIPAA Trainer</p>
+              <p className="text-gray-700 mb-2">10109 Lake Creek Pkwy</p>
+              <p className="text-gray-700">#171315</p>
+              <p className="text-gray-700">Austin, TX 78717</p>
             </div>
           </section>
         </div>
@@ -264,7 +264,7 @@ export default function PrivacyPolicyPage() {
               <h3 className="text-lg font-semibold mb-4 text-purple-400">Company</h3>
               <ul className="space-y-2">
                 <li><Link href="/" className="text-gray-300 hover:text-white transition-colors">Home</Link></li>
-                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">FAQ</a></li>
+                <li><Link href="/faq" className="text-gray-300 hover:text-white transition-colors">FAQ</Link></li>
                 <li><Link href="/contact" className="text-gray-300 hover:text-white transition-colors">Contact</Link></li>
               </ul>
             </div>
@@ -272,8 +272,8 @@ export default function PrivacyPolicyPage() {
               <h3 className="text-lg font-semibold mb-4 text-purple-400">Legal</h3>
               <ul className="space-y-2">
                 <li><Link href="/privacy" className="text-gray-300 hover:text-white transition-colors">Privacy Policy</Link></li>
-                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Terms of Service</a></li>
-                <li><a href="#" className="text-gray-300 hover:text-white transition-colors">HIPAA Compliance</a></li>
+                <li><Link href="/terms" className="text-gray-300 hover:text-white transition-colors">Terms of Service</Link></li>
+                <li><Link href="/hipaa-compliance" className="text-gray-300 hover:text-white transition-colors">HIPAA Compliance</Link></li>
               </ul>
             </div>
             <div>
