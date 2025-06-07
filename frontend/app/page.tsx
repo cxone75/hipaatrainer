@@ -17,11 +17,81 @@ export default function LandingPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [subscriptionMessage, setSubscriptionMessage] = useState('');
+  const [processingPayment, setProcessingPayment] = useState(false);
+  const [checkoutEmail, setCheckoutEmail] = useState('');
+  const [showCheckoutModal, setShowCheckoutModal] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState(null);
 
   const scrollToPricing = () => {
     const pricingSection = document.getElementById('pricing');
     if (pricingSection) {
       pricingSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // Stripe price IDs - replace with your actual Stripe price IDs
+  const stripePrices = {
+    'Founding Member': 'price_1ABC123foundingmember', // Replace with actual price ID
+    'Early Bird': 'price_1ABC123earlybird', // Replace with actual price ID
+  };
+
+  const handlePlanSelection = (planName) => {
+    if (planName === 'Free' || planName === 'Regular') {
+      setShowWaitlistModal(true);
+      return;
+    }
+    
+    if (stripePrices[planName]) {
+      setSelectedPlan(planName);
+      setShowCheckoutModal(true);
+    }
+  };
+
+  const handleStripeCheckout = async (e) => {
+    e.preventDefault();
+    
+    if (!checkoutEmail || !selectedPlan) {
+      alert('Please enter your email address');
+      return;
+    }
+
+    setProcessingPayment(true);
+
+    try {
+      const response = await fetch('/api/stripe/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          priceId: stripePrices[selectedPlan],
+          planName: selectedPlan,
+          email: checkoutEmail,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create checkout session');
+      }
+
+      const { clientSecret } = await response.json();
+      
+      // Redirect to Stripe Checkout
+      const stripe = window.Stripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+      
+      const { error } = await stripe.redirectToCheckout({
+        sessionId: clientSecret.split('_secret_')[0],
+      });
+
+      if (error) {
+        console.error('Stripe error:', error);
+        alert('Payment failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      alert('Failed to process payment. Please try again.');
+    } finally {
+      setProcessingPayment(false);
     }
   };
 
@@ -677,7 +747,7 @@ export default function LandingPage() {
                       </p>
                     )}
                     <button 
-                      onClick={() => setShowWaitlistModal(true)}
+                      onClick={() => handlePlanSelection(tier.plan)}
                       className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 ${
                         tier.disabled 
                           ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
@@ -933,6 +1003,71 @@ export default function LandingPage() {
                   </p>
                 </div>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Stripe Checkout Modal */}
+      {showCheckoutModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4" style={{zIndex: 9999}}>
+          <div className="bg-white rounded-lg w-full max-w-md relative">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h3 className="text-xl font-semibold text-gray-900">
+                Complete Your Purchase
+              </h3>
+              <button
+                onClick={() => {
+                  setShowCheckoutModal(false);
+                  setSelectedPlan(null);
+                  setCheckoutEmail('');
+                }}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6">
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold text-gray-900 mb-2">{selectedPlan}</h4>
+                <p className="text-gray-600">
+                  You're about to purchase the {selectedPlan} plan with lifetime access and 1-year money-back guarantee.
+                </p>
+              </div>
+
+              <form onSubmit={handleStripeCheckout} className="space-y-4">
+                <div>
+                  <label htmlFor="checkout-email" className="block text-sm font-medium text-gray-700 mb-2">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    id="checkout-email"
+                    value={checkoutEmail}
+                    onChange={(e) => setCheckoutEmail(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="your.email@company.com"
+                    required
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={processingPayment}
+                  className="w-full bg-gradient-to-r from-purple-600 to-purple-800 text-white py-3 px-6 rounded-lg font-semibold hover:from-purple-700 hover:to-purple-900 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {processingPayment ? 'Processing...' : 'Continue to Payment'}
+                </button>
+              </form>
+
+              <p className="text-xs text-gray-500 mt-4 text-center">
+                Secure payment powered by Stripe. Your payment information is encrypted and secure.
+              </p>
             </div>
           </div>
         </div>
