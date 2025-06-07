@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import LandingHeader from '../components/Layout/LandingHeader';
-import LandingFooter from '../components/Layout/LandingFooter';
+import LandingHeader from './components/Layout/LandingHeader';
+import LandingFooter from './components/Layout/LandingFooter';
 import { BorderBeam } from '../components/ui/border-beam';
 import { FeaturesSectionWithHoverEffects } from '../components/ui/feature-section-with-hover-effects';
 
@@ -11,6 +11,10 @@ export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [countdown, setCountdown] = useState('');
   const [expandedFAQ, setExpandedFAQ] = useState(0);
+  const [showWaitlistModal, setShowWaitlistModal] = useState(false);
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const scrollToPricing = () => {
     const pricingSection = document.getElementById('pricing');
@@ -55,6 +59,24 @@ export default function LandingPage() {
     // Clean up interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
+
+  // Debug logging
+  console.log('Modal state:', showWaitlistModal);
+
+  const handleWaitlistSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    // Simulate form submission
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+      setTimeout(() => {
+        setShowWaitlistModal(false);
+        setIsSubmitted(false);
+        setEmail('');
+      }, 2000);
+    }, 1000);
 
 
   return (
@@ -580,6 +602,7 @@ export default function LandingPage() {
                       </p>
                     )}
                     <button 
+                      onClick={() => setShowWaitlistModal(true)}
                       className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 ${
                         tier.disabled 
                           ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
@@ -730,6 +753,80 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* Waitlist Modal */}
+      {showWaitlistModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4" style={{zIndex: 9999}}>
+          <div className="bg-white rounded-lg w-full max-w-md relative">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h3 className="text-xl font-semibold text-gray-900">
+                Join Our Waitlist
+              </h3>
+              <button
+                onClick={() => setShowWaitlistModal(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6">
+              {!isSubmitted ? (
+                <>
+                  <p className="text-gray-600 mb-6">
+                    Be the first to know when HIPAA Trainer launches! Get notified about early access, exclusive discounts, and launch updates.
+                  </p>
+
+                  <form onSubmit={handleWaitlistSubmit} className="space-y-4">
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                        Email Address
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        placeholder="your.email@company.com"
+                        required
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full bg-gradient-to-r from-purple-600 to-purple-800 text-white py-3 px-6 rounded-lg font-semibold hover:from-purple-700 hover:to-purple-900 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isSubmitting ? 'Joining...' : 'Join Waitlist'}
+                    </button>
+                  </form>
+
+                  <p className="text-xs text-gray-500 mt-4 text-center">
+                    We respect your privacy. No spam, unsubscribe anytime.
+                  </p>
+                </>
+              ) : (
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2">You're on the list!</h4>
+                  <p className="text-gray-600">
+                    Thanks for joining! We'll notify you when HIPAA Trainer is ready.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       <LandingFooter />
     </div>
