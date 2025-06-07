@@ -206,7 +206,7 @@ export default function HIPAACompliancePage() {
               Let HIPAA Trainer guide your organization through every step of HIPAA compliance with our comprehensive platform.
             </p>
             <a
-              href="#pricing"
+              href="/#pricing"
               className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-block"
             >
               Start Your Compliance Journey
