@@ -25,11 +25,28 @@ export default function ContactPage() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setSubmitted(true);
+      } else {
+        throw new Error(result.error || 'Failed to send message');
+      }
+    } catch (error) {
+      console.error('Contact form error:', error);
+      alert('Failed to send your message. Please try again or contact us directly at info@hipaatrainer.net');
+    } finally {
       setIsSubmitting(false);
-      setSubmitted(true);
-    }, 1000);
+    }
   };
 
   if (submitted) {
