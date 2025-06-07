@@ -811,20 +811,55 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* Combined CTA and Newsletter Section */}
       <section className="py-20 bg-gradient-to-r from-purple-600 to-pink-600 text-white">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to simplify your HIPAA compliance?</h2>
-          <p className="text-xl mb-8 opacity-90">
-            Experience how HIPAA Trainer can transform your compliance process risk-free.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button 
-              onClick={scrollToPricing}
-              className="bg-white text-purple-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-lg shadow-lg"
-            >
-              Start For Free
-            </button>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Newsletter Signup - Left Side */}
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
+              <h3 className="text-2xl font-bold mb-4">Stay Updated on HIPAA Compliance</h3>
+              <p className="text-lg mb-6 opacity-90">
+                Get the latest insights, best practices, and regulatory updates delivered to your inbox.
+              </p>
+              <form onSubmit={handleNewsletterSubscription} className="space-y-4">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"
+                  disabled={isSubmitting}
+                />
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="w-full bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? 'Subscribing...' : 'Subscribe'}
+                </button>
+              </form>
+              {subscriptionMessage && (
+                <p className={`mt-4 text-sm ${subscriptionMessage.includes('Successfully') ? 'text-green-200' : 'text-red-200'}`}>
+                  {subscriptionMessage}
+                </p>
+              )}
+            </div>
+
+            {/* Main CTA - Right Side */}
+            <div className="text-center lg:text-left">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to simplify your HIPAA compliance?</h2>
+              <p className="text-xl mb-8 opacity-90">
+                Experience how HIPAA Trainer can transform your compliance process risk-free.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                <button 
+                  onClick={scrollToPricing}
+                  className="bg-white text-purple-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-lg shadow-lg"
+                >
+                  Start For Free
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -903,44 +938,7 @@ export default function LandingPage() {
         </div>
       )}
 
-      {/* Newsletter Signup Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl p-8 text-white text-center">
-            <h3 className="text-2xl font-bold mb-4">Stay Updated on HIPAA Compliance</h3>
-            <p className="text-lg mb-6 opacity-90">
-              Get the latest insights, best practices, and regulatory updates delivered to your inbox.
-            </p>
-            <form onSubmit={handleNewsletterSubscription} className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                value={newsletterEmail}
-                onChange={(e) => setNewsletterEmail(e.target.value)}
-                className="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"
-                disabled={isSubmitting}
-              />
-              <button 
-                type="submit" 
-                disabled={isSubmitting}
-                className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isSubmitting ? 'Subscribing...' : 'Subscribe'}
-              </button>
-            </form>
-            {subscriptionMessage && (
-              <p className={`mt-4 text-sm ${subscriptionMessage.includes('Successfully') ? 'text-green-200' : 'text-red-200'}`}>
-                {subscriptionMessage}
-              </p>
-            )}
-            {subscriptionMessage && subscriptionMessage.includes('Successfully') && (
-              <p className="mt-2 text-sm text-green-200">
-                Successfully subscribed to our newsletter!
-              </p>
-            )}
-          </div>
-        </div>
-      </section>
+      
 
       <LandingFooter />
     </div>
