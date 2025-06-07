@@ -68,7 +68,12 @@ export default function LandingPage() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/waitlist/join', {
+      // Use the correct API endpoint for the environment
+      const apiUrl = process.env.NODE_ENV === 'production' 
+        ? '/api/waitlist/join' 
+        : 'http://localhost:3001/api/waitlist/join';
+      
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
