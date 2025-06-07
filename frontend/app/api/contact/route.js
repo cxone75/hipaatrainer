@@ -5,6 +5,15 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request) {
   try {
+    // Check if API key is configured
+    if (!process.env.RESEND_API_KEY) {
+      console.error('RESEND_API_KEY environment variable is not set');
+      return new Response(
+        JSON.stringify({ error: 'Email service not configured' }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     const { name, email, company, phone, subject, message } = await request.json();
 
     // Validate required fields
@@ -16,8 +25,14 @@ export async function POST(request) {
     }
 
     // Send email using Resend
+    // Note: Use a verified domain or the default Resend domain for testing
+    const fromAddress = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
+    
+    console.log('Attempting to send email from:', fromAddress);
+    console.log('To:', ['info@hipaatrainer.net']);
+    
     const emailData = await resend.emails.send({
-      from: 'HIPAA Trainer <noreply@hipaatrainer.net>',
+      from: `HIPAA Trainer <${fromAddress}>`,
       to: ['info@hipaatrainer.net'],
       subject: `Contact Form: ${subject}`,
       html: `
@@ -61,9 +76,11 @@ Sent at: ${new Date().toLocaleString()}
       `,
     });
 
+    console.log('Email sent successfully:', emailData);
+
     // Send auto-reply to the user
-    await resend.emails.send({
-      from: 'HIPAA Trainer <noreply@hipaatrainer.net>',
+    const autoReplyData = await resend.emails.send({
+      from: `HIPAA Trainer <${fromAddress}>`,
       to: [email],
       subject: 'Thank you for contacting HIPAA Trainer',
       html: `
@@ -125,11 +142,20 @@ info@hipaatrainer.net
 
   } catch (error) {
     console.error('Contact form error:', error);
+    console.error('Error details:', {
+      message: error.message,
+      stack: error.stack,
+      response: error.response?.data || error.response
+    });
     
     return new Response(
       JSON.stringify({ 
         error: 'Failed to send message. Please try again later.',
-        details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        details: process.env.NODE_ENV === 'development' ? {
+          message: error.message,
+          type: error.constructor.name,
+          apiKey: process.env.RESEND_API_KEY ? 'Set' : 'Not set'
+        } : undefined
       }),
       { 
         status: 500, 
