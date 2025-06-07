@@ -69,9 +69,8 @@ export default function LandingPage() {
 
     try {
       // Use the correct API endpoint for the environment
-      const apiUrl = process.env.NODE_ENV === 'production' 
-        ? '/api/waitlist/join' 
-        : 'http://0.0.0.0:3001/api/waitlist/join';
+      // In Replit, use the relative path to proxy through Next.js
+      const apiUrl = '/api/waitlist/join';
 
       console.log('Attempting to submit to:', apiUrl);
       console.log('Email:', email);
