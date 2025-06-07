@@ -93,6 +93,14 @@ export default function LandingPage() {
           setIsSubmitted(false);
           setEmail('');
         }, 2000);
+      } else if (response.status === 409) {
+        // Email already on waitlist - treat as success
+        setIsSubmitted(true);
+        setTimeout(() => {
+          setShowWaitlistModal(false);
+          setIsSubmitted(false);
+          setEmail('');
+        }, 2000);
       } else {
         const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
         console.error('API Error:', response.status, errorData);
