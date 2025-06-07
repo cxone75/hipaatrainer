@@ -1,11 +1,41 @@
 
 'use client';
 
+import { useState } from 'react';
 import LandingHeader from './components/Layout/LandingHeader';
 import LandingFooter from './components/Layout/LandingFooter';
 import Link from 'next/link';
 
 export default function LandingPage() {
+  const [showWaitlistModal, setShowWaitlistModal] = useState(false);
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleWaitlistSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simulate API call - replace with actual API endpoint
+    try {
+      // You can replace this with your actual API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setIsSubmitted(true);
+      setEmail('');
+      
+      // Auto close modal after 2 seconds
+      setTimeout(() => {
+        setShowWaitlistModal(false);
+        setIsSubmitted(false);
+      }, 2000);
+    } catch (error) {
+      console.error('Error submitting to waitlist:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <LandingHeader />
@@ -89,6 +119,30 @@ export default function LandingPage() {
                 Stay audit-ready with automated documentation and compliance tracking.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Presale Section */}
+      <section className="py-20 bg-gradient-to-br from-purple-600 to-pink-600">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+            Coming Soon - Free Launch Access
+          </h2>
+          <p className="text-xl text-purple-100 mb-8 max-w-3xl mx-auto">
+            Be among the first to experience our comprehensive HIPAA compliance platform. 
+            Join our waitlist to get free access when we launch in 90 days!
+          </p>
+          <div className="flex flex-col items-center">
+            <button 
+              onClick={() => setShowWaitlistModal(true)}
+              className="bg-white text-purple-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-lg shadow-lg"
+            >
+              Join Waitlist - Get Free Access
+            </button>
+            <p className="text-purple-200 text-sm mt-4">
+              🚀 Launching in 90 days • 100% Free for early adopters
+            </p>
           </div>
         </div>
       </section>
@@ -230,6 +284,93 @@ export default function LandingPage() {
       </section>
 
       <LandingFooter />
+
+      {/* Waitlist Modal */}
+      {showWaitlistModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg w-full max-w-md">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h3 className="text-xl font-semibold text-gray-900">
+                Join Our Waitlist
+              </h3>
+              <button
+                onClick={() => setShowWaitlistModal(false)}
+                className="text-gray-400 hover:text-gray-600 text-2xl"
+              >
+                ×
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6">
+              {!isSubmitted ? (
+                <>
+                  <p className="text-gray-600 mb-6">
+                    Get notified when we launch and receive free access to our HIPAA compliance platform for the first 90 days.
+                  </p>
+                  
+                  <form onSubmit={handleWaitlistSubmit} className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Email Address
+                      </label>
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        placeholder="your@email.com"
+                      />
+                    </div>
+                    
+                    <div className="flex space-x-3">
+                      <button
+                        type="button"
+                        onClick={() => setShowWaitlistModal(false)}
+                        className="flex-1 px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={isSubmitting || !email}
+                        className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <svg className="animate-spin w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                            </svg>
+                            Joining...
+                          </>
+                        ) : (
+                          'Join Waitlist'
+                        )}
+                      </button>
+                    </div>
+                  </form>
+                </>
+              ) : (
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                    You're on the list!
+                  </h4>
+                  <p className="text-gray-600">
+                    We'll notify you when we launch and send you your free access code.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
