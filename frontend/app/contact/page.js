@@ -255,7 +255,7 @@ export default function ContactPage() {
                   Check out our frequently asked questions for immediate help with common HIPAA compliance topics.
                 </p>
                 <Link 
-                  href="/landing#faq"
+                  href="/faq"
                   className="bg-white text-purple-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors inline-block"
                 >
                   View FAQ
