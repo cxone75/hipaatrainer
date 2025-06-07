@@ -1,4 +1,3 @@
-
 'use client';
 
 import LandingHeader from '../components/Layout/LandingHeader';
@@ -32,7 +31,7 @@ export default function TermsPage() {
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-lg shadow-lg p-8 lg:p-12">
-            
+
             {/* Content */}
             <div className="prose prose-lg prose-purple max-w-none">
               <section className="mb-8">

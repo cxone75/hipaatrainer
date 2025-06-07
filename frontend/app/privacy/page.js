@@ -25,9 +25,9 @@ export default function PrivacyPolicyPage() {
             {/* Desktop Navigation */}
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-8">
-                <Link href="/landing#solutions" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Solutions</Link>
-                <Link href="/landing#features" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Features</Link>
-                <Link href="/landing#pricing" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Pricing</Link>
+                <Link href="/#solutions" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Solutions</Link>
+                <Link href="/#features" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Features</Link>
+                <Link href="/#pricing" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Pricing</Link>
                 <Link href="/blog" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Blog</Link>
                 <Link href="/onboarding" className="text-gray-600 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Login</Link>
               </div>
@@ -36,7 +36,7 @@ export default function PrivacyPolicyPage() {
             {/* CTA Button */}
             <div className="hidden md:block">
               <Link 
-                href="/landing#pricing"
+                href="/#pricing"
                 className="bg-purple-800 text-white px-6 py-2 rounded-lg font-medium hover:bg-purple-900 transition-colors shadow-md"
               >
                 Start For Free
@@ -254,16 +254,16 @@ export default function PrivacyPolicyPage() {
             <div>
               <h3 className="text-lg font-semibold mb-4 text-purple-400">Product</h3>
               <ul className="space-y-2">
-                <li><Link href="/landing#solutions" className="text-gray-300 hover:text-white transition-colors">Solutions</Link></li>
-                <li><Link href="/landing#features" className="text-gray-300 hover:text-white transition-colors">Features</Link></li>
-                <li><Link href="/landing#pricing" className="text-gray-300 hover:text-white transition-colors">Pricing</Link></li>
+                <li><Link href="/#solutions" className="text-gray-300 hover:text-white transition-colors">Solutions</Link></li>
+                <li><Link href="/#features" className="text-gray-300 hover:text-white transition-colors">Features</Link></li>
+                <li><Link href="/#pricing" className="text-gray-300 hover:text-white transition-colors">Pricing</Link></li>
                 <li><Link href="/blog" className="text-gray-300 hover:text-white transition-colors">Blog</Link></li>
               </ul>
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-4 text-purple-400">Company</h3>
               <ul className="space-y-2">
-                <li><Link href="/landing" className="text-gray-300 hover:text-white transition-colors">Home</Link></li>
+                <li><Link href="/" className="text-gray-300 hover:text-white transition-colors">Home</Link></li>
                 <li><a href="#" className="text-gray-300 hover:text-white transition-colors">FAQ</a></li>
                 <li><Link href="/contact" className="text-gray-300 hover:text-white transition-colors">Contact</Link></li>
               </ul>
