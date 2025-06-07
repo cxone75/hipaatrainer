@@ -12,6 +12,9 @@ export default function LandingPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  // Debug logging
+  console.log('Modal state:', showWaitlistModal);
+
   const handleWaitlistSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -136,9 +139,8 @@ export default function LandingPage() {
           <div className="flex flex-col items-center">
             <button 
               type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                console.log('Waitlist button clicked');
+              onClick={() => {
+                console.log('Waitlist button clicked - setting modal to true');
                 setShowWaitlistModal(true);
               }}
               className="bg-white text-purple-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-lg shadow-lg"
@@ -292,8 +294,8 @@ export default function LandingPage() {
 
       {/* Waitlist Modal */}
       {showWaitlistModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg w-full max-w-md">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4" style={{zIndex: 9999}}>
+          <div className="bg-white rounded-lg w-full max-w-md relative">
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
               <h3 className="text-xl font-semibold text-gray-900">
