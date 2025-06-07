@@ -47,10 +47,12 @@ export default function OnboardingGuard({ children }) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
-            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+          <div className="animate-pulse mb-4">
+            <img 
+              src="/hipaatrainer-logo.png" 
+              alt="HIPAA Trainer" 
+              className="h-16 w-auto mx-auto"
+            />
           </div>
           <p className="text-gray-600">Loading HIPAA Tracker...</p>
         </div>
