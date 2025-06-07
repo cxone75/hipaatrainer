@@ -7,6 +7,9 @@ import LandingFooter from '../components/Layout/LandingFooter';
 
 export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [subscriptionMessage, setSubscriptionMessage] = useState('');
 
   const categories = ['All', 'Product Updates', 'HIPAA Compliance', 'Training', 'Risk Management', 'Policy Updates', 'Best Practices'];
 
@@ -97,6 +100,43 @@ export default function BlogPage() {
 
   const featuredPosts = blogPosts.filter(post => post.featured);
   const regularPosts = filteredPosts.filter(post => !post.featured);
+
+  const handleNewsletterSubscription = async (e) => {
+    e.preventDefault();
+    
+    if (!newsletterEmail) {
+      setSubscriptionMessage('Please enter your email address');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubscriptionMessage('');
+
+    try {
+      const response = await fetch('/api/newsletter/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: newsletterEmail }),
+      });
+
+      if (response.ok) {
+        setSubscriptionMessage('Successfully subscribed to our newsletter!');
+        setNewsletterEmail('');
+      } else if (response.status === 409) {
+        setSubscriptionMessage('You are already subscribed to our newsletter.');
+      } else {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        setSubscriptionMessage(errorData.error || 'Failed to subscribe. Please try again.');
+      }
+    } catch (error) {
+      console.error('Newsletter subscription error:', error);
+      setSubscriptionMessage('Failed to subscribe. Please check your connection and try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -231,16 +271,28 @@ export default function BlogPage() {
           <p className="text-lg mb-6 opacity-90">
             Get the latest insights, best practices, and regulatory updates delivered to your inbox.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+          <form onSubmit={handleNewsletterSubscription} className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
             <input
               type="email"
               placeholder="Enter your email"
+              value={newsletterEmail}
+              onChange={(e) => setNewsletterEmail(e.target.value)}
               className="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"
+              disabled={isSubmitting}
             />
-            <button className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-              Subscribe
+            <button 
+              type="submit" 
+              disabled={isSubmitting}
+              className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? 'Subscribing...' : 'Subscribe'}
             </button>
-          </div>
+          </form>
+          {subscriptionMessage && (
+            <p className={`mt-4 text-sm ${subscriptionMessage.includes('Successfully') ? 'text-green-200' : 'text-red-200'}`}>
+              {subscriptionMessage}
+            </p>
+          )}
         </section>
       </div>
 

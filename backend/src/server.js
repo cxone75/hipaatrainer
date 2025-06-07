@@ -10,6 +10,7 @@ const roleRoutes = require('./routes/roleRoutes');
 const orgRoutes = require('./routes/orgRoutes');
 const documentRoutes = require('./routes/documentRoutes');
 const waitlistRoutes = require('./routes/waitlistRoutes');
+const newsletterRoutes = require('./routes/newsletterRoutes');
 const rateLimit = require('./middleware/rateLimit');
 const auditLogMiddleware = require('./middleware/auditLog');
 
@@ -82,6 +83,7 @@ app.use('/api/roles', roleRoutes);
 app.use('/api/organizations', orgRoutes);
 app.use('/api/documents', documentRoutes);
 app.use('/api/waitlist', waitlistRoutes);
+app.use('/api/newsletter', newsletterRoutes);
 
 // 404 handler
 app.use('*', (req, res) => {
