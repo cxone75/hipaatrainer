@@ -15,6 +15,8 @@ export default function LandingPage() {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [subscriptionMessage, setSubscriptionMessage] = useState('');
 
   const scrollToPricing = () => {
     const pricingSection = document.getElementById('pricing');
@@ -62,6 +64,43 @@ export default function LandingPage() {
 
   // Debug logging
   console.log('Modal state:', showWaitlistModal);
+
+  const handleNewsletterSubscription = async (e) => {
+    e.preventDefault();
+    
+    if (!newsletterEmail) {
+      setSubscriptionMessage('Please enter your email address');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubscriptionMessage('');
+
+    try {
+      const response = await fetch('/api/newsletter/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: newsletterEmail }),
+      });
+
+      if (response.ok) {
+        setSubscriptionMessage('Successfully subscribed to our newsletter!');
+        setNewsletterEmail('');
+      } else if (response.status === 409) {
+        setSubscriptionMessage('You are already subscribed to our newsletter.');
+      } else {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        setSubscriptionMessage(errorData.error || 'Failed to subscribe. Please try again.');
+      }
+    } catch (error) {
+      console.error('Newsletter subscription error:', error);
+      setSubscriptionMessage('Failed to subscribe. Please check your connection and try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const handleWaitlistSubmit = async (e) => {
     e.preventDefault();
@@ -863,6 +902,45 @@ export default function LandingPage() {
           </div>
         </div>
       )}
+
+      {/* Newsletter Signup Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl p-8 text-white text-center">
+            <h3 className="text-2xl font-bold mb-4">Stay Updated on HIPAA Compliance</h3>
+            <p className="text-lg mb-6 opacity-90">
+              Get the latest insights, best practices, and regulatory updates delivered to your inbox.
+            </p>
+            <form onSubmit={handleNewsletterSubscription} className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                className="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"
+                disabled={isSubmitting}
+              />
+              <button 
+                type="submit" 
+                disabled={isSubmitting}
+                className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? 'Subscribing...' : 'Subscribe'}
+              </button>
+            </form>
+            {subscriptionMessage && (
+              <p className={`mt-4 text-sm ${subscriptionMessage.includes('Successfully') ? 'text-green-200' : 'text-red-200'}`}>
+                {subscriptionMessage}
+              </p>
+            )}
+            {subscriptionMessage && subscriptionMessage.includes('Successfully') && (
+              <p className="mt-2 text-sm text-green-200">
+                Successfully subscribed to our newsletter!
+              </p>
+            )}
+          </div>
+        </div>
+      </section>
 
       <LandingFooter />
     </div>
