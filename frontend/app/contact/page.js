@@ -67,7 +67,7 @@ export default function ContactPage() {
               We've received your message and will get back to you within 24 hours.
             </p>
             <Link 
-              href="/landing"
+              href="/"
               className="bg-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-purple-700 transition-colors"
             >
               Return to Home
