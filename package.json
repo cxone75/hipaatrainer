@@ -8,7 +8,6 @@
     "@tabler/icons-react": "^3.33.0",
     "clsx": "^2.1.1",
     "concurrently": "^9.1.2",
-    "framer-motion": "^12.15.0",
     "multer": "^2.0.0",
     "tailwind-merge": "^3.3.0",
     "tailwindcss-animate": "^1.0.7"
