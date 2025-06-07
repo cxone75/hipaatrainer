@@ -30,10 +30,9 @@ export default function LandingPage() {
   };
 
   // Stripe price IDs - replace with your actual Stripe price IDs
-  // TODO: Create products in Stripe dashboard and replace these with real price IDs
   const stripePrices = {
-    'Founding Member': null, // Replace with actual price ID from Stripe
-    'Early Bird': null, // Replace with actual price ID from Stripe
+    'Founding Member': 'price_1ABC123foundingmember', // Replace with actual price ID
+    'Early Bird': 'price_1ABC123earlybird', // Replace with actual price ID
   };
 
   const handlePlanSelection = (planName) => {
@@ -45,10 +44,6 @@ export default function LandingPage() {
     if (stripePrices[planName]) {
       setSelectedPlan(planName);
       setShowCheckoutModal(true);
-    } else {
-      // Temporarily show waitlist modal for paid plans until Stripe is configured
-      alert('Payment processing is being set up. Please join our waitlist to be notified when it\'s ready!');
-      setShowWaitlistModal(true);
     }
   };
 
@@ -672,7 +667,7 @@ export default function LandingPage() {
                 period: "lifetime",
                 popular: true,
                 features: ["Up to 50 users", "All core features", "1-year money-back guarantee", "Priority support"],
-                buttonText: "Join Waitlist (Payment Coming Soon)",
+                buttonText: "Claim Your Founding Member Seat",
                 promoText: "First 50 members only, going quickly"
               },
               {
@@ -681,7 +676,7 @@ export default function LandingPage() {
                 period: "lifetime", 
                 popular: false,
                 features: ["Up to 50 users", "All core features", "1-year money-back guarantee", "Standard support"],
-                buttonText: "Join Waitlist (Payment Coming Soon)",
+                buttonText: "Become an Early Bird",
                 promoText: "Next 100 customers only"
               },
               {

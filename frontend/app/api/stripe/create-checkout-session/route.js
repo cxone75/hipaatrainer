@@ -8,14 +8,6 @@ export async function POST(request) {
   try {
     const { priceId, planName, email } = await request.json();
 
-    // Validate price ID exists
-    if (!priceId) {
-      return NextResponse.json(
-        { error: 'Price ID not configured for this plan. Please contact support.' },
-        { status: 400 }
-      );
-    }
-
     // Create Checkout Sessions from body params
     const session = await stripe.checkout.sessions.create({
       ui_mode: 'embedded',
