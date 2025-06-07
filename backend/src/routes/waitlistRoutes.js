@@ -13,7 +13,7 @@ router.options('*', (req, res) => {
   res.sendStatus(200);
 });
 
-// Add email to waitlist
+// Join waitlist
 router.post('/join', async (req, res) => {
   try {
     const { email } = req.body;
@@ -30,51 +30,60 @@ router.post('/join', async (req, res) => {
 
     const supabase = createClient();
 
-    // Try to insert the email, ignore if duplicate
+    // Check if email already exists
+    const { data: existingEmail, error: checkError } = await supabase
+      .from('waitlist')
+      .select('email')
+      .eq('email', email.toLowerCase())
+      .single();
+
+    if (existingEmail) {
+      return res.status(409).json({ error: 'Email already on waitlist' });
+    }
+
+    // Insert new email (ignore if check error was just "not found")
     const { data, error } = await supabase
       .from('waitlist')
-      .upsert(
-        { email: email.toLowerCase() },
-        { 
-          onConflict: 'email',
-          ignoreDuplicates: true 
-        }
-      )
+      .insert([{ email: email.toLowerCase() }])
       .select()
       .single();
 
-    if (error && error.code !== '23505') { // 23505 is unique violation error code
-      console.error('Waitlist error:', error);
-      return res.status(500).json({ error: 'Failed to join waitlist' });
+    if (error) {
+      if (error.code === '23505') { // Unique constraint violation
+        return res.status(409).json({ error: 'Email already on waitlist' });
+      }
+      throw error;
     }
 
-    res.json({ 
+    res.status(201).json({ 
       message: 'Successfully joined waitlist',
-      email: email.toLowerCase()
+      data: { email: data.email }
     });
 
   } catch (error) {
-    console.error('Waitlist error:', error);
+    console.error('Waitlist join error:', error);
     res.status(500).json({ error: 'Failed to join waitlist' });
   }
 });
 
-// Get waitlist count (optional - for admin use)
+// Get waitlist count (admin only)
 router.get('/count', async (req, res) => {
   try {
     const supabase = createClient();
-    
+
     const { count, error } = await supabase
       .from('waitlist')
-      .select('*', { count: 'exact', head: true });
+      .select('id', { count: 'exact', head: true });
 
     if (error) {
-      return res.status(500).json({ error: 'Failed to get count' });
+      throw error;
     }
 
-    res.json({ count });
+    res.json({ count: count || 0 });
+
   } catch (error) {
-    res.status(500).json({ error: 'Failed to get count' });
+    console.error('Waitlist count error:', error);
+    res.status(500).json({ error: 'Failed to get waitlist count' });
   }
 });
 

@@ -3,7 +3,7 @@ run = "concurrently \"npm run dev:frontend\" \"npm run dev:backend\""
 
 [nix]
 channel = "stable-24_05"
-packages = ["supabase-cli"]
+packages = ["supabase-cli", "lsof"]
 
 [[ports]]
 localPort = 3000
