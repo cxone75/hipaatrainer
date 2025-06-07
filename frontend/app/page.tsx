@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import LandingHeader from './components/Layout/LandingHeader';
 import LandingFooter from './components/Layout/LandingFooter';
-import { BorderBeam } from '../components/ui/border-beam';
-import { FeaturesSectionWithHoverEffects } from '../components/ui/feature-section-with-hover-effects';
+import { BorderBeam } from './components/ui/border-beam';
+import { FeaturesSectionWithHoverEffects } from './components/ui/feature-section-with-hover-effects';
 
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
