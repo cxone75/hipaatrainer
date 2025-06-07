@@ -135,7 +135,12 @@ export default function LandingPage() {
           </p>
           <div className="flex flex-col items-center">
             <button 
-              onClick={() => setShowWaitlistModal(true)}
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                console.log('Waitlist button clicked');
+                setShowWaitlistModal(true);
+              }}
               className="bg-white text-purple-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-lg shadow-lg"
             >
               Join Waitlist - Get Free Access
