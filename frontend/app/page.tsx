@@ -71,7 +71,10 @@ export default function LandingPage() {
       // Use the correct API endpoint for the environment
       const apiUrl = process.env.NODE_ENV === 'production' 
         ? '/api/waitlist/join' 
-        : 'http://localhost:3001/api/waitlist/join';
+        : 'http://0.0.0.0:3001/api/waitlist/join';
+
+      console.log('Attempting to submit to:', apiUrl);
+      console.log('Email:', email);
 
       const response = await fetch(apiUrl, {
         method: 'POST',
@@ -80,6 +83,9 @@ export default function LandingPage() {
         },
         body: JSON.stringify({ email }),
       });
+
+      console.log('Response status:', response.status);
+      console.log('Response ok:', response.ok);
 
       if (response.ok) {
         setIsSubmitted(true);
