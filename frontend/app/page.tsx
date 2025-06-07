@@ -554,8 +554,8 @@ export default function LandingPage() {
                     </span>
                   </div>
                 )}
-                {/* Dark Header Section */}
-                <div className="bg-gray-900 text-white p-8 rounded-t-2xl">
+                {/* Header Section */}
+                <div className={`${tier.plan === 'Regular' ? 'bg-gray-500 text-white' : 'bg-gray-900 text-white'} p-8 rounded-t-2xl`}>
                   <h3 className="text-xl font-bold mb-4">{tier.plan}</h3>
                   <div className="mb-2">
                     <span className="text-4xl font-bold">{tier.price}</span>
