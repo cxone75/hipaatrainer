@@ -67,16 +67,32 @@ export default function LandingPage() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      const response = await fetch('/api/waitlist/join', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (response.ok) {
+        setIsSubmitted(true);
+        setTimeout(() => {
+          setShowWaitlistModal(false);
+          setIsSubmitted(false);
+          setEmail('');
+        }, 2000);
+      } else {
+        const errorData = await response.json();
+        alert(errorData.error || 'Failed to join waitlist');
+      }
+    } catch (error) {
+      console.error('Waitlist submission error:', error);
+      alert('Failed to join waitlist. Please try again.');
+    } finally {
       setIsSubmitting(false);
-      setIsSubmitted(true);
-      setTimeout(() => {
-        setShowWaitlistModal(false);
-        setIsSubmitted(false);
-        setEmail('');
-      }, 2000);
-    }, 1000);
+    }
   };
 
 
