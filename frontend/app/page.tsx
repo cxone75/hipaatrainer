@@ -71,7 +71,7 @@ export default function LandingPage() {
       // Use the correct API endpoint for the environment
       const apiUrl = process.env.NODE_ENV === 'production' 
         ? '/api/waitlist/join' 
-        : 'http://0.0.0.0:3001/api/waitlist/join';
+        : 'http://localhost:3001/api/waitlist/join';
 
       const response = await fetch(apiUrl, {
         method: 'POST',
@@ -89,12 +89,13 @@ export default function LandingPage() {
           setEmail('');
         }, 2000);
       } else {
-        const errorData = await response.json();
-        alert(errorData.error || 'Failed to join waitlist');
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        console.error('API Error:', response.status, errorData);
+        alert(errorData.error || `Failed to join waitlist (${response.status})`);
       }
     } catch (error) {
-      console.error('Waitlist submission error:', error);
-      alert('Failed to join waitlist. Please try again.');
+      console.error('Network error:', error);
+      alert('Failed to join waitlist. Please check your connection and try again.');
     } finally {
       setIsSubmitting(false);
     }
