@@ -31,8 +31,8 @@ export default function LandingPage() {
 
   // Stripe price IDs - replace with your actual Stripe price IDs
   const stripePrices = {
-    'Founding Member': 'price_1ABC123foundingmember', // Replace with actual price ID
-    'Early Bird': 'price_1ABC123earlybird', // Replace with actual price ID
+    'Founding Member': 'price_1RXSiTPaLd3fbhKYN7ah2M7x', // Replace with actual price ID
+    'Early Bird': 'price_1RXT3SPaLd3fbhKYbqfnlKEo', // Replace with actual price ID
   };
 
   const handlePlanSelection = (planName) => {
