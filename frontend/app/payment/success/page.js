@@ -49,14 +49,8 @@ export default function PaymentSuccess() {
           </p>
           <div className="space-y-3">
             <Link
-              href="/app"
-              className="block bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
-            >
-              Access Your Dashboard
-            </Link>
-            <Link
               href="/"
-              className="block border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
+              className="block bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
             >
               Return to Home
             </Link>
