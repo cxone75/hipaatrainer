@@ -5,8 +5,19 @@ export async function POST(request) {
   try {
     const body = await request.json();
     
+    // Validate email
+    if (!body.email) {
+      return NextResponse.json(
+        { error: 'Email is required' },
+        { status: 400 }
+      );
+    }
+
     // Forward the request to the backend
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+    
+    console.log('Forwarding to backend:', `${backendUrl}/api/newsletter/subscribe`);
+    
     const response = await fetch(`${backendUrl}/api/newsletter/subscribe`, {
       method: 'POST',
       headers: {
@@ -15,9 +26,28 @@ export async function POST(request) {
       body: JSON.stringify(body),
     });
 
-    const data = await response.json();
+    // Handle network errors
+    if (!response) {
+      console.error('No response from backend');
+      return NextResponse.json(
+        { error: 'Backend service unavailable' },
+        { status: 503 }
+      );
+    }
+
+    let data;
+    try {
+      data = await response.json();
+    } catch (parseError) {
+      console.error('Failed to parse backend response:', parseError);
+      return NextResponse.json(
+        { error: 'Invalid response from backend' },
+        { status: 502 }
+      );
+    }
 
     if (!response.ok) {
+      console.error('Backend error:', response.status, data);
       return NextResponse.json(data, { status: response.status });
     }
 
