@@ -26,6 +26,7 @@ export default function LandingPage() {
   const [selectedPlan, setSelectedPlan] = useState<string>('');
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
   const [userEmail, setUserEmail] = useState('');
+  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
 
   const scrollToPricing = () => {
     const pricingSection = document.getElementById('pricing');
@@ -371,15 +372,43 @@ export default function LandingPage() {
 
       // Mount the checkout
       console.log('Mounting checkout to #checkout element');
+      
+      // Clear any existing content in the checkout div
       const checkoutElement = document.getElementById('checkout');
       
       if (!checkoutElement) {
-        console.error('Checkout element not found');
-        throw new Error('Checkout element not found');
+        console.error('Checkout element not found - creating it dynamically');
+        // Create the checkout element if it doesn't exist
+        const newCheckoutElement = document.createElement('div');
+        newCheckoutElement.id = 'checkout';
+        newCheckoutElement.className = 'min-h-[400px] w-full';
+        document.body.appendChild(newCheckoutElement);
+      } else {
+        // Clear existing content
+        checkoutElement.innerHTML = '';
       }
       
-      checkout.mount('#checkout');
-      console.log('Checkout mounted successfully');
+      try {
+        // Close email modal and show checkout modal
+        setIsEmailModalOpen(false);
+        setIsCheckoutModalOpen(true);
+        
+        // Wait for modal to render, then mount checkout
+        setTimeout(() => {
+          const finalCheckoutElement = document.getElementById('stripe-checkout-container');
+          if (finalCheckoutElement) {
+            checkout.mount('#stripe-checkout-container');
+            console.log('Checkout mounted successfully to stripe-checkout-container');
+          } else {
+            checkout.mount('#checkout');
+            console.log('Checkout mounted successfully to fallback #checkout');
+          }
+        }, 100);
+        
+      } catch (mountError) {
+        console.error('Error mounting checkout:', mountError);
+        throw new Error(`Failed to mount checkout: ${mountError.message}`);
+      }
     } catch (error) {
       console.error('Error:', error);
       alert('Something went wrong. Please try again.');
@@ -1264,6 +1293,39 @@ export default function LandingPage() {
                   </button>
                 </div>
               </form>
+            </div>
+          </div>
+        )}
+
+        {/* Stripe Checkout Modal */}
+        {isCheckoutModalOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto relative">
+              <div className="flex justify-between items-center p-6 border-b">
+                <h3 className="text-xl font-bold">Complete Your Payment</h3>
+                <button
+                  onClick={() => setIsCheckoutModalOpen(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+              <div className="p-6">
+                <div className="text-center mb-4">
+                  <p className="text-lg font-medium text-gray-900 mb-2">
+                    {selectedPlan} Plan
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    Complete your secure payment below
+                  </p>
+                </div>
+                <div 
+                  id="stripe-checkout-container" 
+                  className="min-h-[500px] w-full"
+                >
+                  {/* Stripe checkout will be mounted here */}
+                </div>
+              </div>
             </div>
           </div>
         )}
