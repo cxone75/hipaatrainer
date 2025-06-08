@@ -270,7 +270,7 @@ export default function LandingPage() {
       setIsEmailModalOpen(false);
 
       // Proceed with Stripe checkout
-      const priceId = selectedPlan === 'Founding Member' ? 'price_1ABC123foundingmember' : 'price_1ABC123pro';
+      const priceId = stripePrices[selectedPlan];
 
       const response = await fetch('/api/stripe/create-checkout-session', {
         method: 'POST',
