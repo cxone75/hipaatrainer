@@ -32,6 +32,8 @@ backend/.env.local
 backend/.env.development.local
 backend/.env.test.local
 backend/.env.production.local
+frontend/.env.local
+frontend/.env
 
 # Vercel
 .vercel
