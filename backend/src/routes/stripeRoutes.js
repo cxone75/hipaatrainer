@@ -2,6 +2,7 @@
 const express = require('express');
 const { supabase } = require('../services/supabase');
 const Stripe = require('stripe');
+const resendEmailService = require('../services/resendEmailService');
 
 const router = express.Router();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -52,6 +53,23 @@ router.post('/webhook', async (req, res) => {
         } else {
           console.log('Successfully updated subscription status to active for:', customerEmail);
           console.log('Updated record:', data);
+
+          // Send purchase confirmation email using Resend
+          if (data && data.length > 0) {
+            const subscription = data[0];
+            try {
+              await resendEmailService.sendPurchaseConfirmationEmail(
+                customerEmail,
+                subscription.plan_name || 'Unknown Plan',
+                subscription.plan_price || 0,
+                subscription.features || []
+              );
+              console.log('Purchase confirmation email sent successfully to:', customerEmail);
+            } catch (emailError) {
+              console.error('Failed to send purchase confirmation email:', emailError);
+              // Don't fail the webhook if email fails
+            }
+          }
         }
 
       } catch (error) {
