@@ -106,7 +106,8 @@ app.use((error, req, res, next) => {
 
 // Start server
 app.listen(PORT, '0.0.0.0', () => {
-  // Server started successfully
+  console.log(`HIPAA Tracker backend server running on port ${PORT}`);
+  console.log(`Health check available at: http://0.0.0.0:${PORT}/health`);
 });
 
 module.exports = app;
