@@ -1,18 +1,23 @@
-
 const express = require('express');
-const router = express.Router();
 const { supabase } = require('../services/supabase');
 
-// Save subscription to database
+const router = express.Router();
+
+// Save subscription signup
 router.post('/save', async (req, res) => {
   try {
-    const { email, planName, planPrice, features } = req.body;
+    const { email, plan_name } = req.body;
 
-    if (!email || !planName) {
-      return res.status(400).json({ error: 'Email and plan name are required' });
+    console.log('Subscription save request:', { email, plan_name });
+
+    if (!email || !plan_name) {
+      return res.status(400).json({ 
+        error: 'Email and plan name are required',
+        received: { email, plan_name }
+      });
     }
 
-    // Insert subscription record
+    // Save to database using the supabase client
     const { data, error } = await supabase
       .from('subscription_signups')
       .insert({

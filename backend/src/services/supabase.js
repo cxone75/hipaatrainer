@@ -111,8 +111,19 @@ class SupabaseService {
   }
 }
 
+// Create functions for backward compatibility
+function createClient() {
+  return supabase;
+}
+
+function createAdminClient() {
+  return supabase;
+}
+
 // Export both the service class and the supabase client
 module.exports = { 
   supabase,
+  createClient,
+  createAdminClient,
   SupabaseService: new SupabaseService()
 };
