@@ -147,6 +147,18 @@ class EmailService {
     });
   }
 
+  // Purchase confirmation email
+  async sendPurchaseConfirmationEmail(subscription) {
+    const subject = 'Purchase Confirmation - HIPAA Tracker';
+    const html = this.generatePurchaseConfirmationTemplate(subscription);
+    
+    return this.sendEmail({
+      to: subscription.email,
+      subject,
+      html,
+    });
+  }
+
   // Compliance report email
   async sendComplianceReportEmail(recipients, reportType, reportUrl, generatedBy) {
     const subject = `Compliance Report Ready - ${reportType}`;
@@ -319,6 +331,81 @@ class EmailService {
         <p style="color: #666; font-size: 12px;">
           This is an automated message from HIPAA Tracker. Please do not reply to this email.
         </p>
+      </div>
+    `;
+  }
+
+  generatePurchaseConfirmationTemplate(subscription) {
+    const formatPrice = (price) => {
+      return typeof price === 'number' ? `$${price}` : price;
+    };
+
+    const formatFeatures = (features) => {
+      if (!Array.isArray(features)) return '';
+      return features.map(feature => `<li>${feature}</li>`).join('');
+    };
+
+    return `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <div style="text-align: center; margin-bottom: 30px;">
+          <h1 style="color: #28a745; margin-bottom: 10px;">🎉 Purchase Confirmed!</h1>
+          <p style="color: #666; font-size: 18px;">Thank you for joining HIPAA Tracker</p>
+        </div>
+        
+        <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3 style="margin-top: 0; color: #333;">Your Purchase Details:</h3>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+              <td style="padding: 8px 0; font-weight: bold; color: #666;">Plan:</td>
+              <td style="padding: 8px 0; color: #333;">${subscription.plan_name}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; font-weight: bold; color: #666;">Price:</td>
+              <td style="padding: 8px 0; color: #333;">${formatPrice(subscription.plan_price)}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; font-weight: bold; color: #666;">Email:</td>
+              <td style="padding: 8px 0; color: #333;">${subscription.email}</td>
+            </tr>
+          </table>
+        </div>
+
+        ${subscription.features ? `
+        <div style="background-color: #e8f5e8; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3 style="margin-top: 0; color: #28a745;">Your Plan Includes:</h3>
+          <ul style="margin: 0; padding-left: 20px; color: #333;">
+            ${formatFeatures(subscription.features)}
+          </ul>
+        </div>
+        ` : ''}
+
+        <div style="text-align: center; margin: 30px 0;">
+          <h3 style="color: #333;">What's Next?</h3>
+          <p style="color: #666; margin-bottom: 20px;">
+            We're preparing your HIPAA Tracker account. You'll receive another email with login instructions within 24 hours.
+          </p>
+          <a href="${process.env.FRONTEND_URL || 'https://hipaa-tracker.com'}" 
+             style="background-color: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;">
+            Visit HIPAA Tracker
+          </a>
+        </div>
+
+        <div style="background-color: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 5px; margin: 20px 0;">
+          <p style="margin: 0; color: #856404;">
+            <strong>Important:</strong> Keep this email as your receipt. If you have any questions about your purchase, 
+            please contact our support team.
+          </p>
+        </div>
+        
+        <hr style="margin: 30px 0;">
+        <div style="text-align: center;">
+          <p style="color: #666; font-size: 14px; margin: 5px 0;">
+            Need help? Contact us at support@hipaatracker.com
+          </p>
+          <p style="color: #666; font-size: 12px; margin: 5px 0;">
+            This is an automated message from HIPAA Tracker. Please do not reply to this email.
+          </p>
+        </div>
       </div>
     `;
   }
