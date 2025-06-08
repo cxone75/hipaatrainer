@@ -3,10 +3,12 @@ const { createClient } = require('@supabase/supabase-js');
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
+let supabase;
+
 if (!supabaseUrl || !supabaseServiceKey) {
   console.warn('Missing Supabase environment variables, using mock client');
   // Create a mock client for development
-  const mockSupabase = {
+  supabase = {
     from: () => ({
       insert: () => ({
         select: () => ({
@@ -18,10 +20,8 @@ if (!supabaseUrl || !supabaseServiceKey) {
       })
     })
   };
-  module.exports = { supabase: mockSupabase };
 } else {
-  const supabase = createClient(supabaseUrl, supabaseServiceKey);
-  module.exports = { supabase };
+  supabase = createClient(supabaseUrl, supabaseServiceKey);
 }
 
 class SupabaseService {
@@ -33,77 +33,37 @@ class SupabaseService {
     if (!this.supabaseUrl || !this.supabaseKey) {
       throw new Error('Missing Supabase configuration. Please check SUPABASE_URL and SUPABASE_ANON_KEY environment variables.');
     }
+
+    this.client = createClient(this.supabaseUrl, this.supabaseKey);
+    this.adminClient = null;
   }
 
-  // Create client with anonymous key (for general use)
-  createClient() {
-    return createClient(this.supabaseUrl, this.supabaseKey, {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false,
-      },
-    });
-  }
-
-  // Create admin client with service role key (for admin operations)
   createAdminClient() {
-    if (!this.supabaseServiceKey) {
-      throw new Error('Missing Supabase service role key. Please check SUPABASE_SERVICE_ROLE_KEY environment variable.');
+    if (!this.adminClient && this.supabaseServiceKey) {
+      this.adminClient = createClient(this.supabaseUrl, this.supabaseServiceKey);
     }
-
-    return createClient(this.supabaseUrl, this.supabaseServiceKey, {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false,
-      },
-    });
+    return this.adminClient || this.client;
   }
 
-  // Create authenticated client for a specific user
-  createUserClient(accessToken) {
-    const client = createClient(this.supabaseUrl, this.supabaseKey, {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false,
-      },
-    });
-
-    // Set the auth token
-    client.auth.setSession({
-      access_token: accessToken,
-      refresh_token: null,
-    });
-
-    return client;
-  }
-
-  // Test database connection
   async testConnection() {
     try {
-      const client = this.createClient();
-      const { data, error } = await client
+      const { data, error } = await this.client
         .from('organizations')
         .select('id')
         .limit(1);
 
-      if (error) {
-        throw error;
-      }
-
       return {
-        success: true,
-        message: 'Database connection successful',
+        success: !error,
+        error: error?.message || null
       };
-    } catch (error) {
+    } catch (err) {
       return {
         success: false,
-        message: `Database connection failed: ${error.message}`,
-        error,
+        error: err.message
       };
     }
   }
 
-  // Health check for the service
   async healthCheck() {
     try {
       const connectionTest = await this.testConnection();
@@ -112,38 +72,18 @@ class SupabaseService {
         status: connectionTest.success ? 'healthy' : 'unhealthy',
         database: connectionTest.success ? 'connected' : 'disconnected',
         timestamp: new Date().toISOString(),
-        ...(!connectionTest.success && { error: connectionTest.message }),
+        error: connectionTest.error
       };
     } catch (error) {
       return {
         status: 'unhealthy',
-        database: 'error',
+        database: 'disconnected',
         timestamp: new Date().toISOString(),
-        error: error.message,
+        error: error.message
       };
     }
   }
 
-  // Execute raw SQL query (admin only)
-  async executeQuery(query, params = []) {
-    try {
-      const client = this.createAdminClient();
-      const { data, error } = await client.rpc('execute_sql', {
-        query,
-        params,
-      });
-
-      if (error) {
-        throw error;
-      }
-
-      return data;
-    } catch (error) {
-      throw new Error(`Query execution failed: ${error.message}`);
-    }
-  }
-
-  // Get database statistics
   async getDatabaseStats() {
     try {
       const client = this.createAdminClient();
@@ -151,31 +91,28 @@ class SupabaseService {
       const [usersCount, rolesCount, orgsCount] = await Promise.all([
         client.from('users').select('id', { count: 'exact', head: true }),
         client.from('roles').select('id', { count: 'exact', head: true }),
-        client.from('organizations').select('id', { count: 'exact', head: true }),
+        client.from('organizations').select('id', { count: 'exact', head: true })
       ]);
 
       return {
         users: usersCount.count || 0,
         roles: rolesCount.count || 0,
-        organizations: orgsCount.count || 0,
-        timestamp: new Date().toISOString(),
+        organizations: orgsCount.count || 0
       };
     } catch (error) {
-      throw new Error(`Failed to get database statistics: ${error.message}`);
+      console.error('Database stats error:', error);
+      return {
+        users: 0,
+        roles: 0,
+        organizations: 0,
+        error: error.message
+      };
     }
   }
 }
 
-// Export singleton instance
-const supabaseService = new SupabaseService();
-
-module.exports = {
-  createClient: () => supabaseService.createClient(),
-  createAdminClient: () => supabaseService.createAdminClient(),
-  createUserClient: (token) => supabaseService.createUserClient(token),
-  testConnection: () => supabaseService.testConnection(),
-  healthCheck: () => supabaseService.healthCheck(),
-  executeQuery: (query, params) => supabaseService.executeQuery(query, params),
-  getDatabaseStats: () => supabaseService.getDatabaseStats(),
-  supabaseService,
+// Export both the service class and the supabase client
+module.exports = { 
+  supabase,
+  SupabaseService: new SupabaseService()
 };
