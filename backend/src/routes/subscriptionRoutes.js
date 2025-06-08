@@ -25,15 +25,15 @@ router.post('/save', async (req, res) => {
     
     console.log('Supabase connection successful, record count:', testData);
     
-    const { email, plan_name } = req.body;
+    const { email, plan_name, plan_price, features } = req.body;
 
-    console.log('Destructured values:', { email, plan_name });
+    console.log('Destructured values:', { email, plan_name, plan_price, features });
     console.log('plan_name type:', typeof plan_name);
 
     if (!email || !plan_name) {
       return res.status(400).json({ 
         error: 'Email and plan name are required',
-        received: { email, plan_name, fullBody: req.body }
+        received: { email, plan_name, plan_price, features, fullBody: req.body }
       });
     }
 
@@ -43,6 +43,8 @@ router.post('/save', async (req, res) => {
     const insertData = {
       email,
       plan_name,
+      plan_price,
+      features: features || {},
       status: 'pending',
       created_at: new Date().toISOString()
     };
@@ -71,7 +73,12 @@ router.post('/save', async (req, res) => {
 
     res.status(201).json({ 
       message: 'Subscription saved successfully',
-      data: { email: data.email, plan_name: data.plan_name }
+      data: { 
+        email: data.email, 
+        plan_name: data.plan_name,
+        plan_price: data.plan_price,
+        features: data.features
+      }
     });
 
   } catch (error) {
