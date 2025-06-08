@@ -6,14 +6,18 @@ const router = express.Router();
 // Save subscription signup
 router.post('/save', async (req, res) => {
   try {
+    console.log('Raw request body:', req.body);
+    console.log('Request body keys:', Object.keys(req.body));
+    
     const { email, plan_name } = req.body;
 
-    console.log('Subscription save request:', { email, plan_name });
+    console.log('Destructured values:', { email, plan_name });
+    console.log('plan_name type:', typeof plan_name);
 
     if (!email || !plan_name) {
       return res.status(400).json({ 
         error: 'Email and plan name are required',
-        received: { email, plan_name }
+        received: { email, plan_name, fullBody: req.body }
       });
     }
 
