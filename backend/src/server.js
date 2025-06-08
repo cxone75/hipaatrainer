@@ -11,6 +11,10 @@ const orgRoutes = require('./routes/orgRoutes');
 const documentRoutes = require('./routes/documentRoutes');
 const waitlistRoutes = require('./routes/waitlistRoutes');
 const newsletterRoutes = require('./routes/newsletterRoutes');
+const subscriptionRoutes = require('./routes/subscriptionRoutes');
+const stripeRoutes = require('./routes/stripeRoutes');
+const testRoutes = require('./routes/testRoutes');
+
 const rateLimit = require('./middleware/rateLimit');
 const auditLogMiddleware = require('./middleware/auditLog');
 
@@ -81,14 +85,15 @@ app.get('/health', (req, res) => {
 
 // Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/organizations', orgRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/organizations', orgRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/documents', documentRoutes);
 app.use('/api/waitlist', waitlistRoutes);
 app.use('/api/newsletter', newsletterRoutes);
-app.use('/api/subscriptions', require('./routes/subscriptionRoutes'));
-app.use('/api/stripe', require('./routes/stripeRoutes'));
+app.use('/api/subscriptions', subscriptionRoutes);
+app.use('/api/stripe', stripeRoutes);
+app.use('/api/test', testRoutes);
 
 // 404 handler
 app.use('*', (req, res) => {
