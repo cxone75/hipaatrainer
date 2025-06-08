@@ -9,6 +9,22 @@ router.post('/save', async (req, res) => {
     console.log('Raw request body:', req.body);
     console.log('Request body keys:', Object.keys(req.body));
     
+    // Test Supabase connection
+    console.log('Testing Supabase connection...');
+    const { data: testData, error: testError } = await supabase
+      .from('subscription_signups')
+      .select('count', { count: 'exact', head: true });
+    
+    if (testError) {
+      console.error('Supabase connection test failed:', testError);
+      return res.status(500).json({ 
+        error: 'Database connection failed',
+        details: testError.message
+      });
+    }
+    
+    console.log('Supabase connection successful, record count:', testData);
+    
     const { email, plan_name } = req.body;
 
     console.log('Destructured values:', { email, plan_name });
@@ -22,22 +38,35 @@ router.post('/save', async (req, res) => {
     }
 
     // Save to database using the supabase client
+    console.log('Attempting to insert into database...');
+    
+    const insertData = {
+      email,
+      plan_name,
+      status: 'pending',
+      created_at: new Date().toISOString()
+    };
+    
+    console.log('Insert data:', insertData);
+    
     const { data, error } = await supabase
       .from('subscription_signups')
-      .insert({
-        email,
-        plan_name,
-        status: 'pending',
-        created_at: new Date().toISOString()
-      })
+      .insert(insertData)
       .select()
       .single();
 
+    console.log('Database response:', { data, error });
+
     if (error) {
+      console.error('Database error details:', error);
       if (error.code === '23505') { // Unique constraint violation
         return res.status(409).json({ error: 'Email already has a subscription signup' });
       }
-      throw error;
+      return res.status(500).json({ 
+        error: 'Database error occurred',
+        details: error.message,
+        code: error.code
+      });
     }
 
     res.status(201).json({ 
