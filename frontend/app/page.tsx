@@ -278,12 +278,20 @@ export default function LandingPage() {
         body: JSON.stringify(subscriptionData),
       });
 
-      if (subscriptionResponse.ok) {
-        console.log('Subscription interest saved to database');
-      }
+      console.log('Subscription response status:', subscriptionResponse.status);
 
-      // Close email modal
-      setIsEmailModalOpen(false);
+      if (subscriptionResponse.ok || subscriptionResponse.status === 409) {
+        console.log('Subscription interest saved to database (or already exists)');
+        
+        // Close email modal
+        setIsEmailModalOpen(false);
+        
+        // Continue with Stripe checkout regardless of whether it was a new record or existing one
+      } else {
+        const errorData = await subscriptionResponse.json();
+        console.error('Failed to save subscription:', errorData);
+        throw new Error('Failed to save subscription data');
+      }
 
       // Proceed with Stripe checkout
       const priceId = stripePrices[selectedPlan];
