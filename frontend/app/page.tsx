@@ -257,8 +257,22 @@ export default function LandingPage() {
     try {
       // Save subscription interest to database
       const planDetails = {
-        'Founding Member': { price: 99, features: ['Everything in Pro', 'Lifetime updates', 'Priority support', 'Founding member benefits'] },
-        'Pro': { price: 49, features: ['Advanced compliance features', 'Custom reporting', 'Priority support'] }
+        'Founding Member': { 
+          price: 199, 
+          features: ['Up to 50 users', 'All core features', '1-year money-back guarantee', 'Priority support'] 
+        },
+        'Early Bird': { 
+          price: 299, 
+          features: ['Up to 50 users', 'All core features', '1-year money-back guarantee', 'Standard support'] 
+        },
+        'Free': { 
+          price: 0, 
+          features: ['Up to 2 users', 'Compliance Dashboard', 'Risk Assessment', 'Training Tool', 'Community support'] 
+        },
+        'Regular': { 
+          price: 19, 
+          features: ['First 10 users', '$15/mo per 10 additional', 'All features', 'Standard support'] 
+        }
       };
 
       const plan = planDetails[selectedPlan as keyof typeof planDetails];
@@ -267,6 +281,8 @@ export default function LandingPage() {
       const subscriptionData = {
         email: userEmail,
         plan_name: selectedPlan,
+        plan_price: plan?.price || 0,
+        features: plan?.features || []
       };
 
       console.log('Sending subscription data:', subscriptionData);
