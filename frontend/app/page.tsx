@@ -288,6 +288,16 @@ export default function LandingPage() {
       // Proceed with Stripe checkout
       const priceId = stripePrices[selectedPlan];
 
+      if (!priceId) {
+        throw new Error(`Price ID not found for selected plan: ${selectedPlan}`);
+      }
+
+      console.log('Creating Stripe checkout session with:', {
+        priceId,
+        planName: selectedPlan,
+        email: userEmail
+      });
+
       const response = await fetch('/api/stripe/create-checkout-session', {
         method: 'POST',
         headers: {
@@ -295,16 +305,21 @@ export default function LandingPage() {
         },
         body: JSON.stringify({
           priceId,
-          successUrl: `${window.location.origin}/payment/success`,
-          cancelUrl: window.location.href,
+          planName: selectedPlan,
+          email: userEmail,
         }),
       });
 
+      console.log('Stripe checkout response status:', response.status);
+
       if (!response.ok) {
-        throw new Error('Failed to create checkout session');
+        const errorData = await response.json();
+        console.error('Stripe checkout error:', errorData);
+        throw new Error(`Failed to create checkout session: ${errorData.error}`);
       }
 
       const { clientSecret } = await response.json();
+      console.log('Received client secret:', clientSecret ? 'Yes' : 'No');
 
       // Initialize Stripe
       const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
