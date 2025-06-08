@@ -5,9 +5,11 @@
     "dev:backend": "cd backend && npm start"
   },
   "dependencies": {
+    "@stripe/stripe-js": "^7.3.1",
     "@tabler/icons-react": "^3.33.0",
     "clsx": "^2.1.1",
     "concurrently": "^9.1.2",
+    "lucide-react": "^0.513.0",
     "multer": "^2.0.0",
     "resend": "^4.5.2",
     "stripe": "^18.2.1",
