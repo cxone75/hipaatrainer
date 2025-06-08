@@ -22,9 +22,7 @@ router.post('/save', async (req, res) => {
       .from('subscription_signups')
       .insert({
         email,
-        plan_name: planName,
-        plan_price: planPrice,
-        features: features || {},
+        plan_name,
         status: 'pending',
         created_at: new Date().toISOString()
       })
@@ -40,7 +38,7 @@ router.post('/save', async (req, res) => {
 
     res.status(201).json({ 
       message: 'Subscription saved successfully',
-      data: { email: data.email, planName: data.plan_name }
+      data: { email: data.email, plan_name: data.plan_name }
     });
 
   } catch (error) {

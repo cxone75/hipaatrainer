@@ -261,9 +261,7 @@ export default function LandingPage() {
         },
         body: JSON.stringify({
           email: userEmail,
-          planName: selectedPlan,
-          planPrice: plan.price,
-          features: plan.features,
+          plan_name: selectedPlan,
         }),
       });
 
