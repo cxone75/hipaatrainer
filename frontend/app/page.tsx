@@ -306,43 +306,80 @@ export default function LandingPage() {
         email: userEmail
       });
 
+      const requestBody = {
+        priceId,
+        planName: selectedPlan,
+        email: userEmail,
+      };
+
+      console.log('Sending request body to Stripe API:', JSON.stringify(requestBody, null, 2));
+
       const response = await fetch('/api/stripe/create-checkout-session', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          priceId,
-          planName: selectedPlan,
-          email: userEmail,
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       console.log('Stripe checkout response status:', response.status);
+      console.log('Stripe checkout response headers:', Object.fromEntries(response.headers.entries()));
 
       if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Stripe checkout error:', errorData);
-        throw new Error(`Failed to create checkout session: ${errorData.error}`);
+        const errorText = await response.text();
+        console.error('Stripe checkout error response text:', errorText);
+        
+        try {
+          const errorData = JSON.parse(errorText);
+          console.error('Stripe checkout error data:', errorData);
+          throw new Error(`Failed to create checkout session: ${errorData.error}`);
+        } catch (parseError) {
+          console.error('Failed to parse error response:', parseError);
+          throw new Error(`Failed to create checkout session: ${response.status} ${response.statusText}`);
+        }
       }
 
-      const { clientSecret } = await response.json();
+      const responseData = await response.json();
+      console.log('Stripe checkout response data:', responseData);
+      
+      const { clientSecret } = responseData;
       console.log('Received client secret:', clientSecret ? 'Yes' : 'No');
+      
+      if (!clientSecret) {
+        throw new Error('No client secret received from Stripe');
+      }
 
       // Initialize Stripe
+      console.log('Initializing Stripe with publishable key:', process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ? 'Key exists' : 'Key missing');
+      
       const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
       if (!stripe) {
+        console.error('Stripe failed to initialize');
         throw new Error('Stripe failed to initialize');
       }
 
+      console.log('Stripe initialized successfully');
+
       // Create embedded checkout
+      console.log('Creating embedded checkout with client secret');
       const checkout = await stripe.initEmbeddedCheckout({
         clientSecret,
       });
 
+      console.log('Embedded checkout created successfully');
+
       // Mount the checkout
+      console.log('Mounting checkout to #checkout element');
+      const checkoutElement = document.getElementById('checkout');
+      
+      if (!checkoutElement) {
+        console.error('Checkout element not found');
+        throw new Error('Checkout element not found');
+      }
+      
       checkout.mount('#checkout');
+      console.log('Checkout mounted successfully');
     } catch (error) {
       console.error('Error:', error);
       alert('Something went wrong. Please try again.');
