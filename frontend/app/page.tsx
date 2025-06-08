@@ -138,7 +138,7 @@ export default function LandingPage() {
   // Debug logging
   console.log('Modal state:', showWaitlistModal);
 
-  const handleNewsletterSubscription = async (e) => {
+  const handleNewsletterSubscription = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!newsletterEmail) {
