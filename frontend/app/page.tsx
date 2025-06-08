@@ -254,15 +254,19 @@ export default function LandingPage() {
       const plan = planDetails[selectedPlan as keyof typeof planDetails];
 
       // Save subscription data
+      const subscriptionData = {
+        email: userEmail,
+        plan_name: selectedPlan,
+      };
+      
+      console.log('Sending subscription data:', subscriptionData);
+      
       const subscriptionResponse = await fetch('/api/subscriptions/save', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          email: userEmail,
-          plan_name: selectedPlan,
-        }),
+        body: JSON.stringify(subscriptionData),
       });
 
       if (subscriptionResponse.ok) {

@@ -5,6 +5,8 @@ export async function POST(request) {
   try {
     const body = await request.json();
     
+    console.log('Frontend API received body:', body);
+    
     // Forward the request to the backend
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
     const response = await fetch(`${backendUrl}/api/subscriptions/save`, {
