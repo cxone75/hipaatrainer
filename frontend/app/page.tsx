@@ -231,8 +231,17 @@ export default function LandingPage() {
     }
   };
 
-  const handleGetStarted = (planName: string) => {
-    setSelectedPlan(planName);
+  const handleGetStarted = async (planType: string) => {
+    console.log('handleGetStarted called with planType:', planType);
+
+    if (planType === 'Regular') {
+      // Handle regular plan - redirect to signup or payment
+      alert('Regular plan selected - redirect to payment');
+      return;
+    }
+
+    console.log('Setting selectedPlan to:', planType);
+    setSelectedPlan(planType);
     setIsEmailModalOpen(true);
   };
 
@@ -258,9 +267,9 @@ export default function LandingPage() {
         email: userEmail,
         plan_name: selectedPlan,
       };
-      
+
       console.log('Sending subscription data:', subscriptionData);
-      
+
       const subscriptionResponse = await fetch('/api/subscriptions/save', {
         method: 'POST',
         headers: {
@@ -636,6 +645,7 @@ export default function LandingPage() {
                             </svg>
                           </div>
                         ),
+```text
                         text: "Time Back"
                       },
                       "10+ hours free per month", 
