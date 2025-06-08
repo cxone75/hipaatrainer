@@ -1,11 +1,35 @@
 const { createClient } = require('@supabase/supabase-js');
 
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!supabaseUrl || !supabaseServiceKey) {
+  console.warn('Missing Supabase environment variables, using mock client');
+  // Create a mock client for development
+  const mockSupabase = {
+    from: () => ({
+      insert: () => ({
+        select: () => ({
+          single: () => Promise.resolve({ 
+            data: { email: 'test@example.com', plan_name: 'test' }, 
+            error: null 
+          })
+        })
+      })
+    })
+  };
+  module.exports = { supabase: mockSupabase };
+} else {
+  const supabase = createClient(supabaseUrl, supabaseServiceKey);
+  module.exports = { supabase };
+}
+
 class SupabaseService {
   constructor() {
     this.supabaseUrl = process.env.SUPABASE_URL;
     this.supabaseKey = process.env.SUPABASE_ANON_KEY;
     this.supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    
+
     if (!this.supabaseUrl || !this.supabaseKey) {
       throw new Error('Missing Supabase configuration. Please check SUPABASE_URL and SUPABASE_ANON_KEY environment variables.');
     }
@@ -83,7 +107,7 @@ class SupabaseService {
   async healthCheck() {
     try {
       const connectionTest = await this.testConnection();
-      
+
       return {
         status: connectionTest.success ? 'healthy' : 'unhealthy',
         database: connectionTest.success ? 'connected' : 'disconnected',
@@ -123,7 +147,7 @@ class SupabaseService {
   async getDatabaseStats() {
     try {
       const client = this.createAdminClient();
-      
+
       const [usersCount, rolesCount, orgsCount] = await Promise.all([
         client.from('users').select('id', { count: 'exact', head: true }),
         client.from('roles').select('id', { count: 'exact', head: true }),

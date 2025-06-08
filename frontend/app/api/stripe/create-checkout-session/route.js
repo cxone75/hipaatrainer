@@ -9,6 +9,7 @@ export async function POST(request) {
     const { priceId, planName, email } = await request.json();
 
     // Create Checkout Sessions from body params
+    const origin = request.headers.get('origin') || 'http://localhost:3000';
     const session = await stripe.checkout.sessions.create({
       ui_mode: 'embedded',
       line_items: [
@@ -18,7 +19,7 @@ export async function POST(request) {
         },
       ],
       mode: 'payment',
-      return_url: `${request.headers.get('origin')}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+      return_url: `${origin}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
       customer_email: email,
       metadata: {
         planName: planName,
