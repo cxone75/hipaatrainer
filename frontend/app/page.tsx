@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import Link from 'next/link';
 import LandingHeader from './components/Layout/LandingHeader';
 import LandingFooter from './components/Layout/LandingFooter';
@@ -1181,7 +1181,6 @@ export default function LandingPage() {
             </div>
           </div>
         )}
-      </main>
       <LandingFooter />
     </div>
   );
