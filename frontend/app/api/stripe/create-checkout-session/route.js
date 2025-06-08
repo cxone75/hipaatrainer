@@ -1,4 +1,3 @@
-
 import Stripe from 'stripe';
 import { NextResponse } from 'next/server';
 
@@ -7,10 +6,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export async function POST(request) {
   try {
     console.log('Stripe checkout API called');
-    
+
     const body = await request.json();
     console.log('Received request body:', body);
-    
+
     const { priceId, planName, email } = body;
 
     console.log('Extracted values:', { priceId, planName, email });
@@ -37,7 +36,7 @@ export async function POST(request) {
     // Create Checkout Sessions from body params
     const origin = request.headers.get('origin') || 'http://localhost:3000';
     console.log('Using origin:', origin);
-    
+
     const sessionData = {
       ui_mode: 'embedded',
       line_items: [

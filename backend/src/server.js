@@ -85,6 +85,7 @@ app.use('/api/documents', documentRoutes);
 app.use('/api/waitlist', waitlistRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/subscriptions', require('./routes/subscriptionRoutes'));
+app.use('/api/stripe', require('./routes/stripeRoutes'));
 
 // 404 handler
 app.use('*', (req, res) => {
