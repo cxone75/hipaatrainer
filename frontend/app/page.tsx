@@ -645,7 +645,6 @@ export default function LandingPage() {
                             </svg>
                           </div>
                         ),
-```text
                         text: "Time Back"
                       },
                       "10+ hours free per month", 
