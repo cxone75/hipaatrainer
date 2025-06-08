@@ -20,7 +20,10 @@ export default function LandingPage() {
   const [processingPayment, setProcessingPayment] = useState(false);
   const [checkoutEmail, setCheckoutEmail] = useState('');
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<string>('');
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
 
   const scrollToPricing = () => {
     const pricingSection = document.getElementById('pricing');
@@ -40,7 +43,7 @@ export default function LandingPage() {
       setShowWaitlistModal(true);
       return;
     }
-    
+
     if (stripePrices[planName]) {
       setSelectedPlan(planName);
       setShowCheckoutModal(true);
@@ -49,7 +52,7 @@ export default function LandingPage() {
 
   const handleStripeCheckout = async (e) => {
     e.preventDefault();
-    
+
     if (!checkoutEmail || !selectedPlan) {
       alert('Please enter your email address');
       return;
@@ -75,10 +78,10 @@ export default function LandingPage() {
       }
 
       const { clientSecret } = await response.json();
-      
+
       // Redirect to Stripe Checkout
       const stripe = window.Stripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
-      
+
       const { error } = await stripe.redirectToCheckout({
         sessionId: clientSecret.split('_secret_')[0],
       });
@@ -137,7 +140,7 @@ export default function LandingPage() {
 
   const handleNewsletterSubscription = async (e) => {
     e.preventDefault();
-    
+
     if (!newsletterEmail) {
       setSubscriptionMessage('Please enter your email address');
       return;
@@ -220,6 +223,76 @@ export default function LandingPage() {
       alert('Failed to join waitlist. Please check your connection and try again.');
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleGetStarted = (planName: string) => {
+    setSelectedPlan(planName);
+    setIsEmailModalOpen(true);
+  };
+
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!userEmail) {
+      alert('Please enter your email address');
+      return;
+    }
+
+    try {
+      // Save subscription interest to database
+      const planDetails = {
+        'Founding Member': { price: 99, features: ['Everything in Pro', 'Lifetime updates', 'Priority support', 'Founding member benefits'] },
+        'Pro': { price: 49, features: ['Advanced compliance features', 'Custom reporting', 'Priority support'] }
+      };
+
+      const plan = planDetails[selectedPlan as keyof typeof planDetails];
+
+      // Save subscription data
+      const subscriptionResponse = await fetch('/api/subscriptions/save', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: userEmail,
+          planName: selectedPlan,
+          planPrice: plan.price,
+          features: plan.features,
+        }),
+      });
+
+      if (subscriptionResponse.ok) {
+        console.log('Subscription interest saved to database');
+      }
+
+      // Close email modal
+      setIsEmailModalOpen(false);
+
+      // Proceed with Stripe checkout
+      const priceId = selectedPlan === 'Founding Member' ? 'price_1ABC123foundingmember' : 'price_1ABC123pro';
+
+      const response = await fetch('/api/stripe/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          priceId,
+          successUrl: `${window.location.origin}/payment/success`,
+          cancelUrl: window.location.href,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create checkout session');
+      }
+
+      const { url } = await response.json();
+      window.location.href = url;
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Something went wrong. Please try again.');
     }
   };
 
@@ -747,7 +820,7 @@ export default function LandingPage() {
                       </p>
                     )}
                     <button 
-                      onClick={() => handlePlanSelection(tier.plan)}
+                      onClick={() => handleGetStarted(tier.plan)}
                       className={`w-full py-3 rounded-lg font-semibold transition-all duration-300 ${
                         tier.disabled 
                           ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
@@ -802,7 +875,7 @@ export default function LandingPage() {
             <div className="flex items-start space-x-4">
               <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
                 <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
               </div>
               <div>
@@ -1072,6 +1145,196 @@ export default function LandingPage() {
           </div>
         </div>
       )}
+
+        {/* Email Collection Modal */}
+        {isEmailModalOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+              <h3 className="text-xl font-bold mb-4">Get Started with {selectedPlan}</h3>
+              <p className="text-gray-600 mb-6">
+                Enter your email to proceed with your {selectedPlan} subscription.
+              </p>
+              <form onSubmit={handleEmailSubmit}>
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={userEmail}
+                  onChange={(e) => setUserEmail(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent mb-4"
+                  required
+                />
+                <div className="flex gap-4">
+                  <button
+                    type="button"
+                    onClick={() => setIsEmailModalOpen(false)}
+                    className="flex-1 px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+                  >
+                    Continue to Payment
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}
+
+      
+
+      
+
+      
+
+      
+      
+      
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+      
+
+      
+
+      
+
+      
+      
+
+      
+
+      
+
+      
+      
+      
+      
+
+      
+
+      
+
+      
+      
+      
+      
+      
+      
+
+      
+
+      
+      
+
+      
+      
+
+      
+
+      
+
+      
+      
+
+      
+
+      
+
+      
+      
+
+      
+      
+      
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+      
+
+      
+
+      
+
+      
+      
+
+      
+      
+
+      
+
+      
+
+      
+      
+      
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+      
+
+      
+
+      
+
+      
+      
+
+      
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
 
       
 

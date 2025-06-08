@@ -76,14 +76,15 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Mount routes
+// Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/organizations', orgRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/roles', roleRoutes);
-app.use('/api/organizations', orgRoutes);
 app.use('/api/documents', documentRoutes);
 app.use('/api/waitlist', waitlistRoutes);
 app.use('/api/newsletter', newsletterRoutes);
+app.use('/api/subscriptions', require('./routes/subscriptionRoutes'));
 
 // 404 handler
 app.use('*', (req, res) => {
