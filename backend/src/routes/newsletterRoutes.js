@@ -1,4 +1,3 @@
-
 const express = require('express');
 const { createClient } = require('../services/supabase');
 
@@ -16,9 +15,12 @@ router.options('*', (req, res) => {
 // Subscribe to newsletter
 router.post('/subscribe', async (req, res) => {
   try {
+    console.log('Newsletter subscription request received:', req.body);
+
     const { email } = req.body;
 
     if (!email) {
+      console.log('No email provided');
       return res.status(400).json({ error: 'Email is required' });
     }
 
@@ -30,39 +32,45 @@ router.post('/subscribe', async (req, res) => {
 
     const supabase = createClient();
 
-    // Check if email already exists in newsletter subscriptions
-    const { data: existingEmail, error: checkError } = await supabase
+    console.log('Attempting to subscribe email:', email);
+
+    // Check if email already exists
+    const { data: existing, error: checkError } = await supabase
       .from('newsletter_subscriptions')
       .select('email')
       .eq('email', email.toLowerCase())
       .single();
 
-    if (existingEmail) {
-      return res.status(409).json({ error: 'Email already subscribed to newsletter' });
+    if (checkError && checkError.code !== 'PGRST116') {
+      console.error('Error checking existing subscriber:', checkError);
+      return res.status(500).json({ error: 'Database error' });
     }
 
-    // Insert new email subscription
+    if (existing) {
+      console.log('Email already subscribed:', email);
+      return res.status(200).json({ message: 'Email already subscribed' });
+    }
+
+    // Insert new subscriber
     const { data, error } = await supabase
       .from('newsletter_subscriptions')
-      .insert([{ email: email.toLowerCase() }])
+      .insert([{ email: email.toLowerCase(), subscribed_at: new Date().toISOString() }])
       .select()
       .single();
 
     if (error) {
-      if (error.code === '23505') { // Unique constraint violation
-        return res.status(409).json({ error: 'Email already subscribed to newsletter' });
-      }
-      throw error;
+      console.error('Newsletter subscription error:', error);
+      return res.status(500).json({ error: 'Failed to subscribe to newsletter' });
     }
 
+    console.log('Successfully subscribed:', email);
     res.status(201).json({ 
       message: 'Successfully subscribed to newsletter',
-      data: { email: data.email }
+      data 
     });
-
   } catch (error) {
     console.error('Newsletter subscription error:', error);
-    res.status(500).json({ error: 'Failed to subscribe to newsletter' });
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
