@@ -10,6 +10,15 @@ class ResendEmailService {
 
   async sendPurchaseConfirmationEmail(customerEmail, planName, planPrice, features) {
     try {
+      // Validate inputs
+      if (!customerEmail) {
+        throw new Error('Customer email is required');
+      }
+
+      console.log('Attempting to send email to:', customerEmail);
+      console.log('From address:', `${this.fromName} <${this.fromAddress}>`);
+      console.log('API Key configured:', !!process.env.RESEND_API_KEY);
+
       const subject = 'Purchase Confirmation - HIPAA Tracker';
       const html = this.generatePurchaseConfirmationTemplate(customerEmail, planName, planPrice, features);
 
@@ -20,12 +29,20 @@ class ResendEmailService {
         html,
       });
 
+      console.log('Email sent successfully:', emailData);
+
       return {
         success: true,
         messageId: emailData.data?.id,
+        emailData: emailData.data
       };
     } catch (error) {
       console.error('Failed to send purchase confirmation email:', error);
+      console.error('Error details:', {
+        message: error.message,
+        status: error.status,
+        name: error.name
+      });
       throw new Error(`Failed to send email: ${error.message}`);
     }
   }
@@ -93,11 +110,39 @@ class ResendEmailService {
   async testConfiguration() {
     try {
       if (!process.env.RESEND_API_KEY) {
-        return { success: false, message: 'RESEND_API_KEY environment variable is not set' };
+        return { 
+          success: false, 
+          message: 'RESEND_API_KEY environment variable is not set. Please add it to Replit Secrets.' 
+        };
       }
-      return { success: true, message: 'Resend email configuration is valid' };
+
+      if (process.env.RESEND_API_KEY.length < 10) {
+        return { 
+          success: false, 
+          message: 'RESEND_API_KEY appears to be invalid (too short)' 
+        };
+      }
+
+      // Test API key by making a simple request
+      try {
+        const testResult = await this.resend.domains.list();
+        return { 
+          success: true, 
+          message: 'Resend email configuration is valid and API key works',
+          apiKeyLength: process.env.RESEND_API_KEY.length,
+          fromAddress: this.fromAddress
+        };
+      } catch (apiError) {
+        return { 
+          success: false, 
+          message: `Resend API key test failed: ${apiError.message}` 
+        };
+      }
     } catch (error) {
-      return { success: false, message: `Resend configuration error: ${error.message}` };
+      return { 
+        success: false, 
+        message: `Resend configuration error: ${error.message}` 
+      };
     }
   }
 }
