@@ -17,6 +17,10 @@ externalPort = 3001
 localPort = 3002
 externalPort = 3002
 
+[[ports]]
+localPort = 3003
+externalPort = 3003
+
 [deployment]
 run = ["sh", "-c", "concurrently \"npm run dev:frontend\" \"npm run dev:backend\""]
 
