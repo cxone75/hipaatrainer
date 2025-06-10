@@ -104,57 +104,7 @@ export default function VideoPlayer({ videoUrl, title, onProgress }) {
           title={`Training Video: ${title}`}
         ></iframe>
 
-        {/* Custom Controls Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-          <div className="flex items-center space-x-4 text-white">
-            {/* Progress Bar */}
-            <div className="flex-1">
-              <div className="flex justify-between text-xs mb-1">
-                <span>{formatTime(currentTime)}</span>
-                <span>{formatTime(duration)}</span>
-              </div>
-              <div className="w-full bg-white/30 rounded-full h-1">
-                <div
-                  className="bg-white h-1 rounded-full transition-all duration-200"
-                  style={{ width: duration > 0 ? `${(currentTime / duration) * 100}%` : '0%' }}
-                ></div>
-              </div>
-            </div>
-
-            {/* Controls */}
-            <div className="flex items-center space-x-2">
-              {/* Captions Toggle */}
-              <button
-                onClick={() => setCaptionsEnabled(!captionsEnabled)}
-                className={`p-2 rounded hover:bg-white/20 transition-colors ${
-                  captionsEnabled ? 'bg-white/30' : ''
-                }`}
-                aria-label={`${captionsEnabled ? 'Disable' : 'Enable'} captions`}
-                title={`${captionsEnabled ? 'Disable' : 'Enable'} captions`}
-              >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M19 4H5c-1.11 0-2 .9-2 2v12c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 7H9.5v-.5h-2v3h2V13H11v1c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1h3c.55 0 1 .45 1 1v1zm7 0h-1.5v-.5h-2v3h2V13H18v1c0 .55-.45 1-1 1h-3c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1h3c.55 0 1 .45 1 1v1z"/>
-                </svg>
-              </button>
-
-              {/* Fullscreen Toggle */}
-              <button
-                onClick={toggleFullscreen}
-                className="p-2 rounded hover:bg-white/20 transition-colors"
-                aria-label={`${isFullscreen ? 'Exit' : 'Enter'} fullscreen`}
-                title={`${isFullscreen ? 'Exit' : 'Enter'} fullscreen`}
-              >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  {isFullscreen ? (
-                    <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/>
-                  ) : (
-                    <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
-                  )}
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
+        
 
         {/* Loading State */}
         {duration === 0 && (
