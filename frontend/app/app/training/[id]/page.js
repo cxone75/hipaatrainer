@@ -76,7 +76,7 @@ export default function TrainingCourse() {
                 id: 1,
                 title: 'Introduction to HIPAA',
                 duration: '17:45',
-                videoUrl: 'https://player.vimeo.com/video/123456789',
+                videoUrl: 'https://player.vimeo.com/video/1092212034/fd595af824',
                 content: 'This lesson introduces the basics of HIPAA and its importance in healthcare.',
                 completed: false
               },
@@ -84,7 +84,7 @@ export default function TrainingCourse() {
                 id: 2,
                 title: 'Importance of PHI',
                 duration: '17:45',
-                videoUrl: 'https://player.vimeo.com/video/123456790',
+                videoUrl: 'https://player.vimeo.com/video/1092212034/fd595af824',
                 content: 'Understanding Protected Health Information and why it matters.',
                 completed: false
               },
@@ -92,7 +92,7 @@ export default function TrainingCourse() {
                 id: 3,
                 title: 'HIPAA Privacy',
                 duration: '17:45',
-                videoUrl: 'https://player.vimeo.com/video/123456791',
+                videoUrl: 'https://player.vimeo.com/video/1092212034/fd595af824',
                 content: 'Privacy rules and regulations under HIPAA.',
                 completed: false
               },
@@ -100,7 +100,7 @@ export default function TrainingCourse() {
                 id: 4,
                 title: 'HIPAA Security',
                 duration: '17:45',
-                videoUrl: 'https://player.vimeo.com/video/123456792',
+                videoUrl: 'https://player.vimeo.com/video/1092212034/fd595af824',
                 content: 'Security requirements and best practices.',
                 completed: false
               },
@@ -108,7 +108,7 @@ export default function TrainingCourse() {
                 id: 5,
                 title: 'HIPAA and State Laws',
                 duration: '17:45',
-                videoUrl: 'https://player.vimeo.com/video/123456793',
+                videoUrl: 'https://player.vimeo.com/video/1092212034/fd595af824',
                 content: 'How HIPAA interacts with state-specific laws.',
                 completed: false
               },
@@ -116,7 +116,7 @@ export default function TrainingCourse() {
                 id: 6,
                 title: 'HIPAA Compliance',
                 duration: '17:45',
-                videoUrl: 'https://player.vimeo.com/video/123456794',
+                videoUrl: 'https://player.vimeo.com/video/1092212034/fd595af824',
                 content: 'Ensuring ongoing compliance with HIPAA requirements.',
                 completed: false
               }
@@ -136,7 +136,7 @@ export default function TrainingCourse() {
                 id: 1,
                 title: 'Introduction to OSHA',
                 duration: '15:30',
-                videoUrl: 'https://player.vimeo.com/video/123456789',
+                videoUrl: 'https://player.vimeo.com/video/1092212034/fd595af824',
                 content: 'Understanding OSHA regulations and workplace safety.',
                 completed: false
               },
@@ -144,7 +144,7 @@ export default function TrainingCourse() {
                 id: 2,
                 title: 'Hazard Identification',
                 duration: '14:45',
-                videoUrl: 'https://player.vimeo.com/video/123456790',
+                videoUrl: 'https://player.vimeo.com/video/1092212034/fd595af824',
                 content: 'Learning to identify workplace hazards.',
                 completed: false
               }
@@ -164,7 +164,7 @@ export default function TrainingCourse() {
                 id: 1,
                 title: 'Privacy Frameworks',
                 duration: '20:00',
-                videoUrl: 'https://player.vimeo.com/video/123456789',
+                videoUrl: 'https://player.vimeo.com/video/1092212034/fd595af824',
                 content: 'Understanding advanced privacy frameworks.',
                 completed: false
               },
@@ -172,7 +172,7 @@ export default function TrainingCourse() {
                 id: 2,
                 title: 'Data Protection Strategies',
                 duration: '25:30',
-                videoUrl: 'https://player.vimeo.com/video/123456790',
+                videoUrl: 'https://player.vimeo.com/video/1092212034/fd595af824',
                 content: 'Implementing data protection strategies.',
                 completed: false
               },
@@ -180,7 +180,7 @@ export default function TrainingCourse() {
                 id: 3,
                 title: 'Compliance Monitoring',
                 duration: '14:30',
-                videoUrl: 'https://player.vimeo.com/video/123456791',
+                videoUrl: 'https://player.vimeo.com/video/1092212034/fd595af824',
                 content: 'Monitoring compliance with privacy regulations.',
                 completed: false
               }
@@ -200,7 +200,7 @@ export default function TrainingCourse() {
                 id: 1,
                 title: 'Incident Identification',
                 duration: '12:45',
-                videoUrl: 'https://player.vimeo.com/video/123456789',
+                videoUrl: 'https://player.vimeo.com/video/1092212034/fd595af824',
                 content: 'How to identify security incidents.',
                 completed: false
               },
@@ -208,7 +208,7 @@ export default function TrainingCourse() {
                 id: 2,
                 title: 'Response Procedures',
                 duration: '18:30',
-                videoUrl: 'https://player.vimeo.com/video/123456790',
+                videoUrl: 'https://player.vimeo.com/video/1092212034/fd595af824',
                 content: 'Step-by-step incident response procedures.',
                 completed: false
               },
@@ -216,7 +216,7 @@ export default function TrainingCourse() {
                 id: 3,
                 title: 'Documentation and Reporting',
                 duration: '8:45',
-                videoUrl: 'https://player.vimeo.com/video/123456791',
+                videoUrl: 'https://player.vimeo.com/video/1092212034/fd595af824',
                 content: 'Proper documentation and reporting of incidents.',
                 completed: false
               }
