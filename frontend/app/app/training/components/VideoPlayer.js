@@ -85,11 +85,11 @@ export default function VideoPlayer({ videoUrl, title, onProgress }) {
   }, []);
 
   return (
-    <div className="p-6">
+    <div className="w-full h-full">
       <div 
         ref={containerRef}
-        className={`relative bg-black rounded-lg overflow-hidden ${
-          isFullscreen ? 'fixed inset-0 z-50' : 'aspect-video'
+        className={`relative bg-black overflow-hidden w-full h-full ${
+          isFullscreen ? 'fixed inset-0 z-50' : ''
         }`}
       >
         {/* Video Player */}
@@ -167,32 +167,7 @@ export default function VideoPlayer({ videoUrl, title, onProgress }) {
         )}
       </div>
 
-      {/* Video Information */}
-      <div className="mt-4">
-        <h3 className="text-lg font-medium text-gray-900 mb-2">{title}</h3>
-        <div className="flex items-center text-sm text-gray-600 space-x-4">
-          <span>Duration: {formatTime(duration)}</span>
-          <span>•</span>
-          <span>Progress: {duration > 0 ? Math.round((currentTime / duration) * 100) : 0}%</span>
-          {captionsEnabled && (
-            <>
-              <span>•</span>
-              <span className="text-green-600">Captions On</span>
-            </>
-          )}
-        </div>
-      </div>
-
-      {/* Accessibility Instructions */}
-      <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-        <h4 className="text-sm font-medium text-blue-900 mb-2">Video Controls</h4>
-        <ul className="text-sm text-blue-800 space-y-1">
-          <li>• Use spacebar to play/pause</li>
-          <li>• Use arrow keys to seek forward/backward</li>
-          <li>• Press 'f' for fullscreen</li>
-          <li>• Press 'c' to toggle captions</li>
-        </ul>
-      </div>
+      
     </div>
   );
 }
