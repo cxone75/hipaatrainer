@@ -1,6 +1,7 @@
 
 const express = require('express');
 const resendEmailService = require('../services/resendEmailService');
+const { createClient } = require('../services/supabase');
 
 const router = express.Router();
 
@@ -68,6 +69,41 @@ router.get('/test-email-config', async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Configuration test failed',
+      error: error.message
+    });
+  }
+});
+
+// Test endpoint to check Supabase connection
+router.get('/test-supabase', async (req, res) => {
+  try {
+    const supabase = createClient();
+    
+    // Test the connection by trying to get users
+    const { data, error } = await supabase.from('users').select('count').limit(1);
+    
+    if (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'Supabase connection failed',
+        error: error.message
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Supabase connection successful',
+      environment: {
+        hasSupabaseUrl: !!process.env.SUPABASE_URL,
+        hasSupabaseAnonKey: !!process.env.SUPABASE_ANON_KEY,
+        hasJwtSecret: !!process.env.JWT_SECRET
+      }
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Supabase test failed',
       error: error.message
     });
   }

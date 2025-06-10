@@ -141,32 +141,49 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log('Login attempt for email:', email);
 
     if (!email || !password) {
+      console.log('Missing email or password');
       return res.status(400).json({ error: 'Email and password are required' });
+    }
+
+    // Check environment variables
+    if (!process.env.JWT_SECRET) {
+      console.error('JWT_SECRET not configured');
+      return res.status(500).json({ error: 'Server configuration error' });
     }
 
     // Authenticate with Supabase
     const supabase = createClient();
+    console.log('Attempting Supabase authentication...');
+    
     const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-      email,
+      email: email.toLowerCase().trim(),
       password
     });
 
     if (authError) {
+      console.error('Supabase auth error:', authError);
       if (authError.message.includes('Invalid login credentials')) {
         return res.status(401).json({ error: 'Invalid email or password' });
       }
-      return res.status(401).json({ error: 'Authentication failed' });
+      return res.status(401).json({ error: 'Authentication failed: ' + authError.message });
     }
+
+    console.log('Supabase auth successful, user ID:', authData.user.id);
 
     // Get user data from database
     const user = await userModel.getUserById(authData.user.id);
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      console.error('User not found in database:', authData.user.id);
+      return res.status(404).json({ error: 'User not found in database' });
     }
 
+    console.log('User found:', user.email, 'Status:', user.status);
+
     if (user.status !== 'active') {
+      console.log('User account not active:', user.status);
       return res.status(403).json({ error: 'Account is not active' });
     }
 
@@ -181,6 +198,8 @@ router.post('/login', async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
+
+    console.log('Login successful for user:', user.email);
 
     res.header('Access-Control-Allow-Credentials', 'true');
     res.json({
@@ -198,7 +217,8 @@ router.post('/login', async (req, res) => {
     });
 
   } catch (error) {
-    res.status(500).json({ error: 'Login failed' });
+    console.error('Login error:', error);
+    res.status(500).json({ error: 'Login failed: ' + error.message });
   }
 });
 

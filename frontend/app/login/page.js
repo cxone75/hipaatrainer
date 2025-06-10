@@ -34,6 +34,8 @@ export default function LoginPage() {
     setError('');
 
     try {
+      console.log('Attempting login with email:', formData.email);
+      
       // Call backend API to authenticate with Supabase
       const response = await fetch('/api/auth/login', {
         method: 'POST',
@@ -47,11 +49,17 @@ export default function LoginPage() {
         }),
       });
 
+      console.log('Login response status:', response.status);
+      
       const data = await response.json();
+      console.log('Login response data:', data);
 
       if (!response.ok) {
-        setError(data.error || 'Login failed');
+        console.error('Login failed:', data);
+        setError(data.error || `Login failed (${response.status})`);
       } else {
+        console.log('Login successful, storing token and redirecting');
+        
         // Store auth token
         localStorage.setItem('authToken', data.token);
         localStorage.setItem('userData', JSON.stringify(data.user));
@@ -60,7 +68,8 @@ export default function LoginPage() {
         window.location.href = '/app';
       }
     } catch (error) {
-      setError('Login failed. Please try again.');
+      console.error('Login error:', error);
+      setError(`Login failed: ${error.message}`);
     } finally {
       setIsLoading(false);
     }
