@@ -76,7 +76,7 @@ export default function TrainingCourse() {
                 id: 1,
                 title: 'Introduction to HIPAA',
                 duration: '17:45',
-                videoUrl: 'https://player.vimeo.com/video/123456789',
+                videoUrl: 'https://player.vimeo.com/video/1092212034/fd595af824',
                 content: 'This lesson introduces the basics of HIPAA and its importance in healthcare.',
                 completed: false
               },
@@ -84,7 +84,7 @@ export default function TrainingCourse() {
                 id: 2,
                 title: 'Importance of PHI',
                 duration: '17:45',
-                videoUrl: 'https://player.vimeo.com/video/123456790',
+                videoUrl: 'https://player.vimeo.com/video/1092212034/fd595af824',
                 content: 'Understanding Protected Health Information and why it matters.',
                 completed: false
               },
@@ -92,7 +92,7 @@ export default function TrainingCourse() {
                 id: 3,
                 title: 'HIPAA Privacy',
                 duration: '17:45',
-                videoUrl: 'https://player.vimeo.com/video/123456791',
+                videoUrl: 'https://player.vimeo.com/video/1092212034/fd595af824',
                 content: 'Privacy rules and regulations under HIPAA.',
                 completed: false
               },
@@ -100,7 +100,7 @@ export default function TrainingCourse() {
                 id: 4,
                 title: 'HIPAA Security',
                 duration: '17:45',
-                videoUrl: 'https://player.vimeo.com/video/123456792',
+                videoUrl: 'https://player.vimeo.com/video/1092212034/fd595af824',
                 content: 'Security requirements and best practices.',
                 completed: false
               },
@@ -108,7 +108,7 @@ export default function TrainingCourse() {
                 id: 5,
                 title: 'HIPAA and State Laws',
                 duration: '17:45',
-                videoUrl: 'https://player.vimeo.com/video/123456793',
+                videoUrl: 'https://player.vimeo.com/video/1092212034/fd595af824',
                 content: 'How HIPAA interacts with state-specific laws.',
                 completed: false
               },
@@ -116,7 +116,7 @@ export default function TrainingCourse() {
                 id: 6,
                 title: 'HIPAA Compliance',
                 duration: '17:45',
-                videoUrl: 'https://player.vimeo.com/video/123456794',
+                videoUrl: 'https://player.vimeo.com/video/1092212034/fd595af824',
                 content: 'Ensuring ongoing compliance with HIPAA requirements.',
                 completed: false
               }
@@ -442,16 +442,15 @@ export default function TrainingCourse() {
           {/* Video Player Area */}
           <div className="flex-1 bg-black relative">
             {/* Video Player */}
-            <div className="w-full h-full flex items-center justify-center">
-              <div className="text-center text-white">
-                <div className="mb-4">
-                  <svg className="w-20 h-20 mx-auto mb-4 opacity-50" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z"/>
-                  </svg>
-                </div>
-                <p className="text-lg">Video Player</p>
-                <p className="text-sm opacity-75">Lesson {currentLesson + 1}: {currentLessonData?.title}</p>
-              </div>
+            <div className="w-full h-full">
+              <iframe
+                src={currentLessonData?.videoUrl || 'https://player.vimeo.com/video/1092212034/fd595af824'}
+                className="w-full h-full"
+                frameBorder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+                title={`Lesson ${currentLesson + 1}: ${currentLessonData?.title}`}
+              ></iframe>
             </div>
 
             {/* Video Controls Overlay */}
