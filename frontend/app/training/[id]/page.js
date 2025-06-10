@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import MainLayout from '../../components/Layout/MainLayout';
 import AlertModal from '../../components/AlertModal';
+import VideoPlayer from '../components/VideoPlayer';
 
 export default function TrainingCourse() {
   const { id } = useParams();
@@ -441,17 +442,18 @@ export default function TrainingCourse() {
         <div className="flex-1 flex flex-col">
           {/* Video Player Area */}
           <div className="flex-1 bg-black relative">
-            {/* Video Player */}
-            <div className="w-full h-full">
-              <iframe
-                src={currentLessonData?.videoUrl || 'https://player.vimeo.com/video/1092212034/fd595af824'}
-                className="w-full h-full"
-                frameBorder="0"
-                allow="autoplay; fullscreen; picture-in-picture"
-                allowFullScreen
-                title={`Lesson ${currentLesson + 1}: ${currentLessonData?.title}`}
-              ></iframe>
-            </div>
+            {/* Enhanced Video Player */}
+            <VideoPlayer
+              videoUrl={currentLessonData?.videoUrl || 'https://player.vimeo.com/video/1092212034/fd595af824'}
+              title={`Lesson ${currentLesson + 1}: ${currentLessonData?.title}`}
+              onProgress={(progress) => {
+                // Track video progress for completion
+                if (progress >= 80 && !completedLessons.includes(currentLessonData.id)) {
+                  // Auto-mark as complete when 80% watched
+                  console.log(`Auto-completing lesson ${currentLessonData.id} at ${progress}% progress`);
+                }
+              }}
+            />
 
             {/* Video Controls Overlay */}
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
