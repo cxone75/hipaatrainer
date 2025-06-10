@@ -10,18 +10,35 @@ export default function OnboardingGuard({ children }) {
   const [isOnboardingComplete, setIsOnboardingComplete] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Routes that should be accessible during onboarding
-  const allowedRoutes = ['/onboarding', '/auth/signin', '/auth/signup'];
+  // Routes that should be accessible during onboarding and for guests
+  const allowedRoutes = [
+    '/onboarding', 
+    '/auth/signin', 
+    '/auth/signup',
+    '/', // Landing page
+    '/landing',
+    '/blog',
+    '/contact',
+    '/privacy',
+    '/terms',
+    '/faq',
+    '/hipaa-compliance'
+  ];
 
   useEffect(() => {
     // Check if user has completed onboarding
     const onboardingCompleted = localStorage.getItem('onboardingCompleted');
     const hasInvite = localStorage.getItem('userInvite'); // Check for invite token
+    const authToken = localStorage.getItem('authToken'); // Check if user is authenticated
     
     // If user has an invite, skip onboarding
     if (hasInvite) {
       setIsOnboardingComplete(true);
+    } else if (!authToken) {
+      // Guest user - allow access to public pages
+      setIsOnboardingComplete(true);
     } else {
+      // Authenticated user - check onboarding status
       setIsOnboardingComplete(onboardingCompleted === 'true');
     }
     
@@ -31,13 +48,15 @@ export default function OnboardingGuard({ children }) {
   useEffect(() => {
     if (isLoading) return;
 
-    // If onboarding is not complete and not on allowed routes, redirect to onboarding
-    if (!isOnboardingComplete && !allowedRoutes.includes(pathname)) {
+    const authToken = localStorage.getItem('authToken');
+    
+    // If user is authenticated but onboarding is not complete and not on allowed routes
+    if (authToken && !isOnboardingComplete && !allowedRoutes.includes(pathname)) {
       router.push('/onboarding');
     }
     
     // If onboarding is complete and on onboarding page, redirect to dashboard
-    if (isOnboardingComplete && pathname === '/onboarding') {
+    if (isOnboardingComplete && pathname === '/onboarding' && authToken) {
       router.push('/dashboard');
     }
   }, [isOnboardingComplete, pathname, router, isLoading]);
@@ -60,8 +79,9 @@ export default function OnboardingGuard({ children }) {
     );
   }
 
-  // Show blocked screen if onboarding not complete and not on allowed routes
-  if (!isOnboardingComplete && !allowedRoutes.includes(pathname)) {
+  // Show blocked screen if user is authenticated, onboarding not complete, and not on allowed routes
+  const authToken = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
+  if (authToken && !isOnboardingComplete && !allowedRoutes.includes(pathname)) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="max-w-md w-full text-center">
