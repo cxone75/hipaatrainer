@@ -60,7 +60,7 @@ router.get('/test-email-config', async (req, res) => {
       message: configTest.message,
       environment: {
         hasApiKey: !!process.env.RESEND_API_KEY,
-        fromEmail: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
+        fromEmail: process.env.RESEND_FROM_EMAIL || 'info@updates.hipaatrainer.net',
         fromName: process.env.EMAIL_FROM_NAME || 'HIPAA Tracker'
       }
     });

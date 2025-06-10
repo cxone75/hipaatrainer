@@ -4,7 +4,7 @@ const { Resend } = require('resend');
 class ResendEmailService {
   constructor() {
     this.resend = new Resend(process.env.RESEND_API_KEY);
-    this.fromAddress = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
+    this.fromAddress = process.env.RESEND_FROM_EMAIL || 'info@updates.hipaatrainer.net';
     this.fromName = process.env.EMAIL_FROM_NAME || 'HIPAA Tracker';
   }
 
