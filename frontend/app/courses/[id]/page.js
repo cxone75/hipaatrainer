@@ -441,16 +441,15 @@ export default function CoursePage() {
           {/* Video Player Area */}
           <div className="flex-1 bg-black relative">
             {/* Video Player */}
-            <div className="w-full h-full flex items-center justify-center">
-              <div className="text-center text-white">
-                <div className="mb-4">
-                  <svg className="w-20 h-20 mx-auto mb-4 opacity-50" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z"/>
-                  </svg>
-                </div>
-                <p className="text-lg">Video Player</p>
-                <p className="text-sm opacity-75">Lesson {currentLesson + 1}: {currentLessonData?.title}</p>
-              </div>
+            <div className="w-full h-full">
+              <iframe
+                src={currentLessonData?.videoUrl || 'https://player.vimeo.com/video/1092212034/fd595af824'}
+                className="w-full h-full"
+                frameBorder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+                title={`Lesson ${currentLesson + 1}: ${currentLessonData?.title}`}
+              ></iframe>
             </div>
 
             {/* Video Controls Overlay */}
