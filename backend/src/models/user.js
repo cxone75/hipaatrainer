@@ -59,6 +59,8 @@ class UserModel {
 
   async getUserById(userId) {
     try {
+      console.log('getUserById called with userId:', userId);
+      
       // Use admin client to bypass RLS for user lookup during registration
       const adminSupabase = require('../services/supabase').createAdminClient();
 
@@ -72,12 +74,22 @@ class UserModel {
         .eq('id', userId)
         .single();
 
+      console.log('Database query result:', { user: !!user, error: error?.message, userId });
+
       if (error && error.code !== 'PGRST116') {
+        console.error('Database error in getUserById:', error);
         throw new Error(`Failed to fetch user: ${error.message}`);
+      }
+
+      if (!user) {
+        console.log('No user found for ID:', userId);
+      } else {
+        console.log('User found:', user.email, user.id);
       }
 
       return user;
     } catch (error) {
+      console.error('Exception in getUserById:', error);
       throw error;
     }
   }
