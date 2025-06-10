@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import AlertModal from '../../../components/AlertModal';
+import VideoPlayer from '../components/VideoPlayer';
 
 export default function TrainingCourse() {
   const { id } = useParams();
@@ -431,18 +432,18 @@ export default function TrainingCourse() {
       <div className="flex-1 flex flex-col">
         {/* Video Player Area */}
         <div className="flex-1 bg-black relative">
-          {/* Video Player */}
-          <div className="w-full h-full flex items-center justify-center">
-            <div className="text-center text-white">
-              <div className="mb-4">
-                <svg className="w-20 h-20 mx-auto mb-4 opacity-50" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z"/>
-                </svg>
-              </div>
-              <p className="text-lg">Video Player</p>
-              <p className="text-sm opacity-75">Lesson {currentLesson + 1}: {currentLessonData?.title}</p>
-            </div>
-          </div>
+          {/* Enhanced Video Player */}
+          <VideoPlayer
+            videoUrl={currentLessonData?.videoUrl || 'https://player.vimeo.com/video/1092212034/fd595af824'}
+            title={`Lesson ${currentLesson + 1}: ${currentLessonData?.title}`}
+            onProgress={(progress) => {
+              // Track video progress for completion
+              if (progress >= 80 && !completedLessons.includes(currentLessonData.id)) {
+                // Auto-mark as complete when 80% watched
+                console.log(`Auto-completing lesson ${currentLessonData.id} at ${progress}% progress`);
+              }
+            }}
+          />
 
           {/* Video Controls Overlay */}
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
