@@ -109,4 +109,45 @@ router.get('/test-supabase', async (req, res) => {
   }
 });
 
+// Debug endpoint to check user records
+router.get('/debug-users', async (req, res) => {
+  try {
+    const { createAdminClient } = require('../services/supabase');
+    const adminSupabase = createAdminClient();
+    
+    // Get all users from database
+    const { data: dbUsers, error: dbError } = await adminSupabase
+      .from('users')
+      .select('id, email, first_name, last_name, status, created_at')
+      .limit(10);
+    
+    // Get all auth users
+    const { data: authUsersData, error: authError } = await adminSupabase.auth.admin.listUsers();
+    
+    res.json({
+      success: true,
+      database_users: dbUsers || [],
+      database_error: dbError?.message || null,
+      auth_users: authUsersData?.users?.map(u => ({
+        id: u.id,
+        email: u.email,
+        created_at: u.created_at,
+        email_confirmed_at: u.email_confirmed_at
+      })) || [],
+      auth_error: authError?.message || null,
+      user_count_match: {
+        db_count: dbUsers?.length || 0,
+        auth_count: authUsersData?.users?.length || 0
+      }
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Debug test failed',
+      error: error.message
+    });
+  }
+});
+
 module.exports = router;

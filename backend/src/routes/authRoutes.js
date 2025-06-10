@@ -174,10 +174,34 @@ router.post('/login', async (req, res) => {
     console.log('Supabase auth successful, user ID:', authData.user.id);
 
     // Get user data from database
-    const user = await userModel.getUserById(authData.user.id);
+    let user = await userModel.getUserById(authData.user.id);
     if (!user) {
       console.error('User not found in database:', authData.user.id);
-      return res.status(404).json({ error: 'User not found in database' });
+      console.log('Auth user data:', authData.user);
+      
+      // Try to create user record from Auth data
+      try {
+        const supabase = createAdminClient();
+        const { data: authUser, error: fetchError } = await supabase.auth.admin.getUserById(authData.user.id);
+        
+        if (fetchError) {
+          console.error('Error fetching auth user:', fetchError);
+          return res.status(404).json({ error: 'User not found in authentication system' });
+        }
+
+        console.log('Creating missing user record for:', authUser.user.email);
+        
+        // This should trigger the same process as registration
+        // You may need to run your database triggers manually or create the user record
+        return res.status(404).json({ 
+          error: 'User account setup incomplete. Please contact support or try registering again.',
+          details: 'Authentication successful but user profile not found'
+        });
+        
+      } catch (error) {
+        console.error('Error during user lookup/creation:', error);
+        return res.status(500).json({ error: 'Database error during login' });
+      }
     }
 
     console.log('User found:', user.email, 'Status:', user.status);
