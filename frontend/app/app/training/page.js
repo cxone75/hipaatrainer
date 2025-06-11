@@ -150,7 +150,7 @@ export default function TrainingCourses() {
       {/* Course Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredCourses.map((course) => (
-          <div key={course.id} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+          <div key={course.id} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow flex flex-col">
             {/* Course Thumbnail */}
             <div className="h-48 bg-gradient-to-br from-purple-500 to-blue-600 flex items-center justify-center">
               <div className="text-white text-center">
@@ -162,7 +162,7 @@ export default function TrainingCourses() {
             </div>
 
             {/* Course Content */}
-            <div className="p-6">
+            <div className="p-6 flex flex-col flex-grow">
               <div className="flex items-start justify-between mb-3">
                 <h3 className="text-lg font-bold text-gray-900">{course.title}</h3>
                 {course.certificateEarned && (
@@ -213,7 +213,7 @@ export default function TrainingCourses() {
               )}
 
               {/* Action Buttons */}
-              <div className="space-y-2">
+              <div className="space-y-2 mt-auto">
                 <div className="flex space-x-2">
                   {course.enrolled ? (
                     <a
