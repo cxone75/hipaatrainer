@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -13,7 +12,7 @@ export default function SRAGuide({ assessmentData, onUpdateData }) {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
@@ -64,38 +63,10 @@ export default function SRAGuide({ assessmentData, onUpdateData }) {
         required: true
       },
       {
-        id: 'password_policy',
-        question: 'What password requirements do you enforce?',
-        type: 'checkbox',
-        options: ['Minimum 12 characters', 'Complex characters required', 'Regular password changes', 'Password history enforcement', 'Account lockout policies'],
-        required: true
-      },
-      {
         id: 'network_security',
         question: 'Which network security measures are implemented?',
         type: 'checkbox',
         options: ['Firewall', 'Intrusion Detection System', 'Network Segmentation', 'VPN for remote access', 'Network monitoring'],
-        required: true
-      },
-      {
-        id: 'data_classification',
-        question: 'Do you have a data classification system?',
-        type: 'radio',
-        options: ['Yes, fully implemented', 'Partially implemented', 'In development', 'No'],
-        required: true
-      },
-      {
-        id: 'vendor_management',
-        question: 'How do you assess third-party vendor security?',
-        type: 'radio',
-        options: ['Comprehensive security assessments', 'Basic questionnaires', 'Contract review only', 'No formal process'],
-        required: true
-      },
-      {
-        id: 'physical_security',
-        question: 'What physical security controls are in place?',
-        type: 'checkbox',
-        options: ['Access cards/badges', 'Security cameras', 'Visitor management', 'Secure server rooms', 'Clean desk policy'],
         required: true
       },
       {
@@ -106,52 +77,10 @@ export default function SRAGuide({ assessmentData, onUpdateData }) {
         required: true
       },
       {
-        id: 'data_retention',
-        question: 'Do you have a data retention and disposal policy?',
-        type: 'radio',
-        options: ['Yes, fully documented and enforced', 'Yes, but not consistently enforced', 'Informal guidelines only', 'No policy'],
-        required: true
-      },
-      {
         id: 'audit_logging',
         question: 'What activities are logged and monitored?',
         type: 'checkbox',
         options: ['User login/logout', 'Data access', 'Administrative changes', 'Failed login attempts', 'System changes'],
-        required: true
-      },
-      {
-        id: 'business_continuity',
-        question: 'Do you have a business continuity plan?',
-        type: 'radio',
-        options: ['Yes, tested annually', 'Yes, but not tested', 'In development', 'No'],
-        required: true
-      },
-      {
-        id: 'privacy_controls',
-        question: 'What privacy protection measures are implemented?',
-        type: 'checkbox',
-        options: ['Data minimization', 'Purpose limitation', 'Consent management', 'Privacy impact assessments', 'Data subject rights'],
-        required: true
-      },
-      {
-        id: 'remote_work',
-        question: 'How do you secure remote work environments?',
-        type: 'checkbox',
-        options: ['VPN required', 'Endpoint security software', 'Device encryption', 'Remote wipe capabilities', 'Home network security guidelines'],
-        required: true
-      },
-      {
-        id: 'security_governance',
-        question: 'Who oversees your cybersecurity program?',
-        type: 'radio',
-        options: ['Dedicated CISO/Security Officer', 'IT Manager', 'External consultant', 'No designated person'],
-        required: true
-      },
-      {
-        id: 'risk_assessment_frequency',
-        question: 'How often do you conduct formal risk assessments?',
-        type: 'radio',
-        options: ['Quarterly', 'Annually', 'When major changes occur', 'Never'],
         required: true
       },
       {
@@ -163,70 +92,7 @@ export default function SRAGuide({ assessmentData, onUpdateData }) {
       }
     ];
 
-    // Adaptive questions based on previous answers
-    const adaptiveQuestions = [...baseQuestions];
-
-    if (answers.encryption === 'No encryption' || answers.encryption === 'Partially implemented') {
-      adaptiveQuestions.push({
-        id: 'encryption_plan',
-        question: 'What is your timeline for implementing full encryption?',
-        type: 'radio',
-        options: ['Within 30 days', 'Within 90 days', 'Within 6 months', 'Within 1 year', 'No current plans'],
-        required: true
-      });
-    }
-
-    if (answers.access_control === 'No') {
-      adaptiveQuestions.push({
-        id: 'mfa_timeline',
-        question: 'When do you plan to implement multi-factor authentication?',
-        type: 'radio',
-        options: ['Within 30 days', 'Within 90 days', 'Within 6 months', 'No current plans'],
-        required: true
-      });
-    }
-
-    if (answers.backup === 'Rarely' || answers.backup === 'Never') {
-      adaptiveQuestions.push({
-        id: 'backup_barriers',
-        question: 'What are the main barriers to implementing regular backups?',
-        type: 'checkbox',
-        options: ['Lack of resources', 'Technical complexity', 'Cost concerns', 'Not a priority', 'No suitable backup solution'],
-        required: true
-      });
-    }
-
-    if (answers.incident_response === 'No') {
-      adaptiveQuestions.push({
-        id: 'incident_response_timeline',
-        question: 'When do you plan to develop an incident response plan?',
-        type: 'radio',
-        options: ['Within 30 days', 'Within 90 days', 'Within 6 months', 'No current plans'],
-        required: true
-      });
-    }
-
-    if (answers.vulnerability_scanning === 'Never') {
-      adaptiveQuestions.push({
-        id: 'vulnerability_scanning_barriers',
-        question: 'What prevents you from conducting vulnerability assessments?',
-        type: 'checkbox',
-        options: ['Lack of expertise', 'Cost concerns', 'No suitable tools', 'Not a priority', 'Lack of time'],
-        required: true
-      });
-    }
-
-    if (answers.security_governance === 'No designated person') {
-      adaptiveQuestions.push({
-        id: 'security_governance_plan',
-        question: 'Do you plan to assign cybersecurity responsibilities?',
-        type: 'radio',
-        options: ['Yes, within 30 days', 'Yes, within 90 days', 'Considering it', 'No current plans'],
-        required: true
-      });
-    }
-
-    return adaptiveQuestions;
+    return baseQuestions;
   };
 
   const questions = getAdaptiveQuestions();
@@ -235,7 +101,7 @@ export default function SRAGuide({ assessmentData, onUpdateData }) {
   const handleAnswerChange = (questionId, value) => {
     const newAnswers = { ...answers, [questionId]: value };
     setAnswers(newAnswers);
-    
+
     // Update parent component
     onUpdateData({
       ...assessmentData,
