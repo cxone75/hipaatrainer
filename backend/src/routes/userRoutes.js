@@ -65,14 +65,14 @@ router.put('/me/profile',
   rateLimit.apiLimiter,
   (req, res) => {
     req.params.id = req.user.id;
-    // Restrict what users can update about themselves
-    const allowedFields = ['firstName', 'lastName', 'phone', 'preferences'];
-    req.body = Object.keys(req.body)
-      .filter(key => allowedFields.includes(key))
-      .reduce((obj, key) => {
-        obj[key] = req.body[key];
-        return obj;
-      }, {});
+    // Restrict what users can update about themselves using literal property names
+    const sanitizedBody = {};
+    if (req.body.firstName !== undefined) sanitizedBody.firstName = req.body.firstName;
+    if (req.body.lastName !== undefined) sanitizedBody.lastName = req.body.lastName;
+    if (req.body.phone !== undefined) sanitizedBody.phone = req.body.phone;
+    if (req.body.preferences !== undefined) sanitizedBody.preferences = req.body.preferences;
+    
+    req.body = sanitizedBody;
     userController.updateUser(req, res);
   }
 );
