@@ -255,7 +255,7 @@ export default function TrainingCourses() {
                   className="w-full bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-200 transition-colors flex items-center justify-center space-x-2"
                 >
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M16 17v2H2v-2s0-4 7-4 7 4 7 4m-3.5-9.5A3.5 3.5 0 1 0 9 11a3.5 3.5 0 0 0 3.5-3.5M12.5 7a3.5 3.5 0 1 0 3.5 3.5A3.5 3.5 0 0 0 12.5 7M16.5 11a2.5 2.5 0 1 0 2.5 2.5A2.5 2.5 0 0 0 16.5 11" />
+                    <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                   <span>User Assigned</span>
                 </button>
