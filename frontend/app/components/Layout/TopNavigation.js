@@ -99,7 +99,8 @@ export default function TopNavigation() {
               className="relative p-2 text-gray-400 hover:text-white"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5-5v-5a3 3 0 00-6 0v5l-5 5h5m-5 0v3a2 2 0 002 2h6a2 2 0 002-2v-3" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 5a2 2 0 114 0c0 7.973 2.36 10.799 4.5 15.5a.5.5 0 01-.5.5h-16a.5.5 0 01-.5-.5C4.64 15.799 7 12.973 7 5z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 21c0 .796.316 1.559.879 2.121.562.563 1.325.879 2.121.879s1.559-.316 2.121-.879c.563-.562.879-1.325.879-2.121" />
               </svg>
               <span className="absolute top-0 right-0 w-2 h-2 bg-red-600 rounded-full"></span>
             </button>
