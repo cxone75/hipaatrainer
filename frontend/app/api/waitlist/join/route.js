@@ -3,8 +3,13 @@ export async function POST(request) {
   try {
     const body = await request.json();
     
+    // Use environment-aware URL for backend requests
+    const backendUrl = process.env.NODE_ENV === 'production' 
+      ? 'https://your-backend-domain.com/api/waitlist/join'
+      : 'http://0.0.0.0:3001/api/waitlist/join';
+    
     // Proxy the request to the backend
-    const backendResponse = await fetch('http://0.0.0.0:3001/api/waitlist/join', {
+    const backendResponse = await fetch(backendUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
