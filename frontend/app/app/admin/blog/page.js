@@ -8,40 +8,89 @@ export default function BlogManagementPage() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Sample posts - replace with API call
-  const samplePosts = [
-    {
-      id: 1,
-      title: "Introducing HIPAA Trainer",
-      excerpt: "An innovative AI-powered platform designed to transform your business operations...",
-      category: "Product Updates",
-      author: "HIPAA Trainer Team",
-      date: "August 24, 2024",
-      status: "published",
-      slug: "introducing-hipaa-trainer"
-    }
-  ];
-
   useEffect(() => {
-    // Simulate loading posts
-    setTimeout(() => {
-      setPosts(samplePosts);
-      setLoading(false);
-    }, 500);
+    fetchPosts();
   }, []);
 
-  const handleDeletePost = (id) => {
-    if (confirm('Are you sure you want to delete this post?')) {
-      setPosts(posts.filter(post => post.id !== id));
+  const fetchPosts = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('http://0.0.0.0:3001/api/blog', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        const formattedPosts = data.map(post => ({
+          ...post,
+          date: new Date(post.created_at).toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          })
+        }));
+        setPosts(formattedPosts);
+      } else {
+        console.error('Failed to fetch posts');
+      }
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleToggleStatus = (id) => {
-    setPosts(posts.map(post => 
-      post.id === id 
-        ? { ...post, status: post.status === 'published' ? 'draft' : 'published' }
-        : post
-    ));
+  const handleDeletePost = async (id) => {
+    if (confirm('Are you sure you want to delete this post?')) {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`http://0.0.0.0:3001/api/blog/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (response.ok) {
+          setPosts(posts.filter(post => post.id !== id));
+        } else {
+          console.error('Failed to delete post');
+        }
+      } catch (error) {
+        console.error('Error deleting post:', error);
+      }
+    }
+  };
+
+  const handleToggleStatus = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      const post = posts.find(p => p.id === id);
+      const newStatus = post.status === 'published' ? 'draft' : 'published';
+      
+      const response = await fetch(`http://0.0.0.0:3001/api/blog/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ status: newStatus })
+      });
+      
+      if (response.ok) {
+        setPosts(posts.map(post => 
+          post.id === id 
+            ? { ...post, status: newStatus }
+            : post
+        ));
+      } else {
+        console.error('Failed to update post status');
+      }
+    } catch (error) {
+      console.error('Error updating post status:', error);
+    }
   };
 
   if (loading) {
