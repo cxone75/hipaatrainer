@@ -1,0 +1,190 @@
+
+const express = require('express');
+const { createClient } = require('../services/supabase');
+const authMiddleware = require('../middleware/auth');
+const rbacMiddleware = require('../middleware/rbac');
+
+const router = express.Router();
+const auth = authMiddleware.verifyToken.bind(authMiddleware);
+const rbac = rbacMiddleware.requireRole;
+
+// Get all blog posts
+router.get('/', async (req, res) => {
+  try {
+    const { category, status, featured } = req.query;
+    const supabase = createClient();
+
+    let query = supabase
+      .from('blog_posts')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (category && category !== 'All') {
+      query = query.eq('category', category);
+    }
+
+    if (status) {
+      query = query.eq('status', status);
+    }
+
+    if (featured !== undefined) {
+      query = query.eq('featured', featured === 'true');
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching blog posts:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Get single blog post by slug
+router.get('/:slug', async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const supabase = createClient();
+
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('slug', slug)
+      .eq('status', 'published')
+      .single();
+
+    if (error) {
+      return res.status(404).json({ error: 'Blog post not found' });
+    }
+
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching blog post:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Create new blog post (admin only)
+router.post('/', auth, rbac(['admin']), async (req, res) => {
+  try {
+    const {
+      title,
+      subtitle,
+      content,
+      excerpt,
+      category,
+      author,
+      featured,
+      status
+    } = req.body;
+
+    // Generate slug from title
+    const slug = title.toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim('-');
+
+    // Calculate read time
+    const readTime = `${Math.ceil(content.split(' ').length / 200)} min read`;
+
+    const supabase = createClient();
+
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .insert({
+        title,
+        subtitle,
+        content,
+        excerpt,
+        category,
+        author,
+        slug,
+        featured: featured || false,
+        status: status || 'draft',
+        read_time: readTime,
+        created_by: req.user.id
+      })
+      .select()
+      .single();
+
+    if (error) {
+      return res.status(400).json({ error: error.message });
+    }
+
+    res.status(201).json(data);
+  } catch (error) {
+    console.error('Error creating blog post:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Update blog post (admin only)
+router.put('/:id', auth, rbac(['admin']), async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    // Regenerate slug if title changed
+    if (updateData.title) {
+      updateData.slug = updateData.title.toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-');
+    }
+
+    // Recalculate read time if content changed
+    if (updateData.content) {
+      updateData.read_time = `${Math.ceil(updateData.content.split(' ').length / 200)} min read`;
+    }
+
+    updateData.updated_at = new Date().toISOString();
+
+    const supabase = createClient();
+
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .update(updateData)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) {
+      return res.status(400).json({ error: error.message });
+    }
+
+    res.json(data);
+  } catch (error) {
+    console.error('Error updating blog post:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Delete blog post (admin only)
+router.delete('/:id', auth, rbac(['admin']), async (req, res) => {
+  try {
+    const { id } = req.params;
+    const supabase = createClient();
+
+    const { error } = await supabase
+      .from('blog_posts')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      return res.status(400).json({ error: error.message });
+    }
+
+    res.json({ message: 'Blog post deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting blog post:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+module.exports = router;
