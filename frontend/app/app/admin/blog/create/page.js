@@ -22,29 +22,25 @@ export default function CreateBlogPostPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Generate slug from title
-    const slug = formData.title.toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .trim('-');
-
-    const postData = {
-      ...formData,
-      slug,
-      date: new Date().toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
-      }),
-      readTime: `${Math.ceil(formData.content.split(' ').length / 200)} min read`
-    };
-
-    console.log('Creating post:', postData);
-    
-    // Here you would save to your database/API
-    // For now, just redirect back to blog management
-    router.push('/app/admin/blog');
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('http://0.0.0.0:3001/api/blog', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(formData)
+      });
+      
+      if (response.ok) {
+        router.push('/app/admin/blog');
+      } else {
+        console.error('Failed to create blog post');
+      }
+    } catch (error) {
+      console.error('Error creating blog post:', error);
+    }
   };
 
   const handleChange = (e) => {

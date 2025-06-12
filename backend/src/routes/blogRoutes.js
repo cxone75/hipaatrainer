@@ -44,18 +44,28 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Get single blog post by slug
-router.get('/:slug', async (req, res) => {
+// Get single blog post by slug or ID
+router.get('/:identifier', async (req, res) => {
   try {
-    const { slug } = req.params;
+    const { identifier } = req.params;
     const supabase = createClient();
 
-    const { data, error } = await supabase
+    // Check if identifier is a number (ID) or string (slug)
+    const isId = /^\d+$/.test(identifier);
+    
+    let query = supabase
       .from('blog_posts')
-      .select('*')
-      .eq('slug', slug)
-      .eq('status', 'published')
-      .single();
+      .select('*');
+
+    if (isId) {
+      // If it's an ID, don't filter by status (for admin access)
+      query = query.eq('id', parseInt(identifier));
+    } else {
+      // If it's a slug, filter by published status (for public access)
+      query = query.eq('slug', identifier).eq('status', 'published');
+    }
+
+    const { data, error } = await query.single();
 
     if (error) {
       return res.status(404).json({ error: 'Blog post not found' });

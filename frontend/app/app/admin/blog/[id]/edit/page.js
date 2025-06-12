@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -46,33 +45,60 @@ export default function EditBlogPostPage() {
   };
 
   useEffect(() => {
-    // Simulate loading post data
-    setTimeout(() => {
-      const post = samplePosts[params.id];
-      if (post) {
+    fetchBlogPost();
+  }, [params.id]);
+
+  const fetchBlogPost = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://0.0.0.0:3001/api/blog/${params.id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
         setFormData({
-          title: post.title,
-          subtitle: post.subtitle || '',
-          content: post.content,
-          category: post.category,
-          author: post.author,
-          excerpt: post.excerpt,
-          featured: post.featured || false,
-          status: post.status
+          title: data.title || '',
+          subtitle: data.subtitle || '',
+          content: data.content || '',
+          category: data.category || 'Product Updates',
+          author: data.author || '',
+          excerpt: data.excerpt || '',
+          featured: data.featured || false,
+          status: data.status || 'draft'
         });
       }
+    } catch (error) {
+      console.error('Error fetching blog post:', error);
+    } finally {
       setLoading(false);
-    }, 500);
-  }, [params.id]);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    console.log('Updating post:', { id: params.id, ...formData });
-    
-    // Here you would call your API to update the post
-    // For now, just redirect back to blog management
-    router.push('/app/admin/blog');
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://0.0.0.0:3001/api/blog/${params.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        router.push('/app/admin/blog');
+      } else {
+        console.error('Failed to update blog post');
+      }
+    } catch (error) {
+      console.error('Error updating blog post:', error);
+    }
   };
 
   const handleChange = (e) => {
@@ -125,7 +151,7 @@ export default function EditBlogPostPage() {
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -232,7 +258,7 @@ export default function EditBlogPostPage() {
 
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Content</h2>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Article Content *
