@@ -11,97 +11,36 @@ export default function BlogArticlePage() {
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Sample article data - in a real app, this would come from an API
-  const sampleArticles = {
-    'introducing-hipaa-trainer': {
-      id: 1,
-      title: "Introducing HIPAA Trainer",
-      subtitle: "An innovative AI-powered platform designed to transform your business operations and skyrocket productivity.",
-      content: `
-        <p>We're excited to unveil <strong>HIPAA Trainer</strong>, an innovative AI-powered platform designed to transform your business operations and skyrocket productivity.</p>
+  useEffect(() => {
+    fetchArticle();
+  }, [params.slug]);
 
-        <h2>The Challenge We're Addressing</h2>
-        <p>In today's AI-driven world, healthcare organizations face several hurdles:</p>
-        <ul>
-          <li>Overwhelming HIPAA compliance requirements</li>
-          <li>Inefficient staff training processes</li>
-          <li>Difficulty in maintaining ongoing compliance</li>
-        </ul>
-        <p>HIPAA Trainer tackles these challenges head-on, offering a sophisticated AI solution that simplifies complex compliance processes.</p>
-
-        <h2>Our Mission</h2>
-        <ol>
-          <li><strong>Accelerate Compliance Training:</strong> By leveraging AI to analyze your staff needs, we help you make informed training decisions faster.</li>
-          <li><strong>Enhance Risk Management:</strong> Our advanced risk assessment tools provide accurate insights into future compliance trends.</li>
-          <li><strong>Optimize Operations:</strong> With AI-driven recommendations, streamline your compliance processes effortlessly.</li>
-        </ol>
-
-        <h2>Core Capabilities</h2>
-        <ul>
-          <li><strong>AI-Powered Dashboard:</strong> Get real-time HIPAA compliance insights at a glance</li>
-          <li><strong>Predictive Analytics:</strong> Forecast trends and make data-driven compliance decisions</li>
-          <li><strong>Automated Risk Processing:</strong> Interact with your compliance data using simple language queries</li>
-          <li><strong>Intelligent Reporting:</strong> Generate comprehensive reports with a single click</li>
-          <li><strong>Customizable Training Modules:</strong> Tailor the AI to your specific healthcare industry needs</li>
-        </ul>
-
-        <h2>Why HIPAA Trainer Stands Out</h2>
-        <blockquote>
-          <p>"HIPAA Trainer has revolutionized our compliance approach. It's like having a crystal ball for our healthcare operations." - <em>Dr. Jane Smith, CTO of HealthTech</em></p>
-        </blockquote>
-
-        <p>Our AI solution isn't just a tool; it's your competitive edge. Here's how we compare:</p>
-
-        <div class="comparison-table">
-          <div class="table-header">
-            <div class="feature-col">Feature</div>
-            <div class="hipaa-trainer-col">HIPAA Trainer</div>
-            <div class="traditional-col">Traditional Tools</div>
-          </div>
-          <div class="table-row">
-            <div class="feature-col">AI-Powered Insights</div>
-            <div class="hipaa-trainer-col">✅</div>
-            <div class="traditional-col">❌</div>
-          </div>
-          <div class="table-row">
-            <div class="feature-col">Predictive Capabilities</div>
-            <div class="hipaa-trainer-col">✅</div>
-            <div class="traditional-col">❌</div>
-          </div>
-          <div class="table-row">
-            <div class="feature-col">Natural Language Queries</div>
-            <div class="hipaa-trainer-col">✅</div>
-            <div class="traditional-col">❌</div>
-          </div>
-        </div>
-
-        <h2>Embarking on Your AI Journey</h2>
-        <p>Getting started with HIPAA Trainer is seamless:</p>
-        <ol>
-          <li>Sign up for a demo</li>
-          <li>Integrate your compliance data sources</li>
-          <li>Start unlocking AI-driven insights</li>
-        </ol>
-
-        <p>Ready to transform your healthcare compliance? <a href="/landing#pricing" class="text-purple-600 hover:text-purple-800 font-medium">Start your free trial today</a> and experience the future of HIPAA compliance management.</p>
-      `,
-      author: "HIPAA Trainer Team",
-      authorRole: "@hipaatrainer",
-      date: "August 24, 2024",
-      readTime: "8 min read",
-      category: "Product Updates",
-      image: "/api/placeholder/800/400"
+  const fetchArticle = async () => {
+    try {
+      const response = await fetch(`http://0.0.0.0:3001/api/blog/${params.slug}`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        const formattedArticle = {
+          ...data,
+          date: new Date(data.created_at).toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          }),
+          authorRole: "@hipaatrainer"
+        };
+        setArticle(formattedArticle);
+      } else {
+        setArticle(null);
+      }
+    } catch (error) {
+      console.error('Error fetching article:', error);
+      setArticle(null);
+    } finally {
+      setLoading(false);
     }
   };
-
-  useEffect(() => {
-    // Simulate loading
-    setTimeout(() => {
-      const foundArticle = sampleArticles[params.slug];
-      setArticle(foundArticle);
-      setLoading(false);
-    }, 500);
-  }, [params.slug]);
 
   if (loading) {
     return (

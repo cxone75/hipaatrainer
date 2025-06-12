@@ -1,6 +1,7 @@
+javascript
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import LandingHeader from '../components/Layout/LandingHeader';
 import LandingFooter from '../components/Layout/LandingFooter';
@@ -8,91 +9,41 @@ import LandingFooter from '../components/Layout/LandingFooter';
 export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [newsletterEmail, setNewsletterEmail] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [subscriptionMessage, setSubscriptionMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [blogPosts, setBlogPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const categories = ['All', 'Product Updates', 'HIPAA Compliance', 'Training', 'Risk Management', 'Policy Updates', 'Best Practices'];
 
-  const blogPosts = [
-    {
-      id: 0,
-      title: "Introducing HIPAA Trainer",
-      excerpt: "An innovative AI-powered platform designed to transform your business operations and skyrocket productivity.",
-      category: "Product Updates",
-      author: "HIPAA Trainer Team",
-      date: "August 24, 2024",
-      readTime: "8 min read",
-      featured: true,
-      image: "/api/placeholder/600/300",
-      slug: "introducing-hipaa-trainer"
-    },
-    {
-      id: 1,
-      title: "HIPAA Training Requirements for 2025: What Healthcare Organizations Need to Know",
-      excerpt: "Stay ahead of compliance with the latest HIPAA training requirements and best practices for your healthcare team.",
-      category: "HIPAA Compliance",
-      author: "Dr. Sarah Johnson",
-      date: "December 15, 2024",
-      readTime: "8 min read",
-      featured: true,
-      image: "/api/placeholder/600/300"
-    },
-    {
-      id: 2,
-      title: "Building a Culture of Privacy: Beyond Compliance Checkboxes",
-      excerpt: "Learn how to transform HIPAA compliance from a burden into a competitive advantage for your healthcare organization.",
-      category: "Best Practices",
-      author: "Michael Chen",
-      date: "December 10, 2024",
-      readTime: "6 min read",
-      featured: true,
-      image: "/api/placeholder/600/300"
-    },
-    {
-      id: 3,
-      title: "Risk Assessment Automation: Streamlining HIPAA Security Evaluations",
-      excerpt: "Discover how automated risk assessments can save time while improving the accuracy of your HIPAA security evaluations.",
-      category: "Risk Management",
-      author: "Jennifer Martinez",
-      date: "December 5, 2024",
-      readTime: "10 min read",
-      featured: false,
-      image: "/api/placeholder/400/250"
-    },
-    {
-      id: 4,
-      title: "Common HIPAA Violations and How to Prevent Them",
-      excerpt: "Understand the most frequent HIPAA violations in healthcare and implement strategies to protect your organization.",
-      category: "HIPAA Compliance",
-      author: "Dr. Robert Kim",
-      date: "November 28, 2024",
-      readTime: "7 min read",
-      featured: false,
-      image: "/api/placeholder/400/250"
-    },
-    {
-      id: 5,
-      title: "Employee Training ROI: Measuring the Impact of HIPAA Education",
-      excerpt: "Learn how to measure and maximize the return on investment from your HIPAA training programs.",
-      category: "Training",
-      author: "Lisa Thompson",
-      date: "November 20, 2024",
-      readTime: "5 min read",
-      featured: false,
-      image: "/api/placeholder/400/250"
-    },
-    {
-      id: 6,
-      title: "2025 HIPAA Policy Updates: What You Need to Review",
-      excerpt: "Stay current with the latest HIPAA policy changes and ensure your organization remains compliant.",
-      category: "Policy Updates",
-      author: "David Wilson",
-      date: "November 15, 2024",
-      readTime: "9 min read",
-      featured: false,
-      image: "/api/placeholder/400/250"
+  useEffect(() => {
+    fetchBlogPosts();
+  }, []);
+
+  const fetchBlogPosts = async () => {
+    try {
+      const response = await fetch('http://0.0.0.0:3001/api/blog?status=published');
+
+      if (response.ok) {
+        const data = await response.json();
+        const formattedPosts = data.map(post => ({
+          ...post,
+          date: new Date(post.created_at).toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          })
+        }));
+        setBlogPosts(formattedPosts);
+      } else {
+        console.error('Failed to fetch blog posts');
+      }
+    } catch (error) {
+      console.error('Error fetching blog posts:', error);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
   const filteredPosts = selectedCategory === 'All' 
     ? blogPosts 
@@ -137,6 +88,33 @@ export default function BlogPage() {
       setIsSubmitting(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <LandingHeader />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded w-1/4 mb-6"></div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1, 2, 3, 4, 5, 6].map(i => (
+                <div key={i} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                  <div className="h-32 bg-gray-200"></div>
+                  <div className="p-6">
+                    <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-1/2 mb-4"></div>
+                    <div className="h-3 bg-gray-200 rounded w-full mb-2"></div>
+                    <div className="h-3 bg-gray-200 rounded w-2/3"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <LandingFooter />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
