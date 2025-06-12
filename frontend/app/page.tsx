@@ -27,6 +27,7 @@ export default function LandingPage() {
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
   const [userEmail, setUserEmail] = useState('');
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
+  const [showDemoModal, setShowDemoModal] = useState(false);
 
   const scrollToPricing = () => {
     const pricingSection = document.getElementById('pricing');
@@ -458,7 +459,10 @@ export default function LandingPage() {
               >
                 Start For Free
               </button>
-              <button className="border-2 border-purple-600 text-purple-600 px-8 py-4 rounded-lg font-semibold hover:bg-purple-600 hover:text-white transition-all duration-300 text-lg">
+              <button 
+                onClick={() => setShowDemoModal(true)}
+                className="border-2 border-purple-600 text-purple-600 px-8 py-4 rounded-lg font-semibold hover:bg-purple-600 hover:text-white transition-all duration-300 text-lg"
+              >
                 Watch Demo
               </button>
             </div>
@@ -1340,6 +1344,34 @@ export default function LandingPage() {
                   className="min-h-[500px] w-full"
                 >
                   {/* Stripe checkout will be mounted here */}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Demo Modal */}
+        {showDemoModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg w-full max-w-6xl max-h-[90vh] relative">
+              <div className="flex justify-between items-center p-4 border-b">
+                <h3 className="text-xl font-bold text-gray-900">HIPAA Trainer Demo</h3>
+                <button
+                  onClick={() => setShowDemoModal(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+              <div className="p-4">
+                <div style={{padding:'56.25% 0 0 0', position:'relative'}}>
+                  <iframe 
+                    src="https://player.vimeo.com/video/1092653338?h=134b409ab3&badge=0&autopause=0&player_id=0&app_id=58479" 
+                    frameBorder="0" 
+                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
+                    style={{position:'absolute', top:0, left:0, width:'100%', height:'100%'}} 
+                    title="HIPAA TRAINER DEMO"
+                  ></iframe>
                 </div>
               </div>
             </div>
