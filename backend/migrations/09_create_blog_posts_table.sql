@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS blog_posts (
     status VARCHAR(20) DEFAULT 'draft' CHECK (status IN ('draft', 'published')),
     read_time VARCHAR(20),
     image_url TEXT,
-    created_by INTEGER REFERENCES users(id),
+    created_by UUID REFERENCES users(id),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
