@@ -17,7 +17,7 @@ export default function BlogArticlePage() {
 
   const fetchArticle = async () => {
     try {
-      const response = await fetch(`http://0.0.0.0:3001/api/blog/${params.slug}`);
+      const response = await fetch(`/api/blog/${params.slug}`);
       
       if (response.ok) {
         const data = await response.json();

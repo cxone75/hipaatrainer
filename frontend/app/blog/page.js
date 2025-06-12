@@ -21,7 +21,7 @@ export default function BlogPage() {
 
   const fetchBlogPosts = async () => {
     try {
-      const response = await fetch('http://0.0.0.0:3001/api/blog?status=published');
+      const response = await fetch('/api/blog?status=published');
 
       if (response.ok) {
         const data = await response.json();
