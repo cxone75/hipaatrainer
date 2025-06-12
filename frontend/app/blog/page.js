@@ -103,7 +103,7 @@ export default function BlogPage() {
 
   const handleNewsletterSubscription = async (e) => {
     e.preventDefault();
-    
+
     if (!newsletterEmail) {
       setSubscriptionMessage('Please enter your email address');
       return;
@@ -255,9 +255,9 @@ export default function BlogPage() {
                         <div className="text-xs text-gray-500">{post.date}</div>
                       </div>
                     </div>
-                    <button className="text-purple-600 hover:text-purple-800 font-medium text-sm">
+                    <Link href={post.slug ? `/blog/${post.slug}` : '/blog'} className="text-purple-600 hover:text-purple-800 font-medium text-sm">
                       Read →
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </article>
