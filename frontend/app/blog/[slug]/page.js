@@ -207,13 +207,13 @@ export default function BlogArticlePage() {
         <div className="mt-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl p-8 text-white text-center">
           <h3 className="text-2xl font-bold mb-4">Ready to Transform Your HIPAA Compliance?</h3>
           <p className="text-lg mb-6 opacity-90">
-            Join thousands of healthcare organizations already using HIPAA Trainer to streamline their compliance processes.
+            Join healthcare organizations waiting to use HIPAATRAINER.NET to streamline their compliance processes.
           </p>
           <Link 
-            href="/landing#pricing"
+            href="/#pricing"
             className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-block"
           >
-            Start Free Trial
+            Start for Free
           </Link>
         </div>
 
