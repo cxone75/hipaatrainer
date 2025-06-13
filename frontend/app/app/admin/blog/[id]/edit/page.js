@@ -19,6 +19,7 @@ export default function EditBlogPostPage() {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [saving, setSaving] = useState(false);
 
   const categories = ['Product Updates', 'HIPAA Compliance', 'Training', 'Risk Management', 'Policy Updates', 'Best Practices'];
 
@@ -52,7 +53,7 @@ export default function EditBlogPostPage() {
       }
     } catch (error) {
       console.error('Error fetching blog post:', error);
-      setError('Error loading blog post');
+      setError('Failed to load blog post');
     } finally {
       setLoading(false);
     }
@@ -60,7 +61,8 @@ export default function EditBlogPostPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    setSaving(true);
+
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(`/api/blog/admin/${params.id}`, {
@@ -71,14 +73,17 @@ export default function EditBlogPostPage() {
         },
         body: JSON.stringify(formData)
       });
-      
+
       if (response.ok) {
         router.push('/app/admin/blog');
       } else {
-        console.error('Failed to update blog post');
+        setError('Failed to update blog post');
       }
     } catch (error) {
       console.error('Error updating blog post:', error);
+      setError('Failed to update blog post');
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -130,159 +135,150 @@ export default function EditBlogPostPage() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Title *
-              </label>
-              <input
-                type="text"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Category *
-              </label>
-              <select
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              >
-                {categories.map(category => (
-                  <option key={category} value={category}>{category}</option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Author *
-              </label>
-              <input
-                type="text"
-                name="author"
-                value={formData.author}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Status
-              </label>
-              <select
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              >
-                <option value="draft">Draft</option>
-                <option value="published">Published</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="mt-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Subtitle
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+              Title *
             </label>
             <input
               type="text"
-              name="subtitle"
-              value={formData.subtitle}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
-          </div>
-
-          <div className="mt-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Excerpt *
-            </label>
-            <textarea
-              name="excerpt"
-              value={formData.excerpt}
+              id="title"
+              name="title"
+              value={formData.title}
               onChange={handleChange}
               required
-              rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Brief description of the article for listings..."
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
+              placeholder="Enter blog post title"
             />
           </div>
 
-          <div className="mt-6">
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                name="featured"
-                checked={formData.featured}
-                onChange={handleChange}
-                className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
-              />
-              <span className="ml-2 text-sm text-gray-700">Featured Article</span>
-            </label>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Content</h2>
-          
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Article Content *
+            <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
+              Category
             </label>
-            <textarea
-              name="content"
-              value={formData.content}
+            <select
+              id="category"
+              name="category"
+              value={formData.category}
               onChange={handleChange}
-              required
-              rows={20}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 font-mono text-sm"
-              placeholder="Write your article content here. You can use HTML tags for formatting..."
-            />
-            <p className="text-sm text-gray-500 mt-2">
-              You can use HTML tags for formatting (h2, h3, p, ul, ol, li, strong, em, blockquote, etc.)
-            </p>
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
+            >
+              {categories.map(category => (
+                <option key={category} value={category}>{category}</option>
+              ))}
+            </select>
           </div>
         </div>
 
-        <div className="flex justify-between">
+        <div>
+          <label htmlFor="subtitle" className="block text-sm font-medium text-gray-700 mb-2">
+            Subtitle
+          </label>
+          <input
+            type="text"
+            id="subtitle"
+            name="subtitle"
+            value={formData.subtitle}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
+            placeholder="Enter subtitle (optional)"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="author" className="block text-sm font-medium text-gray-700 mb-2">
+            Author *
+          </label>
+          <input
+            type="text"
+            id="author"
+            name="author"
+            value={formData.author}
+            onChange={handleChange}
+            required
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
+            placeholder="Enter author name"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="excerpt" className="block text-sm font-medium text-gray-700 mb-2">
+            Excerpt
+          </label>
+          <textarea
+            id="excerpt"
+            name="excerpt"
+            value={formData.excerpt}
+            onChange={handleChange}
+            rows={3}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
+            placeholder="Brief description of the blog post"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
+            Content *
+          </label>
+          <textarea
+            id="content"
+            name="content"
+            value={formData.content}
+            onChange={handleChange}
+            required
+            rows={15}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
+            placeholder="Write your blog post content here..."
+          />
+        </div>
+
+        <div className="flex items-center space-x-6">
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="featured"
+              name="featured"
+              checked={formData.featured}
+              onChange={handleChange}
+              className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+            />
+            <label htmlFor="featured" className="ml-2 text-sm text-gray-700">
+              Featured Post
+            </label>
+          </div>
+
+          <div>
+            <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">
+              Status
+            </label>
+            <select
+              id="status"
+              name="status"
+              value={formData.status}
+              onChange={handleChange}
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
+            >
+              <option value="draft">Draft</option>
+              <option value="published">Published</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="flex justify-end space-x-4">
           <button
             type="button"
-            onClick={() => router.back()}
+            onClick={() => router.push('/app/admin/blog')}
             className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
           >
             Cancel
           </button>
-          <div className="space-x-3">
-            <button
-              type="submit"
-              onClick={() => setFormData(prev => ({ ...prev, status: 'draft' }))}
-              className="px-6 py-2 border border-purple-600 text-purple-600 rounded-lg hover:bg-purple-50 transition-colors"
-            >
-              Save as Draft
-            </button>
-            <button
-              type="submit"
-              onClick={() => setFormData(prev => ({ ...prev, status: 'published' }))}
-              className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-            >
-              Update & Publish
-            </button>
-          </div>
+          <button
+            type="submit"
+            disabled={saving}
+            className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50"
+          >
+            {saving ? 'Saving...' : 'Update Post'}
+          </button>
         </div>
       </form>
     </div>
