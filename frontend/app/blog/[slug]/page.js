@@ -82,44 +82,6 @@ export default function BlogArticlePage() {
           </div>
         </nav>
 
-        {/* Article Header */}
-        <header className="mb-12 text-center">
-          <div className="mb-6">
-            <span className="inline-block bg-purple-100 text-purple-800 text-sm px-3 py-1 rounded-full font-medium">
-              {article.category}
-            </span>
-          </div>
-
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            {article.title}
-          </h1>
-
-          {article.subtitle && (
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              {article.subtitle}
-            </p>
-          )}
-
-          {/* Author and Meta */}
-          <div className="flex items-center justify-center space-x-6 text-sm text-gray-500">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                <span className="text-purple-600 font-bold text-sm">
-                  {article.author.split(' ').map(n => n[0]).join('')}
-                </span>
-              </div>
-              <div className="text-left">
-                <div className="text-gray-900 font-medium">{article.author}</div>
-                <div className="text-gray-500">{article.authorRole}</div>
-              </div>
-            </div>
-            <span>•</span>
-            <span>{article.date}</span>
-            <span>•</span>
-            <span>{article.readTime}</span>
-          </div>
-        </header>
-
         {/* Featured Image - Only show if image exists */}
         {article.featured_image && (
           <div className="mb-12">
