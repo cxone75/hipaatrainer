@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -31,7 +30,7 @@ function EditBlogPostPage() {
       router.push('/login');
       return;
     }
-    
+
     fetchBlogPost();
   }, [params.id, router]);
 
@@ -41,13 +40,13 @@ function EditBlogPostPage() {
     try {
       const token = localStorage.getItem('token');
       console.log('Edit page: Token exists:', !!token);
-      
+
       if (!token) {
         console.log('Edit page: No token available, redirecting to login');
         router.push('/login');
         return;
       }
-      
+
       console.log('Edit page: Making request to:', `/api/blog/admin/${params.id}`);
 
       const response = await fetch(`/api/blog/admin/${params.id}`, {
@@ -58,7 +57,7 @@ function EditBlogPostPage() {
 
       console.log('Edit page: Response status:', response.status);
       console.log('Edit page: Response ok:', response.ok);
-      
+
       // Handle authentication errors
       if (response.status === 401) {
         console.log('Edit page: Authentication failed, clearing token and redirecting to login');
@@ -73,7 +72,7 @@ function EditBlogPostPage() {
         console.log('Edit page: Successfully loaded blog post data:', data);
         console.log('Edit page: Blog post title:', data.title);
         console.log('Edit page: Blog post ID:', data.id);
-        
+
         setFormData({
           title: data.title || '',
           subtitle: data.subtitle || '',
@@ -103,7 +102,7 @@ function EditBlogPostPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
-    
+
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(`/api/blog/admin/${params.id}`, {
@@ -114,7 +113,7 @@ function EditBlogPostPage() {
         },
         body: JSON.stringify(formData)
       });
-      
+
       if (response.ok) {
         router.push('/app/admin/blog');
       } else {
@@ -179,7 +178,7 @@ function EditBlogPostPage() {
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -335,32 +334,32 @@ function AuthGuard({ children }) {
 
   useEffect(() => {
     const checkAuth = () => {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('authToken');
       if (!token) {
         router.push('/login');
         return;
       }
-      
+
       // Verify token is valid by checking its structure
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));
         const currentTime = Date.now() / 1000;
-        
+
         if (payload.exp && payload.exp < currentTime) {
           console.log('Token expired, redirecting to login');
-          localStorage.removeItem('token');
+          localStorage.removeItem('authToken');
           router.push('/login');
           return;
         }
-        
+
         setIsAuthenticated(true);
       } catch (error) {
         console.log('Invalid token format, redirecting to login');
-        localStorage.removeItem('token');
+        localStorage.removeItem('authToken');
         router.push('/login');
         return;
       }
-      
+
       setIsLoading(false);
     };
 

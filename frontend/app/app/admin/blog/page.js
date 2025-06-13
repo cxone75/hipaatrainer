@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -10,39 +9,39 @@ export default function BlogManagementPage() {
 
   useEffect(() => {
     // Check authentication first
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('authToken');
     if (!token) {
       console.log('Admin blog page: No token found, redirecting to login');
       window.location.href = '/login';
       return;
     }
-    
+
     fetchPosts();
   }, []);
 
   const fetchPosts = async () => {
     try {
-      const token = localStorage.getItem('token');
-      
+      const token = localStorage.getItem('authToken');
+
       if (!token) {
         console.log('Admin blog page: No token available, redirecting to login');
         window.location.href = '/login';
         return;
       }
-      
+
       const response = await fetch('/api/blog/admin', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
-      
+
       if (response.status === 401) {
         console.log('Admin blog page: Authentication failed, clearing token and redirecting to login');
-        localStorage.removeItem('token');
+        localStorage.removeItem('authToken');
         window.location.href = '/login';
         return;
       }
-      
+
       if (response.ok) {
         const data = await response.json();
         const formattedPosts = data.map(post => ({
@@ -67,14 +66,14 @@ export default function BlogManagementPage() {
   const handleDeletePost = async (id) => {
     if (confirm('Are you sure you want to delete this post?')) {
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('authToken');
         const response = await fetch(`/api/blog/admin/${id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
-        
+
         if (response.ok) {
           setPosts(posts.filter(post => post.id !== id));
         } else {
@@ -88,10 +87,10 @@ export default function BlogManagementPage() {
 
   const handleToggleStatus = async (id) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('authToken');
       const post = posts.find(p => p.id === id);
       const newStatus = post.status === 'published' ? 'draft' : 'published';
-      
+
       const response = await fetch(`/api/blog/admin/${id}`, {
         method: 'PUT',
         headers: {
@@ -100,7 +99,7 @@ export default function BlogManagementPage() {
         },
         body: JSON.stringify({ status: newStatus })
       });
-      
+
       if (response.ok) {
         setPosts(posts.map(post => 
           post.id === id 
