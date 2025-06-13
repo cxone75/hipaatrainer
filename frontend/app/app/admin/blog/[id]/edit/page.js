@@ -24,7 +24,7 @@ function EditBlogPostPage() {
 
   useEffect(() => {
     // Check authentication first
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('authToken');
     if (!token) {
       console.log('Edit page: No token found, redirecting to login');
       router.push('/login');
@@ -38,7 +38,7 @@ function EditBlogPostPage() {
     console.log('=== EDIT PAGE DEBUG START ===');
     console.log('Edit page: Fetching blog post for ID:', params.id);
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('authToken');
       console.log('Edit page: Token exists:', !!token);
 
       if (!token) {
@@ -61,7 +61,7 @@ function EditBlogPostPage() {
       // Handle authentication errors
       if (response.status === 401) {
         console.log('Edit page: Authentication failed, clearing token and redirecting to login');
-        localStorage.removeItem('token');
+        localStorage.removeItem('authToken');
         router.push('/login');
         return;
       }
@@ -104,7 +104,7 @@ function EditBlogPostPage() {
     setSaving(true);
 
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('authToken');
       const response = await fetch(`/api/blog/admin/${params.id}`, {
         method: 'PUT',
         headers: {
