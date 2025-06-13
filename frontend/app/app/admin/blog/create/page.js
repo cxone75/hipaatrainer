@@ -23,7 +23,7 @@ export default function CreateBlogPostPage() {
     e.preventDefault();
     
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('authToken');
       const response = await fetch('/api/blog/admin', {
         method: 'POST',
         headers: {

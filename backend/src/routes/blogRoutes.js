@@ -52,8 +52,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Get single blog post by ID (admin only)
-router.get('/admin/:id', auth, rbac(['admin']), async (req, res) => {
+// Get single blog post by ID (authenticated users with blog access)
+router.get('/admin/:id', auth, async (req, res) => {
   try {
     const { id } = req.params;
     const supabase = createClient();
@@ -124,8 +124,8 @@ router.get('/:identifier', async (req, res) => {
   }
 });
 
-// Create new blog post (admin only)
-router.post('/', auth, rbac(['admin']), async (req, res) => {
+// Create new blog post (authenticated users)
+router.post('/', auth, async (req, res) => {
   try {
     const {
       title,
@@ -179,8 +179,8 @@ router.post('/', auth, rbac(['admin']), async (req, res) => {
   }
 });
 
-// Update blog post (admin only)
-router.put('/:id', auth, rbac(['admin']), async (req, res) => {
+// Update blog post (authenticated users)
+router.put('/:id', auth, async (req, res) => {
   try {
     const { id } = req.params;
     const updateData = req.body;
@@ -221,8 +221,8 @@ router.put('/:id', auth, rbac(['admin']), async (req, res) => {
   }
 });
 
-// Delete blog post (admin only)
-router.delete('/:id', auth, rbac(['admin']), async (req, res) => {
+// Delete blog post (authenticated users)
+router.delete('/:id', auth, async (req, res) => {
   try {
     const { id } = req.params;
     const supabase = createClient();
