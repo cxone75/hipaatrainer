@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Head from 'next/head';
 import LandingHeader from '../components/Layout/LandingHeader';
 import LandingFooter from '../components/Layout/LandingFooter';
 
@@ -13,13 +12,6 @@ export default function BlogPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [blogPosts, setBlogPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // SEO metadata for blog listing page
-  const blogMetadata = {
-    title: 'HIPAA Compliance Blog | Expert Insights & Best Practices | HIPAA Trainer',
-    description: 'Stay updated with the latest HIPAA compliance insights, healthcare privacy best practices, and regulatory updates. Expert guidance for healthcare professionals.',
-    canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://hipaatrainer.com'}/blog`
-  };
 
   const categories = ['All', 'Product Updates', 'HIPAA Compliance', 'Training', 'Risk Management', 'Policy Updates', 'Best Practices'];
 
@@ -125,18 +117,6 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Head>
-        <title>{blogMetadata.title}</title>
-        <meta name="description" content={blogMetadata.description} />
-        <link rel="canonical" href={blogMetadata.canonical} />
-        <meta property="og:title" content="HIPAA Compliance Blog | HIPAA Trainer" />
-        <meta property="og:description" content={blogMetadata.description} />
-        <meta property="og:url" content={blogMetadata.canonical} />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="HIPAA Compliance Blog | HIPAA Trainer" />
-        <meta name="twitter:description" content={blogMetadata.description} />
-      </Head>
       <LandingHeader />
 
       {/* Hero Section */}
