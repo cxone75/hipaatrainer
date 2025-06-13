@@ -146,7 +146,7 @@ export default function BlogPage() {
                     </div>
                   )}
                   <div className="p-6">
-                    <div className="flex items-center mb-3"></div>
+                    <div className="flex items-center mb-3">
                       <span className="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full font-medium">
                         {post.category}
                       </span>
@@ -212,7 +212,7 @@ export default function BlogPage() {
                   </div>
                 )}
                 <div className="p-6">
-                  <div className="flex items-center mb-3"></div>
+                  <div className="flex items-center mb-3">
                     <span className="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full font-medium">
                       {post.category}
                     </span>
