@@ -145,8 +145,8 @@ export default function BlogPage() {
                       <span className="text-purple-600 text-sm font-medium">Featured Article</span>
                     </div>
                   )}
-                  <div className="p-6"></div>
-                    <div className="flex items-center mb-3">
+                  <div className="p-6">
+                    <div className="flex items-center mb-3"></div>
                       <span className="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full font-medium">
                         {post.category}
                       </span>
@@ -211,8 +211,8 @@ export default function BlogPage() {
                     <span className="text-gray-500 text-sm">Article Image</span>
                   </div>
                 )}
-                <div className="p-6"></div>
-                  <div className="flex items-center mb-3">
+                <div className="p-6">
+                  <div className="flex items-center mb-3"></div>
                     <span className="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full font-medium">
                       {post.category}
                     </span>
