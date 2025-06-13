@@ -140,10 +140,12 @@ export default function BlogPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {featuredPosts.map((post) => (
                 <article key={post.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
-                  <div className="h-48 bg-gradient-to-r from-purple-100 to-pink-100 flex items-center justify-center">
-                    <span className="text-purple-600 text-sm font-medium">Featured Article</span>
-                  </div>
-                  <div className="p-6">
+                  {post.image && (
+                    <div className="h-48 bg-gradient-to-r from-purple-100 to-pink-100 flex items-center justify-center">
+                      <span className="text-purple-600 text-sm font-medium">Featured Article</span>
+                    </div>
+                  )}
+                  <div className="p-6"></div>
                     <div className="flex items-center mb-3">
                       <span className="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full font-medium">
                         {post.category}
@@ -204,10 +206,12 @@ export default function BlogPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {regularPosts.map((post) => (
               <article key={post.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
-                <div className="h-32 bg-gradient-to-r from-gray-100 to-gray-200 flex items-center justify-center">
-                  <span className="text-gray-500 text-sm">Article Image</span>
-                </div>
-                <div className="p-6">
+                {post.image && (
+                  <div className="h-32 bg-gradient-to-r from-gray-100 to-gray-200 flex items-center justify-center">
+                    <span className="text-gray-500 text-sm">Article Image</span>
+                  </div>
+                )}
+                <div className="p-6"></div>
                   <div className="flex items-center mb-3">
                     <span className="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full font-medium">
                       {post.category}
