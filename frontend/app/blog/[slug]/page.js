@@ -234,7 +234,6 @@ export default function BlogArticlePage() {
 
         {/* Related Articles */}
         <RelatedArticles currentArticle={article} />
-        </section>
       </main>
 
       <LandingFooter />
