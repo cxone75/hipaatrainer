@@ -9,6 +9,9 @@ const rbac = rbacMiddleware.requireRole;
 
 // Get all blog posts
 router.get('/', async (req, res) => {
+  console.log('Backend: GET all blog posts request received');
+  console.log('Backend: Query params:', req.query);
+  
   try {
     const { category, status, featured } = req.query;
     const supabase = createClient();
@@ -20,37 +23,46 @@ router.get('/', async (req, res) => {
 
     if (category && category !== 'All') {
       query = query.eq('category', category);
+      console.log('Backend: Filtering by category:', category);
     }
 
     if (status) {
       query = query.eq('status', status);
+      console.log('Backend: Filtering by status:', status);
     }
 
     if (featured !== undefined) {
       query = query.eq('featured', featured === 'true');
+      console.log('Backend: Filtering by featured:', featured);
     }
 
+    console.log('Backend: Executing query for all blog posts...');
     const { data, error } = await query;
 
     if (error) {
+      console.error('Backend: Database error fetching all posts:', error);
       return res.status(500).json({ error: error.message });
     }
 
+    console.log('Backend: Successfully fetched', data?.length || 0, 'blog posts');
     res.json(data);
   } catch (error) {
-    console.error('Error fetching blog posts:', error);
+    console.error('Backend: Error fetching blog posts:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
 // Get single blog post by slug or ID
 router.get('/:identifier', async (req, res) => {
+  console.log('Backend: GET blog post request received for identifier:', req.params.identifier);
+  
   try {
     const { identifier } = req.params;
     const supabase = createClient();
 
     // Check if identifier is a number (ID) or string (slug)
     const isId = /^\d+$/.test(identifier);
+    console.log('Backend: Identifier type - isId:', isId, 'identifier:', identifier);
 
     let query = supabase
       .from('blog_posts')
@@ -59,25 +71,32 @@ router.get('/:identifier', async (req, res) => {
     if (isId) {
       // If it's an ID, don't filter by status (for admin access)
       query = query.eq('id', parseInt(identifier));
+      console.log('Backend: Querying by ID:', parseInt(identifier));
     } else {
       // If it's a slug, filter by published status (for public access)
       query = query.eq('slug', identifier).eq('status', 'published');
+      console.log('Backend: Querying by slug:', identifier, 'with published status');
     }
 
+    console.log('Backend: Executing Supabase query...');
     const { data, error } = await query.single();
 
     if (error) {
-      console.error('Database error:', error);
+      console.error('Backend: Database error:', error);
+      console.error('Backend: Error code:', error.code);
+      console.error('Backend: Error message:', error.message);
       return res.status(404).json({ error: 'Blog post not found' });
     }
 
     if (!data) {
+      console.log('Backend: No data returned from query');
       return res.status(404).json({ error: 'Blog post not found' });
     }
 
+    console.log('Backend: Successfully found blog post:', data.id, data.title);
     res.json(data);
   } catch (error) {
-    console.error('Error fetching blog post:', error);
+    console.error('Backend: Error fetching blog post:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
