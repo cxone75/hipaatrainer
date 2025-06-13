@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -33,19 +32,23 @@ export default function EditBlogPostPage() {
       const token = localStorage.getItem('token');
       console.log('Edit page: Token exists:', !!token);
       console.log('Edit page: Making request to:', `/api/blog/admin/${params.id}`);
-      
+
       const response = await fetch(`/api/blog/admin/${params.id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
-      
+
       console.log('Edit page: Response status:', response.status);
       console.log('Edit page: Response ok:', response.ok);
 
       if (response.ok) {
+        console.log('Edit page: Response is OK, parsing JSON...');
         const data = await response.json();
-        console.log('Edit page: Successfully loaded blog post:', data);
+        console.log('Edit page: Successfully loaded blog post data:', data);
+        console.log('Edit page: Blog post title:', data.title);
+        console.log('Edit page: Blog post ID:', data.id);
+
         setFormData({
           title: data.title || '',
           subtitle: data.subtitle || '',
@@ -56,17 +59,25 @@ export default function EditBlogPostPage() {
           featured: data.featured || false,
           status: data.status || 'draft'
         });
+        console.log('Edit page: Form data set successfully');
       } else {
+        console.error('Edit page: Response not OK');
         const errorText = await response.text();
-        console.error('Edit page: Failed to load blog post. Status:', response.status, 'Error:', errorText);
+        console.error('Edit page: Failed to load blog post. Status:', response.status);
+        console.error('Edit page: Error response text:', errorText);
         setError('Failed to load blog post');
       }
     } catch (error) {
+      console.error('Edit page: Exception caught during fetch');
       console.error('Edit page: Error fetching blog post:', error);
-      console.error('Edit page: Error details:', error.message, error.stack);
+      console.error('Edit page: Error name:', error.name);
+      console.error('Edit page: Error message:', error.message);
+      console.error('Edit page: Error stack:', error.stack);
       setError('Failed to load blog post');
     } finally {
+      console.log('Edit page: Setting loading to false');
       setLoading(false);
+      console.log('=== EDIT PAGE DEBUG END ===');
     }
   };
 

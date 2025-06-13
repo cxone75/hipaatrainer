@@ -1,22 +1,26 @@
 
 export async function GET(request, { params }) {
+  console.log('=== FRONTEND API DEBUG ===');
   console.log('Frontend API: GET request received for blog ID:', params.id);
+  console.log('Frontend API: Request URL:', request.url);
   
   try {
     const { id } = params;
+    console.log('Frontend API: Extracted ID from params:', id);
     
     // Forward authorization header
     const headers = {};
     const authHeader = request.headers.get('Authorization');
     if (authHeader) {
       headers.Authorization = authHeader;
-      console.log('Frontend API: Authorization header found');
+      console.log('Frontend API: Authorization header found:', authHeader.substring(0, 20) + '...');
     } else {
       console.log('Frontend API: No authorization header found');
     }
     
     const backendUrl = `http://0.0.0.0:3001/api/blog/${id}`;
     console.log('Frontend API: Making request to backend:', backendUrl);
+    console.log('Frontend API: Request headers:', headers);
     
     const response = await fetch(backendUrl, { headers });
     
@@ -25,15 +29,21 @@ export async function GET(request, { params }) {
     
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Frontend API: Backend response error:', errorText);
+      console.error('Frontend API: Backend response error status:', response.status);
+      console.error('Frontend API: Backend response error text:', errorText);
+      console.log('=== END FRONTEND API DEBUG (ERROR) ===');
       return Response.json({ error: 'Blog post not found' }, { status: 404 });
     }
     
     const data = await response.json();
     console.log('Frontend API: Successfully retrieved blog post:', data.id, data.title);
+    console.log('Frontend API: Full blog post data:', JSON.stringify(data, null, 2));
+    console.log('=== END FRONTEND API DEBUG (SUCCESS) ===');
     return Response.json(data);
   } catch (error) {
     console.error('Frontend API: GET error:', error);
+    console.error('Frontend API: Error stack:', error.stack);
+    console.log('=== END FRONTEND API DEBUG (EXCEPTION) ===');
     return Response.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
