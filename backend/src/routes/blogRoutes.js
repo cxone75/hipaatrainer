@@ -1,4 +1,3 @@
-
 const express = require('express');
 const { createClient } = require('../services/supabase');
 const authMiddleware = require('../middleware/auth');
@@ -44,6 +43,34 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Get individual blog post by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const supabase = createClient();
+
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error) {
+      console.error('Database error:', error);
+      return res.status(404).json({ error: 'Blog post not found' });
+    }
+
+    if (!data) {
+      return res.status(404).json({ error: 'Blog post not found' });
+    }
+
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching blog post:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // Get single blog post by slug or ID
 router.get('/:identifier', async (req, res) => {
   try {
@@ -52,7 +79,7 @@ router.get('/:identifier', async (req, res) => {
 
     // Check if identifier is a number (ID) or string (slug)
     const isId = /^\d+$/.test(identifier);
-    
+
     let query = supabase
       .from('blog_posts')
       .select('*');

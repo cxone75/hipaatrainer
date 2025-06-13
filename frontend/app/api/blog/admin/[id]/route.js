@@ -73,6 +73,8 @@ export async function GET(request, { params }) {
     const response = await fetch(`http://0.0.0.0:3001/api/blog/${id}`, { headers });
     
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Backend response error:', errorText);
       return Response.json({ error: 'Blog post not found' }, { status: 404 });
     }
     
