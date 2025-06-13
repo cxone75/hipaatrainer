@@ -105,7 +105,7 @@ function EditBlogPostPage() {
 
     try {
       const token = localStorage.getItem('authToken');
-      const response = await fetch(`/api/blog/admin/${params.id}`, {
+      const response = await fetch(`/api/blog?id=${params.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
