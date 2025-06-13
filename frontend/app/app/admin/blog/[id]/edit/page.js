@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -49,7 +50,7 @@ export default function EditBlogPostPage() {
         console.log('Edit page: Successfully loaded blog post data:', data);
         console.log('Edit page: Blog post title:', data.title);
         console.log('Edit page: Blog post ID:', data.id);
-
+        
         setFormData({
           title: data.title || '',
           subtitle: data.subtitle || '',
@@ -60,21 +61,16 @@ export default function EditBlogPostPage() {
           featured: data.featured || false,
           status: data.status || 'draft'
         });
-        console.log('Edit page: Form data set successfully');
       } else {
         console.error('Edit page: Response not OK');
-        const errorText = await response.text();
+        const errorData = await response.json().catch(() => ({}));
         console.error('Edit page: Failed to load blog post. Status:', response.status);
-        console.error('Edit page: Error response text:', errorText);
-        setError('Failed to load blog post');
+        console.error('Edit page: Error response text:', JSON.stringify(errorData));
+        setError(`Failed to load blog post. ${errorData.error || 'Unknown error'}`);
       }
     } catch (error) {
-      console.error('Edit page: Exception caught during fetch');
-      console.error('Edit page: Error fetching blog post:', error);
-      console.error('Edit page: Error name:', error.name);
-      console.error('Edit page: Error message:', error.message);
-      console.error('Edit page: Error stack:', error.stack);
-      setError('Failed to load blog post');
+      console.error('Edit page: Exception caught:', error);
+      setError('Failed to load blog post. Please try again.');
     } finally {
       setLoading(false);
       console.log('=== EDIT PAGE DEBUG END ===');
@@ -84,7 +80,7 @@ export default function EditBlogPostPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
-
+    
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(`/api/blog/admin/${params.id}`, {
@@ -95,15 +91,16 @@ export default function EditBlogPostPage() {
         },
         body: JSON.stringify(formData)
       });
-
+      
       if (response.ok) {
         router.push('/app/admin/blog');
       } else {
-        setError('Failed to update blog post');
+        const errorData = await response.json().catch(() => ({}));
+        setError(`Failed to update blog post. ${errorData.error || 'Unknown error'}`);
       }
     } catch (error) {
       console.error('Error updating blog post:', error);
-      setError('Failed to update blog post');
+      setError('Failed to update blog post. Please try again.');
     } finally {
       setSaving(false);
     }
@@ -123,9 +120,9 @@ export default function EditBlogPostPage() {
         <div className="animate-pulse">
           <div className="h-8 bg-gray-200 rounded w-1/4 mb-6"></div>
           <div className="space-y-4">
-            <div className="h-16 bg-gray-200 rounded"></div>
-            <div className="h-16 bg-gray-200 rounded"></div>
-            <div className="h-32 bg-gray-200 rounded"></div>
+            {[1, 2, 3].map(i => (
+              <div key={i} className="h-16 bg-gray-200 rounded"></div>
+            ))}
           </div>
         </div>
       </div>
@@ -159,7 +156,7 @@ export default function EditBlogPostPage() {
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h2>
-
+          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
