@@ -11,7 +11,7 @@ const rbac = rbacMiddleware.requireRole;
 router.get('/', async (req, res) => {
   console.log('Backend: GET all blog posts request received');
   console.log('Backend: Query params:', req.query);
-  
+
   try {
     const { category, status, featured } = req.query;
     const supabase = createClient();
@@ -52,10 +52,33 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Get single blog post by ID (admin only)
+router.get('/admin/:id', auth, rbac(['admin']), async (req, res) => {
+  try {
+    const { id } = req.params;
+    const supabase = createClient();
+
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error) {
+      return res.status(404).json({ error: 'Blog post not found' });
+    }
+
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching blog post:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // Get single blog post by slug or ID
 router.get('/:identifier', async (req, res) => {
   console.log('Backend: GET blog post request received for identifier:', req.params.identifier);
-  
+
   try {
     const { identifier } = req.params;
     const supabase = createClient();
