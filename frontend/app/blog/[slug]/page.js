@@ -1,7 +1,9 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Head from 'next/head';
 import { useParams } from 'next/navigation';
 import LandingHeader from '../../components/Layout/LandingHeader';
 import LandingFooter from '../../components/Layout/LandingFooter';
@@ -83,7 +85,7 @@ function RelatedArticles({ currentArticle }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {relatedArticles.map(post => (
           <Link key={post.id} href={`/blog/${post.slug}`} className="group">
-            <article className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+            <article className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow" itemScope itemType="https://schema.org/BlogPosting">
               {post.featured_image ? (
                 <div className="h-32 overflow-hidden">
                   <img 
@@ -98,19 +100,19 @@ function RelatedArticles({ currentArticle }) {
                 </div>
               )}
               <div className="p-6">
-                <span className="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full font-medium mb-3">
+                <span className="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full font-medium mb-3" itemProp="articleSection">
                   {post.category}
                 </span>
-                <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-purple-800 transition-colors">
+                <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-purple-800 transition-colors" itemProp="headline">
                   {post.title}
                 </h4>
-                <p className="text-gray-600 text-sm line-clamp-2">
+                <p className="text-gray-600 text-sm line-clamp-2" itemProp="description">
                   {post.excerpt}
                 </p>
-                <div className="flex items-center mt-3 text-xs text-gray-500">
-                  <span>{post.author}</span>
+                <div className="flex items-center mt-3 text-xs text-gray-500" itemProp="author" itemScope itemType="https://schema.org/Person">
+                  <span itemProp="name">{post.author}</span>
                   <span className="mx-2">•</span>
-                  <span>{post.date}</span>
+                  <time itemProp="datePublished" dateTime={post.created_at}>{post.date}</time>
                 </div>
               </div>
             </article>
@@ -157,9 +159,44 @@ export default function BlogArticlePage() {
     }
   };
 
+  // Generate structured data for the article
+  const structuredData = article ? {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": article.title,
+    "description": article.excerpt,
+    "image": article.featured_image || "https://hipaatrainer.net/hipaatrainer-logo.png",
+    "author": {
+      "@type": "Person",
+      "name": article.author
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "HIPAA Trainer",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://hipaatrainer.net/hipaatrainer-logo.png"
+      }
+    },
+    "datePublished": article.created_at,
+    "dateModified": article.updated_at || article.created_at,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://hipaatrainer.net/blog/${article.slug}`
+    },
+    "articleSection": article.category,
+    "keywords": `HIPAA, compliance, healthcare, ${article.category.toLowerCase()}, privacy, security`,
+    "wordCount": article.content ? article.content.split(' ').length : 0,
+    "articleBody": article.content
+  } : null;
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <Head>
+          <title>Loading Article... - HIPAA Trainer</title>
+          <meta name="robots" content="noindex" />
+        </Head>
         <div className="text-center">
           <div className="animate-spin w-8 h-8 border-4 border-purple-600 border-t-transparent rounded-full mx-auto mb-4"></div>
           <p className="text-gray-600">Loading article...</p>
@@ -171,6 +208,11 @@ export default function BlogArticlePage() {
   if (!article) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <Head>
+          <title>Article Not Found - HIPAA Trainer</title>
+          <meta name="description" content="The requested article could not be found. Browse our HIPAA compliance blog for expert insights and best practices." />
+          <meta name="robots" content="noindex" />
+        </Head>
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Article Not Found</h1>
           <p className="text-gray-600 mb-6">The article you're looking for doesn't exist.</p>
@@ -184,18 +226,68 @@ export default function BlogArticlePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Head>
+        <title>{article.title} - HIPAA Trainer Blog</title>
+        <meta name="description" content={article.excerpt} />
+        <meta name="keywords" content={`HIPAA compliance, healthcare privacy, ${article.category.toLowerCase()}, ${article.title.toLowerCase()}`} />
+        <meta name="author" content={article.author} />
+        <meta property="og:title" content={article.title} />
+        <meta property="og:description" content={article.excerpt} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://hipaatrainer.net/blog/${article.slug}`} />
+        <meta property="og:site_name" content="HIPAA Trainer" />
+        <meta property="og:image" content={article.featured_image || "https://hipaatrainer.net/hipaatrainer-logo.png"} />
+        <meta property="article:author" content={article.author} />
+        <meta property="article:published_time" content={article.created_at} />
+        <meta property="article:modified_time" content={article.updated_at || article.created_at} />
+        <meta property="article:section" content={article.category} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={article.title} />
+        <meta name="twitter:description" content={article.excerpt} />
+        <meta name="twitter:image" content={article.featured_image || "https://hipaatrainer.net/hipaatrainer-logo.png"} />
+        <link rel="canonical" href={`https://hipaatrainer.net/blog/${article.slug}`} />
+        {structuredData && (
+          <script 
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+          />
+        )}
+      </Head>
+
       <LandingHeader />
 
       {/* Article Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Breadcrumb */}
-        <nav className="mb-8">
-          <div className="flex items-center space-x-2 text-sm text-gray-500">
-            <Link href="/blog" className="hover:text-purple-600">Blog</Link>
-            <span>›</span>
-            <span className="text-gray-900">{article.title}</span>
-          </div>
+        <nav className="mb-8" aria-label="Breadcrumb">
+          <ol className="flex items-center space-x-2 text-sm text-gray-500">
+            <li><Link href="/blog" className="hover:text-purple-600">Blog</Link></li>
+            <li aria-hidden="true">›</li>
+            <li className="text-gray-900" aria-current="page">{article.title}</li>
+          </ol>
         </nav>
+
+        {/* Article Header */}
+        <header className="mb-8">
+          <div className="mb-4">
+            <span className="inline-block bg-purple-100 text-purple-800 text-sm px-3 py-1 rounded-full font-medium">
+              {article.category}
+            </span>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            {article.title}
+          </h1>
+          {article.subtitle && (
+            <p className="text-xl text-gray-600 mb-6">{article.subtitle}</p>
+          )}
+          <div className="flex items-center text-gray-500 text-sm">
+            <span>By {article.author}</span>
+            <span className="mx-2">•</span>
+            <time dateTime={article.created_at}>{article.date}</time>
+            <span className="mx-2">•</span>
+            <span>{article.read_time}</span>
+          </div>
+        </header>
 
         {/* Featured Image - Only show if image exists */}
         {article.featured_image && (
@@ -211,15 +303,26 @@ export default function BlogArticlePage() {
         )}
 
         {/* Article Body */}
-        <article className="prose prose-lg prose-purple max-w-none">
+        <article className="prose prose-lg prose-purple max-w-none" itemScope itemType="https://schema.org/BlogPosting">
+          <meta itemProp="headline" content={article.title} />
+          <meta itemProp="description" content={article.excerpt} />
+          <meta itemProp="datePublished" content={article.created_at} />
+          <meta itemProp="dateModified" content={article.updated_at || article.created_at} />
+          <div itemProp="author" itemScope itemType="https://schema.org/Person">
+            <meta itemProp="name" content={article.author} />
+          </div>
+          <div itemProp="publisher" itemScope itemType="https://schema.org/Organization">
+            <meta itemProp="name" content="HIPAA Trainer" />
+          </div>
           <div 
             dangerouslySetInnerHTML={{ __html: article.content }}
             className="article-content"
+            itemProp="articleBody"
           />
         </article>
 
         {/* Call to Action */}
-        <div className="mt-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl p-8 text-white text-center">
+        <aside className="mt-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl p-8 text-white text-center">
           <h3 className="text-2xl font-bold mb-4">Ready to Transform Your HIPAA Compliance?</h3>
           <p className="text-lg mb-6 opacity-90">
             Join healthcare organizations waiting to use HIPAATRAINER.NET to streamline their compliance processes.
@@ -230,7 +333,7 @@ export default function BlogArticlePage() {
           >
             Start for Free
           </Link>
-        </div>
+        </aside>
 
         {/* Related Articles */}
         <RelatedArticles currentArticle={article} />

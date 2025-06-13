@@ -1,7 +1,9 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Head from 'next/head';
 import LandingHeader from '../components/Layout/LandingHeader';
 import LandingFooter from '../components/Layout/LandingFooter';
 
@@ -88,9 +90,49 @@ export default function BlogPage() {
     }
   };
 
+  // Generate structured data for the blog
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "HIPAA Compliance Blog",
+    "description": "Expert insights, best practices, and the latest updates in healthcare compliance and privacy protection.",
+    "url": "https://hipaatrainer.net/blog",
+    "publisher": {
+      "@type": "Organization",
+      "name": "HIPAA Trainer",
+      "url": "https://hipaatrainer.net"
+    },
+    "blogPost": blogPosts.map(post => ({
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "description": post.excerpt,
+      "url": `https://hipaatrainer.net/blog/${post.slug}`,
+      "datePublished": post.created_at,
+      "dateModified": post.updated_at || post.created_at,
+      "author": {
+        "@type": "Person",
+        "name": post.author
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "HIPAA Trainer"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": `https://hipaatrainer.net/blog/${post.slug}`
+      },
+      "articleSection": post.category,
+      "keywords": `HIPAA, compliance, healthcare, ${post.category.toLowerCase()}, privacy, security`
+    }))
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50">
+        <Head>
+          <title>HIPAA Compliance Blog - Loading...</title>
+          <meta name="robots" content="noindex" />
+        </Head>
         <LandingHeader />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="animate-pulse">
@@ -117,10 +159,30 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Head>
+        <title>HIPAA Compliance Blog | Expert Insights & Best Practices - HIPAA Trainer</title>
+        <meta name="description" content="Stay updated with the latest HIPAA compliance insights, best practices, and regulatory updates. Expert guidance for healthcare organizations on privacy protection and security." />
+        <meta name="keywords" content="HIPAA compliance, healthcare privacy, HIPAA training, medical privacy, healthcare security, PHI protection, HIPAA blog, compliance updates" />
+        <meta name="author" content="HIPAA Trainer" />
+        <meta property="og:title" content="HIPAA Compliance Blog | Expert Insights & Best Practices" />
+        <meta property="og:description" content="Expert insights, best practices, and the latest updates in healthcare compliance and privacy protection." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://hipaatrainer.net/blog" />
+        <meta property="og:site_name" content="HIPAA Trainer" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="HIPAA Compliance Blog | Expert Insights & Best Practices" />
+        <meta name="twitter:description" content="Expert insights, best practices, and the latest updates in healthcare compliance and privacy protection." />
+        <link rel="canonical" href="https://hipaatrainer.net/blog" />
+        <script 
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+      </Head>
+
       <LandingHeader />
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 py-16">
+      <header className="bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             HIPAA Compliance Blog
@@ -129,17 +191,17 @@ export default function BlogPage() {
             Expert insights, best practices, and the latest updates in healthcare compliance and privacy protection.
           </p>
         </div>
-      </section>
+      </header>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Featured Posts */}
-        {selectedCategory === 'All' && (
+        {selectedCategory === 'All' && featuredPosts.length > 0 && (
           <section className="mb-16">
             <h2 className="text-2xl font-bold text-gray-900 mb-8">Featured Articles</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {featuredPosts.map((post) => (
-                <article key={post.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+                <article key={post.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow" itemScope itemType="https://schema.org/BlogPosting">
                   {post.image && (
                     <div className="h-48 bg-gradient-to-r from-purple-100 to-pink-100 flex items-center justify-center">
                       <span className="text-purple-600 text-sm font-medium">Featured Article</span>
@@ -147,27 +209,27 @@ export default function BlogPage() {
                   )}
                   <div className="p-6">
                     <div className="flex items-center mb-3">
-                      <span className="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full font-medium">
+                      <span className="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full font-medium" itemProp="articleSection">
                         {post.category}
                       </span>
-                      <span className="text-gray-500 text-sm ml-3">{post.readTime}</span>
+                      <span className="text-gray-500 text-sm ml-3">{post.read_time}</span>
                     </div>
                     <Link href={post.slug ? `/blog/${post.slug}` : '/blog'}>
-                      <h3 className="text-xl font-bold text-gray-900 mb-3 hover:text-purple-800 transition-colors cursor-pointer">
+                      <h3 className="text-xl font-bold text-gray-900 mb-3 hover:text-purple-800 transition-colors cursor-pointer" itemProp="headline">
                         {post.title}
                       </h3>
                     </Link>
-                    <p className="text-gray-600 mb-4">{post.excerpt}</p>
+                    <p className="text-gray-600 mb-4" itemProp="description">{post.excerpt}</p>
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center">
+                      <div className="flex items-center" itemProp="author" itemScope itemType="https://schema.org/Person">
                         <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3">
                           <span className="text-purple-600 text-xs font-bold">
                             {post.author.split(' ').map(n => n[0]).join('')}
                           </span>
                         </div>
                         <div>
-                          <div className="text-sm font-medium text-gray-900">{post.author}</div>
-                          <div className="text-xs text-gray-500">{post.date}</div>
+                          <div className="text-sm font-medium text-gray-900" itemProp="name">{post.author}</div>
+                          <time className="text-xs text-gray-500" itemProp="datePublished" dateTime={post.created_at}>{post.date}</time>
                         </div>
                       </div>
                       <Link href={post.slug ? `/blog/${post.slug}` : '/blog'} className="text-purple-600 hover:text-purple-800 font-medium text-sm">
@@ -182,7 +244,7 @@ export default function BlogPage() {
         )}
 
         {/* Category Filter */}
-        <div className="flex flex-wrap gap-2 mb-8">
+        <nav className="flex flex-wrap gap-2 mb-8" aria-label="Blog categories">
           {categories.map((category) => (
             <button
               key={category}
@@ -192,11 +254,12 @@ export default function BlogPage() {
                   ? 'bg-purple-600 text-white'
                   : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-200'
               }`}
+              aria-pressed={selectedCategory === category}
             >
               {category}
             </button>
           ))}
-        </div>
+        </nav>
 
         {/* All Posts Grid */}
         <section>
@@ -205,7 +268,7 @@ export default function BlogPage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {regularPosts.map((post) => (
-              <article key={post.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+              <article key={post.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow" itemScope itemType="https://schema.org/BlogPosting">
                 {post.image && (
                   <div className="h-32 bg-gradient-to-r from-gray-100 to-gray-200 flex items-center justify-center">
                     <span className="text-gray-500 text-sm">Article Image</span>
@@ -213,27 +276,27 @@ export default function BlogPage() {
                 )}
                 <div className="p-6">
                   <div className="flex items-center mb-3">
-                    <span className="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full font-medium">
+                    <span className="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full font-medium" itemProp="articleSection">
                       {post.category}
                     </span>
-                    <span className="text-gray-500 text-sm ml-3">{post.readTime}</span>
+                    <span className="text-gray-500 text-sm ml-3">{post.read_time}</span>
                   </div>
                   <Link href={post.slug ? `/blog/${post.slug}` : '/blog'}>
-                    <h3 className="text-lg font-bold text-gray-900 mb-2 hover:text-purple-800 transition-colors cursor-pointer">
+                    <h3 className="text-lg font-bold text-gray-900 mb-2 hover:text-purple-800 transition-colors cursor-pointer" itemProp="headline">
                       {post.title}
                     </h3>
                   </Link>
-                  <p className="text-gray-600 text-sm mb-4">{post.excerpt}</p>
+                  <p className="text-gray-600 text-sm mb-4" itemProp="description">{post.excerpt}</p>
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center">
+                    <div className="flex items-center" itemProp="author" itemScope itemType="https://schema.org/Person">
                       <div className="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center mr-2">
                         <span className="text-purple-600 text-xs font-bold">
                           {post.author.split(' ').map(n => n[0]).join('')}
                         </span>
                       </div>
                       <div>
-                        <div className="text-xs font-medium text-gray-900">{post.author}</div>
-                        <div className="text-xs text-gray-500">{post.date}</div>
+                        <div className="text-xs font-medium text-gray-900" itemProp="name">{post.author}</div>
+                        <time className="text-xs text-gray-500" itemProp="datePublished" dateTime={post.created_at}>{post.date}</time>
                       </div>
                     </div>
                     <Link href={post.slug ? `/blog/${post.slug}` : '/blog'} className="text-purple-600 hover:text-purple-800 font-medium text-sm">
@@ -247,19 +310,22 @@ export default function BlogPage() {
         </section>
 
         {/* Newsletter Signup */}
-        <section className="mt-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl p-8 text-white text-center">
+        <aside className="mt-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl p-8 text-white text-center">
           <h3 className="text-2xl font-bold mb-4">Stay Updated on HIPAA Compliance</h3>
           <p className="text-lg mb-6 opacity-90">
             Get the latest insights, best practices, and regulatory updates delivered to your inbox.
           </p>
           <form onSubmit={handleNewsletterSubscription} className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+            <label htmlFor="newsletter-email" className="sr-only">Email address</label>
             <input
+              id="newsletter-email"
               type="email"
               placeholder="Enter your email"
               value={newsletterEmail}
               onChange={(e) => setNewsletterEmail(e.target.value)}
               className="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"
               disabled={isSubmitting}
+              required
             />
             <button 
               type="submit" 
@@ -270,12 +336,12 @@ export default function BlogPage() {
             </button>
           </form>
           {subscriptionMessage && (
-            <p className={`mt-4 text-sm ${subscriptionMessage.includes('Successfully') ? 'text-green-200' : 'text-red-200'}`}>
+            <p className={`mt-4 text-sm ${subscriptionMessage.includes('Successfully') ? 'text-green-200' : 'text-red-200'}`} role="status" aria-live="polite">
               {subscriptionMessage}
             </p>
           )}
-        </section>
-      </div>
+        </aside>
+      </main>
 
       <LandingFooter />
     </div>
