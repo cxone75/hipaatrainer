@@ -28,16 +28,24 @@ export default function EditBlogPostPage() {
   }, [params.id]);
 
   const fetchBlogPost = async () => {
+    console.log('Edit page: Fetching blog post for ID:', params.id);
     try {
       const token = localStorage.getItem('token');
+      console.log('Edit page: Token exists:', !!token);
+      console.log('Edit page: Making request to:', `/api/blog/admin/${params.id}`);
+      
       const response = await fetch(`/api/blog/admin/${params.id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
+      
+      console.log('Edit page: Response status:', response.status);
+      console.log('Edit page: Response ok:', response.ok);
 
       if (response.ok) {
         const data = await response.json();
+        console.log('Edit page: Successfully loaded blog post:', data);
         setFormData({
           title: data.title || '',
           subtitle: data.subtitle || '',
@@ -49,10 +57,13 @@ export default function EditBlogPostPage() {
           status: data.status || 'draft'
         });
       } else {
+        const errorText = await response.text();
+        console.error('Edit page: Failed to load blog post. Status:', response.status, 'Error:', errorText);
         setError('Failed to load blog post');
       }
     } catch (error) {
-      console.error('Error fetching blog post:', error);
+      console.error('Edit page: Error fetching blog post:', error);
+      console.error('Edit page: Error details:', error.message, error.stack);
       setError('Failed to load blog post');
     } finally {
       setLoading(false);
