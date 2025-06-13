@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import Head from 'next/head';
 import LandingHeader from '../../components/Layout/LandingHeader';
 import LandingFooter from '../../components/Layout/LandingFooter';
 
@@ -19,7 +20,7 @@ function RelatedArticles({ currentArticle }) {
   const fetchRelatedArticles = async () => {
     try {
       const response = await fetch(`/api/blog?status=published&category=${encodeURIComponent(currentArticle.category)}`);
-      
+
       if (response.ok) {
         const data = await response.json();
         // Filter out the current article and limit to 2 related articles
@@ -133,7 +134,7 @@ export default function BlogArticlePage() {
   const fetchArticle = async () => {
     try {
       const response = await fetch(`/api/blog/${params.slug}`);
-      
+
       if (response.ok) {
         const data = await response.json();
         const formattedArticle = {
@@ -157,13 +158,83 @@ export default function BlogArticlePage() {
     }
   };
 
+  // SEO metadata generation
+  const generateMetadata = (article) => {
+    if (!article) return null;
+
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hipaatrainer.com';
+    const articleUrl = `${siteUrl}/blog/${article.slug}`;
+    const imageUrl = article.image_url || `${siteUrl}/hipaatrainer-logo.png`;
+
+    return {
+      title: `${article.title} | HIPAA Trainer Blog`,
+      description: article.excerpt || article.subtitle,
+      canonical: articleUrl,
+      openGraph: {
+        title: article.title,
+        description: article.excerpt || article.subtitle,
+        url: articleUrl,
+        type: 'article',
+        image: imageUrl,
+        site_name: 'HIPAA Trainer',
+        article: {
+          published_time: article.created_at,
+          modified_time: article.updated_at,
+          author: article.author,
+          section: article.category,
+          tag: [article.category, 'HIPAA', 'Healthcare Compliance']
+        }
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: article.title,
+        description: article.excerpt || article.subtitle,
+        image: imageUrl
+      },
+      structuredData: {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": article.title,
+        "description": article.excerpt || article.subtitle,
+        "image": imageUrl,
+        "author": {
+          "@type": "Person",
+          "name": article.author
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "HIPAA Trainer",
+          "logo": {
+            "@type": "ImageObject",
+            "url": `${siteUrl}/hipaatrainer-logo.png`
+          }
+        },
+        "datePublished": article.created_at,
+        "dateModified": article.updated_at,
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": articleUrl
+        }
+      }
+    };
+  };
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin w-8 h-8 border-4 border-purple-600 border-t-transparent rounded-full mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading article...</p>
+      <div className="min-h-screen bg-gray-50">
+        <LandingHeader />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded w-3/4 mb-4"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/2 mb-6"></div>
+            <div className="space-y-3">
+              {[1, 2, 3, 4, 5].map(i => (
+                <div key={i} className="h-4 bg-gray-200 rounded"></div>
+              ))}
+            </div>
+          </div>
         </div>
+        <LandingFooter />
       </div>
     );
   }
@@ -184,6 +255,32 @@ export default function BlogArticlePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+       <Head>
+        {generateMetadata(article) && (
+          <>
+            <title>{generateMetadata(article).title}</title>
+            <meta name="description" content={generateMetadata(article).description} />
+            <link rel="canonical" href={generateMetadata(article).canonical} />
+            {/* Open Graph meta tags */}
+            <meta property="og:title" content={generateMetadata(article).openGraph.title} />
+            <meta property="og:description" content={generateMetadata(article).openGraph.description} />
+            <meta property="og:url" content={generateMetadata(article).openGraph.url} />
+            <meta property="og:type" content={generateMetadata(article).openGraph.type} />
+            <meta property="og:image" content={generateMetadata(article).openGraph.image} />
+            <meta property="og:site_name" content={generateMetadata(article).openGraph.site_name} />
+            {/* Twitter meta tags */}
+            <meta name="twitter:card" content={generateMetadata(article).twitter.card} />
+            <meta name="twitter:title" content={generateMetadata(article).twitter.title} />
+            <meta name="twitter:description" content={generateMetadata(article).twitter.description} />
+            <meta name="twitter:image" content={generateMetadata(article).twitter.image} />
+            {/* Structured data */}
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{ __html: JSON.stringify(generateMetadata(article).structuredData) }}
+            />
+          </>
+        )}
+      </Head>
       <LandingHeader />
 
       {/* Article Content */}
