@@ -6,6 +6,121 @@ import { useParams } from 'next/navigation';
 import LandingHeader from '../../components/Layout/LandingHeader';
 import LandingFooter from '../../components/Layout/LandingFooter';
 
+function RelatedArticles({ currentArticle }) {
+  const [relatedArticles, setRelatedArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (currentArticle) {
+      fetchRelatedArticles();
+    }
+  }, [currentArticle]);
+
+  const fetchRelatedArticles = async () => {
+    try {
+      const response = await fetch(`/api/blog?status=published&category=${encodeURIComponent(currentArticle.category)}`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        // Filter out the current article and limit to 2 related articles
+        const filtered = data
+          .filter(post => post.id !== currentArticle.id)
+          .slice(0, 2)
+          .map(post => ({
+            ...post,
+            date: new Date(post.created_at).toLocaleDateString('en-US', { 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            })
+          }));
+        setRelatedArticles(filtered);
+      }
+    } catch (error) {
+      console.error('Error fetching related articles:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <section className="mt-16">
+        <h3 className="text-2xl font-bold text-gray-900 mb-8">Related Articles</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {[1, 2].map(i => (
+            <div key={i} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+              <div className="h-32 bg-gray-200 animate-pulse"></div>
+              <div className="p-6">
+                <div className="h-4 bg-gray-200 rounded w-20 mb-3 animate-pulse"></div>
+                <div className="h-6 bg-gray-200 rounded w-3/4 mb-2 animate-pulse"></div>
+                <div className="h-4 bg-gray-200 rounded w-full animate-pulse"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  if (relatedArticles.length === 0) {
+    return (
+      <section className="mt-16">
+        <h3 className="text-2xl font-bold text-gray-900 mb-8">Related Articles</h3>
+        <div className="text-center py-8">
+          <p className="text-gray-600">No related articles found.</p>
+          <Link href="/blog" className="text-purple-600 hover:text-purple-800 font-medium">
+            Browse all articles →
+          </Link>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="mt-16">
+      <h3 className="text-2xl font-bold text-gray-900 mb-8">Related Articles</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {relatedArticles.map(post => (
+          <Link key={post.id} href={`/blog/${post.slug}`} className="group">
+            <article className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+              {post.featured_image ? (
+                <div className="h-32 overflow-hidden">
+                  <img 
+                    src={post.featured_image} 
+                    alt={post.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="h-32 bg-gradient-to-r from-gray-100 to-gray-200 flex items-center justify-center">
+                  <span className="text-gray-500 text-sm">Related Article</span>
+                </div>
+              )}
+              <div className="p-6">
+                <span className="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full font-medium mb-3">
+                  {post.category}
+                </span>
+                <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-purple-800 transition-colors">
+                  {post.title}
+                </h4>
+                <p className="text-gray-600 text-sm line-clamp-2">
+                  {post.excerpt}
+                </p>
+                <div className="flex items-center mt-3 text-xs text-gray-500">
+                  <span>{post.author}</span>
+                  <span className="mx-2">•</span>
+                  <span>{post.date}</span>
+                </div>
+              </div>
+            </article>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export default function BlogArticlePage() {
   const params = useParams();
   const [article, setArticle] = useState(null);
@@ -118,47 +233,7 @@ export default function BlogArticlePage() {
         </div>
 
         {/* Related Articles */}
-        <section className="mt-16">
-          <h3 className="text-2xl font-bold text-gray-900 mb-8">Related Articles</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Link href="/blog" className="group">
-              <article className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
-                <div className="h-32 bg-gradient-to-r from-gray-100 to-gray-200 flex items-center justify-center">
-                  <span className="text-gray-500 text-sm">Related Article</span>
-                </div>
-                <div className="p-6">
-                  <span className="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full font-medium mb-3">
-                    HIPAA Compliance
-                  </span>
-                  <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-purple-800 transition-colors">
-                    HIPAA Training Requirements for 2025
-                  </h4>
-                  <p className="text-gray-600 text-sm">
-                    Stay ahead of compliance with the latest HIPAA training requirements...
-                  </p>
-                </div>
-              </article>
-            </Link>
-
-            <Link href="/blog" className="group">
-              <article className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
-                <div className="h-32 bg-gradient-to-r from-gray-100 to-gray-200 flex items-center justify-center">
-                  <span className="text-gray-500 text-sm">Related Article</span>
-                </div>
-                <div className="p-6">
-                  <span className="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full font-medium mb-3">
-                    Best Practices
-                  </span>
-                  <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-purple-800 transition-colors">
-                    Building a Culture of Privacy
-                  </h4>
-                  <p className="text-gray-600 text-sm">
-                    Learn how to transform HIPAA compliance from a burden into a competitive advantage...
-                  </p>
-                </div>
-              </article>
-            </Link>
-          </div>
+        <RelatedArticles currentArticle={article} />
         </section>
       </main>
 
@@ -249,6 +324,13 @@ export default function BlogArticlePage() {
         .article-content a:hover {
           color: #5b21b6;
           text-decoration: underline;
+        }
+
+        .line-clamp-2 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
         }
       `}</style>
     </div>
