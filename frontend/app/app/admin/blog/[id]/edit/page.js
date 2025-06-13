@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 
-export default function EditBlogPostPage() {
+function EditBlogPostPage() {
   const router = useRouter();
   const params = useParams();
   const [formData, setFormData] = useState({
@@ -24,8 +24,16 @@ export default function EditBlogPostPage() {
   const categories = ['Product Updates', 'HIPAA Compliance', 'Training', 'Risk Management', 'Policy Updates', 'Best Practices'];
 
   useEffect(() => {
+    // Check authentication first
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.log('Edit page: No token found, redirecting to login');
+      router.push('/login');
+      return;
+    }
+    
     fetchBlogPost();
-  }, [params.id]);
+  }, [params.id, router]);
 
   const fetchBlogPost = async () => {
     console.log('=== EDIT PAGE DEBUG START ===');
@@ -33,6 +41,13 @@ export default function EditBlogPostPage() {
     try {
       const token = localStorage.getItem('token');
       console.log('Edit page: Token exists:', !!token);
+      
+      if (!token) {
+        console.log('Edit page: No token available, redirecting to login');
+        router.push('/login');
+        return;
+      }
+      
       console.log('Edit page: Making request to:', `/api/blog/admin/${params.id}`);
 
       const response = await fetch(`/api/blog/admin/${params.id}`, {
@@ -43,6 +58,14 @@ export default function EditBlogPostPage() {
 
       console.log('Edit page: Response status:', response.status);
       console.log('Edit page: Response ok:', response.ok);
+      
+      // Handle authentication errors
+      if (response.status === 401) {
+        console.log('Edit page: Authentication failed, clearing token and redirecting to login');
+        localStorage.removeItem('token');
+        router.push('/login');
+        return;
+      }
 
       if (response.ok) {
         console.log('Edit page: Response is OK, parsing JSON...');
@@ -301,5 +324,75 @@ export default function EditBlogPostPage() {
         </div>
       </form>
     </div>
+  );
+}
+
+// AuthGuard wrapper component
+function AuthGuard({ children }) {
+  const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const checkAuth = () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        router.push('/login');
+        return;
+      }
+      
+      // Verify token is valid by checking its structure
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const currentTime = Date.now() / 1000;
+        
+        if (payload.exp && payload.exp < currentTime) {
+          console.log('Token expired, redirecting to login');
+          localStorage.removeItem('token');
+          router.push('/login');
+          return;
+        }
+        
+        setIsAuthenticated(true);
+      } catch (error) {
+        console.log('Invalid token format, redirecting to login');
+        localStorage.removeItem('token');
+        router.push('/login');
+        return;
+      }
+      
+      setIsLoading(false);
+    };
+
+    checkAuth();
+  }, [router]);
+
+  if (isLoading) {
+    return (
+      <div className="p-6">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-1/4 mb-6"></div>
+          <div className="space-y-4">
+            {[1, 2, 3].map(i => (
+              <div key={i} className="h-16 bg-gray-200 rounded"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null;
+  }
+
+  return children;
+}
+
+export default function ProtectedEditBlogPostPage() {
+  return (
+    <AuthGuard>
+      <EditBlogPostPage />
+    </AuthGuard>
   );
 }

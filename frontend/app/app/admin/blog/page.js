@@ -9,17 +9,39 @@ export default function BlogManagementPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Check authentication first
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.log('Admin blog page: No token found, redirecting to login');
+      window.location.href = '/login';
+      return;
+    }
+    
     fetchPosts();
   }, []);
 
   const fetchPosts = async () => {
     try {
       const token = localStorage.getItem('token');
+      
+      if (!token) {
+        console.log('Admin blog page: No token available, redirecting to login');
+        window.location.href = '/login';
+        return;
+      }
+      
       const response = await fetch('/api/blog/admin', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
+      
+      if (response.status === 401) {
+        console.log('Admin blog page: Authentication failed, clearing token and redirecting to login');
+        localStorage.removeItem('token');
+        window.location.href = '/login';
+        return;
+      }
       
       if (response.ok) {
         const data = await response.json();
