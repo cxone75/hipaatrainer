@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -27,6 +28,7 @@ export default function EditBlogPostPage() {
   }, [params.id]);
 
   const fetchBlogPost = async () => {
+    console.log('=== EDIT PAGE DEBUG START ===');
     console.log('Edit page: Fetching blog post for ID:', params.id);
     try {
       const token = localStorage.getItem('token');
@@ -48,7 +50,7 @@ export default function EditBlogPostPage() {
         console.log('Edit page: Successfully loaded blog post data:', data);
         console.log('Edit page: Blog post title:', data.title);
         console.log('Edit page: Blog post ID:', data.id);
-
+        
         setFormData({
           title: data.title || '',
           subtitle: data.subtitle || '',
@@ -157,136 +159,146 @@ export default function EditBlogPostPage() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
-              Title *
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+                Title *
+              </label>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
+                placeholder="Enter blog post title"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
+                Category *
+              </label>
+              <select
+                id="category"
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
+              >
+                {categories.map(category => (
+                  <option key={category} value={category}>{category}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="author" className="block text-sm font-medium text-gray-700 mb-2">
+                Author *
+              </label>
+              <input
+                type="text"
+                id="author"
+                name="author"
+                value={formData.author}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
+                placeholder="Author name"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-2">
+                Status
+              </label>
+              <select
+                id="status"
+                name="status"
+                value={formData.status}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
+              >
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <label htmlFor="subtitle" className="block text-sm font-medium text-gray-700 mb-2">
+              Subtitle
             </label>
             <input
               type="text"
-              id="title"
-              name="title"
-              value={formData.title}
+              id="subtitle"
+              name="subtitle"
+              value={formData.subtitle}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
+              placeholder="Optional subtitle"
+            />
+          </div>
+
+          <div className="mt-6">
+            <label htmlFor="excerpt" className="block text-sm font-medium text-gray-700 mb-2">
+              Excerpt *
+            </label>
+            <textarea
+              id="excerpt"
+              name="excerpt"
+              value={formData.excerpt}
               onChange={handleChange}
               required
+              rows={3}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
-              placeholder="Enter blog post title"
+              placeholder="Brief description of the article for listings..."
             />
           </div>
 
-          <div>
-            <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
-              Category
+          <div className="mt-6">
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                name="featured"
+                checked={formData.featured}
+                onChange={handleChange}
+                className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+              />
+              <span className="ml-2 text-sm text-gray-700">Featured Article</span>
             </label>
-            <select
-              id="category"
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
-            >
-              {categories.map(category => (
-                <option key={category} value={category}>{category}</option>
-              ))}
-            </select>
           </div>
         </div>
 
-        <div>
-          <label htmlFor="subtitle" className="block text-sm font-medium text-gray-700 mb-2">
-            Subtitle
-          </label>
-          <input
-            type="text"
-            id="subtitle"
-            name="subtitle"
-            value={formData.subtitle}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
-            placeholder="Enter subtitle (optional)"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="author" className="block text-sm font-medium text-gray-700 mb-2">
-            Author *
-          </label>
-          <input
-            type="text"
-            id="author"
-            name="author"
-            value={formData.author}
-            onChange={handleChange}
-            required
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
-            placeholder="Enter author name"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="excerpt" className="block text-sm font-medium text-gray-700 mb-2">
-            Excerpt
-          </label>
-          <textarea
-            id="excerpt"
-            name="excerpt"
-            value={formData.excerpt}
-            onChange={handleChange}
-            rows={3}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
-            placeholder="Brief description of the blog post"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
-            Content *
-          </label>
-          <textarea
-            id="content"
-            name="content"
-            value={formData.content}
-            onChange={handleChange}
-            required
-            rows={15}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
-            placeholder="Write your blog post content here..."
-          />
-        </div>
-
-        <div className="flex items-center space-x-6">
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="featured"
-              name="featured"
-              checked={formData.featured}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Content</h2>
+          
+          <div>
+            <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
+              Article Content *
+            </label>
+            <textarea
+              id="content"
+              name="content"
+              value={formData.content}
               onChange={handleChange}
-              className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+              required
+              rows={20}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500 font-mono text-sm"
+              placeholder="Write your article content here. You can use HTML tags for formatting..."
             />
-            <label htmlFor="featured" className="ml-2 text-sm text-gray-700">
-              Featured Post
-            </label>
-          </div>
-
-          <div>
-            <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">
-              Status
-            </label>
-            <select
-              id="status"
-              name="status"
-              value={formData.status}
-              onChange={handleChange}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
-            >
-              <option value="draft">Draft</option>
-              <option value="published">Published</option>
-            </select>
+            <p className="text-sm text-gray-500 mt-2">
+              You can use HTML tags for formatting (h2, h3, p, ul, ol, li, strong, em, blockquote, etc.)
+            </p>
           </div>
         </div>
 
-        <div className="flex justify-end space-x-4">
+        <div className="flex justify-between">
           <button
             type="button"
             onClick={() => router.push('/app/admin/blog')}
