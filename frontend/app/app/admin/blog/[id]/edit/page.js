@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -17,32 +18,9 @@ export default function EditBlogPostPage() {
     status: 'draft'
   });
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const categories = ['Product Updates', 'HIPAA Compliance', 'Training', 'Risk Management', 'Policy Updates', 'Best Practices'];
-
-  // Sample posts data - replace with API call
-  const samplePosts = {
-    1: {
-      id: 1,
-      title: "Introducing HIPAA Trainer",
-      subtitle: "An innovative AI-powered platform designed to transform your business operations.",
-      excerpt: "An innovative AI-powered platform designed to transform your business operations and skyrocket productivity.",
-      category: "Product Updates",
-      author: "HIPAA Trainer Team",
-      status: "published",
-      featured: true,
-      content: `<p>We're excited to unveil <strong>HIPAA Trainer</strong>, an innovative AI-powered platform designed to transform your business operations and skyrocket productivity.</p>
-
-<h2>The Challenge We're Addressing</h2>
-<p>In today's AI-driven world, healthcare organizations face several hurdles:</p>
-<ul>
-  <li>Overwhelming HIPAA compliance requirements</li>
-  <li>Inefficient staff training processes</li>
-  <li>Difficulty in maintaining ongoing compliance</li>
-</ul>
-<p>HIPAA Trainer tackles these challenges head-on, offering a sophisticated AI solution that simplifies complex compliance processes.</p>`
-    }
-  };
 
   useEffect(() => {
     fetchBlogPost();
@@ -69,9 +47,12 @@ export default function EditBlogPostPage() {
           featured: data.featured || false,
           status: data.status || 'draft'
         });
+      } else {
+        setError('Failed to load blog post');
       }
     } catch (error) {
       console.error('Error fetching blog post:', error);
+      setError('Error loading blog post');
     } finally {
       setLoading(false);
     }
@@ -79,10 +60,10 @@ export default function EditBlogPostPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://0.0.0.0:3001/api/blog/${params.id}`, {
+      const response = await fetch(`/api/blog/admin/${params.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -90,7 +71,7 @@ export default function EditBlogPostPage() {
         },
         body: JSON.stringify(formData)
       });
-
+      
       if (response.ok) {
         router.push('/app/admin/blog');
       } else {
@@ -115,21 +96,21 @@ export default function EditBlogPostPage() {
         <div className="animate-pulse">
           <div className="h-8 bg-gray-200 rounded w-1/4 mb-6"></div>
           <div className="space-y-4">
-            {[1, 2, 3].map(i => (
-              <div key={i} className="h-16 bg-gray-200 rounded"></div>
-            ))}
+            <div className="h-16 bg-gray-200 rounded"></div>
+            <div className="h-16 bg-gray-200 rounded"></div>
+            <div className="h-32 bg-gray-200 rounded"></div>
           </div>
         </div>
       </div>
     );
   }
 
-  if (!samplePosts[params.id]) {
+  if (error) {
     return (
       <div className="p-6">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Blog Post Not Found</h1>
-          <p className="text-gray-600 mb-6">The blog post you're trying to edit doesn't exist.</p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Error</h1>
+          <p className="text-gray-600 mb-6">{error}</p>
           <button
             onClick={() => router.push('/app/admin/blog')}
             className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors"
@@ -151,7 +132,7 @@ export default function EditBlogPostPage() {
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h2>
-
+          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -258,7 +239,7 @@ export default function EditBlogPostPage() {
 
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Content</h2>
-
+          
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Article Content *

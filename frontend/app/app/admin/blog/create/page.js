@@ -24,7 +24,7 @@ export default function CreateBlogPostPage() {
     
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://0.0.0.0:3001/api/blog', {
+      const response = await fetch('/api/blog/admin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
