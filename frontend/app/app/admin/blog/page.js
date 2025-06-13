@@ -15,7 +15,7 @@ export default function BlogManagementPage() {
   const fetchPosts = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://0.0.0.0:3001/api/blog', {
+      const response = await fetch('/api/blog/admin', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -46,7 +46,7 @@ export default function BlogManagementPage() {
     if (confirm('Are you sure you want to delete this post?')) {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://0.0.0.0:3001/api/blog/${id}`, {
+        const response = await fetch(`/api/blog/admin/${id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -70,7 +70,7 @@ export default function BlogManagementPage() {
       const post = posts.find(p => p.id === id);
       const newStatus = post.status === 'published' ? 'draft' : 'published';
       
-      const response = await fetch(`http://0.0.0.0:3001/api/blog/${id}`, {
+      const response = await fetch(`/api/blog/admin/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

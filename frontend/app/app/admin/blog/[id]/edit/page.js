@@ -51,7 +51,7 @@ export default function EditBlogPostPage() {
   const fetchBlogPost = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://0.0.0.0:3001/api/blog/${params.id}`, {
+      const response = await fetch(`/api/blog/admin/${params.id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
