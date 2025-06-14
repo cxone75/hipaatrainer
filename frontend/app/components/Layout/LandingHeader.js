@@ -1,10 +1,17 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function LandingHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+
+  useEffect(() => {
+    // Check if LOGIN environment variable is set to 'TRUE'
+    const loginEnabled = process.env.NEXT_PUBLIC_LOGIN === 'TRUE';
+    setShowLogin(loginEnabled);
+  }, []);
 
   const scrollToPricing = () => {
     const pricingSection = document.getElementById('pricing');
@@ -37,8 +44,14 @@ export default function LandingHeader() {
               <Link href="/#solutions" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Solutions</Link>
               <Link href="/#features" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Features</Link>
               <Link href="/#pricing" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Pricing</Link>
+              <Link href="/certification" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Certification</Link>
+              <Link href="/small-practices" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Small Practices</Link>
+              <Link href="/policy-review-training" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Policy Review</Link>
+              <Link href="/free-training" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Free Training</Link>
               <Link href="/blog" className="text-gray-700 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Blog</Link>
-              <Link href="/login" className="text-gray-600 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Login</Link>
+              {showLogin && (
+                <Link href="/login" className="text-gray-600 hover:text-purple-800 px-3 py-2 text-sm font-medium transition-colors">Login</Link>
+              )}
             </div>
           </div>
 
@@ -72,8 +85,14 @@ export default function LandingHeader() {
               <Link href="/#solutions" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Solutions</Link>
               <Link href="/#features" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Features</Link>
               <Link href="/#pricing" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Pricing</Link>
+              <Link href="/certification" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Certification</Link>
+              <Link href="/small-practices" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Small Practices</Link>
+              <Link href="/policy-review-training" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Policy Review</Link>
+              <Link href="/free-training" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Free Training</Link>
               <Link href="/blog" className="text-gray-700 hover:text-purple-800 block px-3 py-2 text-base font-medium">Blog</Link>
-              <Link href="/login" className="text-gray-600 hover:text-purple-800 block px-3 py-2 text-base font-medium">Login</Link>
+              {showLogin && (
+                <Link href="/login" className="text-gray-600 hover:text-purple-800 block px-3 py-2 text-base font-medium">Login</Link>
+              )}
               <Link 
                 href="/#pricing"
                 className="block w-full bg-purple-800 text-white px-6 py-2 rounded-lg font-medium hover:bg-purple-900 transition-colors mt-4 text-center"

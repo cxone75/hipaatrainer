@@ -1,0 +1,50 @@
+
+{
+  "name": "HIPAA Trainer - Complete HIPAA Compliance Training Platform",
+  "short_name": "HIPAA Trainer",
+  "description": "Comprehensive HIPAA compliance training and management platform for healthcare organizations",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#7c3aed",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/hipaatrainer-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/hipaatrainer-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["healthcare", "business", "education"],
+  "screenshots": [
+    {
+      "src": "/HIPAATRAINER-DEMO-DASHBOARD.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "label": "HIPAA Trainer Dashboard"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Blog",
+      "short_name": "Blog",
+      "description": "HIPAA compliance insights and best practices",
+      "url": "/blog",
+      "icons": [{ "src": "/hipaatrainer-logo.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Training",
+      "short_name": "Training",
+      "description": "HIPAA compliance training modules",
+      "url": "/training",
+      "icons": [{ "src": "/hipaatrainer-logo.png", "sizes": "96x96" }]
+    }
+  ]
+}

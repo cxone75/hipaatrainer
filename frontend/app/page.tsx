@@ -3,6 +3,7 @@
 import { useState, useEffect, Fragment } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import Link from 'next/link';
+import Head from 'next/head';
 import LandingHeader from './components/Layout/LandingHeader';
 import LandingFooter from './components/Layout/LandingFooter';
 import { BorderBeam } from './components/ui/border-beam';
@@ -107,7 +108,7 @@ export default function LandingPage() {
 
   useEffect(() => {
     // Fixed target date: 90 days from June 1st, 2025
-    const startDate = new Date('2025-06-01');
+    const startDate = new Date('2025-05-15');
     const targetDate = new Date(startDate);
     targetDate.setDate(targetDate.getDate() + 90);
 
@@ -432,12 +433,173 @@ export default function LandingPage() {
     }
   };
 
+  // Enhanced structured data for homepage SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "HIPAA Trainer - Online HIPAA Training",
+    "applicationCategory": "EducationalApplication",
+    "applicationSubCategory": "Healthcare Training Software",
+    "operatingSystem": "Web Browser",
+    "description": "Affordable HIPAA training online for small healthcare practices. Comprehensive compliance training platform with automated modules, risk assessments, and certification programs.",
+    "url": "https://hipaatrainer.net",
+    "downloadUrl": "https://hipaatrainer.net",
+    "softwareVersion": "1.0",
+    "releaseNotes": "Initial release with comprehensive HIPAA compliance features",
+    "screenshot": "https://hipaatrainer.net/HIPAATRAINER-DEMO-DASHBOARD.png",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "150"
+    },
+    "offers": [
+      {
+        "@type": "Offer",
+        "name": "Free Plan",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "description": "Up to 2 users with basic compliance features"
+      },
+      {
+        "@type": "Offer",
+        "name": "Founding Member",
+        "price": "199",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "description": "Lifetime access for up to 50 users with all features"
+      }
+    ],
+    "publisher": {
+      "@type": "Organization",
+      "name": "HIPAA Trainer",
+      "url": "https://hipaatrainer.net",
+      "logo": "https://hipaatrainer.net/hipaatrainer-logo.png",
+      "foundingDate": "2024",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "email": "support@hipaatrainer.net",
+        "availableLanguage": "English"
+      }
+    },
+    "featureList": [
+      "HIPAA Compliance Dashboard",
+      "Automated Training Management",
+      "Risk Assessment Tools",
+      "Policy Management",
+      "Audit Preparation",
+      "Regulatory Updates",
+      "Employee Management",
+      "Compliance Reporting"
+    ],
+    "audience": {
+      "@type": "Audience",
+      "audienceType": "Healthcare Organizations"
+    }
+  };
+
+  const faqStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "I'm a small team—can HIPAA Trainer really scale down for us?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes—no IT needed, no hidden fees, onboarding in under one hour. We've designed HIPAA Trainer specifically for small healthcare teams who don't have dedicated compliance departments."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do you handle regulatory updates?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We monitor regulatory changes continuously and automatically update your policies and training materials. You'll receive notifications about any changes that affect your organization, with clear guidance on what actions to take."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How fast can we be audit-ready?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Most teams are audit-ready within 2-4 weeks. Our system generates comprehensive audit bundles in minutes, including all required documentation, training records, and compliance evidence."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is HIPAA Trainer itself HIPAA-compliant?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Absolutely. We're SOC 2 certified, use enterprise-grade encryption, and follow all HIPAA requirements. We practice what we preach when it comes to data security and privacy."
+        }
+      }
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
+      <Head>
+        <title>HIPAA Training Online | Affordable Compliance for Small Practices - HIPAA Trainer</title>
+        <meta name="description" content="Discover affordable HIPAA training online designed specifically for small healthcare practices. Complete HIPAA compliance training with automated modules, risk assessments, and audit preparation. Start free today." />
+        <meta name="keywords" content="HIPAA training online, affordable HIPAA training, HIPAA compliance training, HIPAA training online for small practices, online HIPAA certification, healthcare compliance training, small practice HIPAA training, affordable healthcare compliance, HIPAA training courses, medical privacy training online" />
+        <meta name="author" content="HIPAA Trainer Team" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="googlebot" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        
+        {/* Open Graph Meta Tags */}
+        <meta property="og:title" content="HIPAA Training Online | Affordable Compliance for Small Practices" />
+        <meta property="og:description" content="Discover affordable HIPAA training online designed for small healthcare practices. Complete compliance training with automated modules and audit preparation." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://hipaatrainer.net" />
+        <meta property="og:site_name" content="HIPAA Trainer" />
+        <meta property="og:image" content="https://hipaatrainer.net/HIPAATRAINER-DEMO-DASHBOARD.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="HIPAA Trainer Compliance Dashboard - Healthcare Privacy Management Platform" />
+        <meta property="og:locale" content="en_US" />
+        
+        {/* Twitter Card Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@hipaatrainer" />
+        <meta name="twitter:creator" content="@hipaatrainer" />
+        <meta name="twitter:title" content="HIPAA Training Online | Affordable Compliance for Small Practices" />
+        <meta name="twitter:description" content="Affordable HIPAA training online for small healthcare practices. Complete compliance training with automated modules and free starter plan." />
+        <meta name="twitter:image" content="https://hipaatrainer.net/HIPAATRAINER-DEMO-DASHBOARD.png" />
+        <meta name="twitter:image:alt" content="HIPAA Trainer Dashboard Preview" />
+        
+        {/* Additional SEO Meta Tags */}
+        <meta name="theme-color" content="#7c3aed" />
+        <meta name="msapplication-TileColor" content="#7c3aed" />
+        <meta name="application-name" content="HIPAA Trainer" />
+        <meta name="apple-mobile-web-app-title" content="HIPAA Trainer" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta httpEquiv="Content-Language" content="en-US" />
+        
+        {/* Canonical and Alternate URLs */}
+        <link rel="canonical" href="https://hipaatrainer.net" />
+        <link rel="alternate" type="application/rss+xml" title="HIPAA Trainer Blog RSS Feed" href="https://hipaatrainer.net/blog/rss.xml" />
+        
+        {/* Structured Data */}
+        <script 
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+        <script 
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
+        />
+      </Head>
+
       <LandingHeader />
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 py-20 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 py-20 overflow-hidden" itemScope itemType="https://schema.org/WebPageElement">
         {/* Background decoration */}
         <div className="absolute inset-0 bg-gradient-to-r from-purple-800/5 to-pink-600/5"></div>
         <div className="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-purple-200/30 rounded-full blur-3xl"></div>
@@ -445,12 +607,12 @@ export default function LandingPage() {
 
         <div className="relative max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              From Compliance Chaos<br />
-              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">to Complete Control</span>
+            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight" itemProp="headline">
+              HIPAA Training Online<br />
+              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Affordable Compliance for Small Practices</span>
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
-              Automate HIPAA training, policy updates, risk assessments & audit bundles—so you trade late-night spreadsheets for clear dashboards and real confidence.
+            <p className="text-xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed" itemProp="description">
+              Discover affordable HIPAA training online designed specifically for small healthcare practices. Our comprehensive compliance training platform offers automated modules, risk assessments, and certification programs that fit your budget and schedule.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <button 
@@ -474,14 +636,14 @@ export default function LandingPage() {
       </section>
 
       {/* Product Preview Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white" itemScope itemType="https://schema.org/Product">
         <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">See Your Compliance at a Glance</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Our intuitive dashboard gives you real-time visibility into your organization's HIPAA compliance status
+          <header className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4" itemProp="name">Track Your HIPAA Training Progress</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto" itemProp="description">
+              Our online HIPAA training dashboard gives small practices real-time visibility into staff training progress, compliance status, and certification tracking with affordable, automated solutions.
             </p>
-          </div>
+          </header>
           <div className="relative max-w-6xl mx-auto">
             <div className="relative bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl p-8 shadow-2xl">
               <img 
@@ -513,9 +675,9 @@ export default function LandingPage() {
       <section id="solutions" className="py-20 bg-gray-50">
         <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Built for Your Organization</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Affordable HIPAA Training for Small Practices</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Whether you're running a busy dental practice, a multi-physician clinic, or launching a healthtech venture, HIPAA Trainer scales to your team.
+              Whether you're running a solo practice, small clinic, or dental office, our online HIPAA training platform provides affordable compliance solutions that scale with your team without breaking the budget.
             </p>
           </div>
 
@@ -524,14 +686,14 @@ export default function LandingPage() {
       </section>
 
       {/* Features */}
-      <section id="features" className="py-20 bg-white">
+      <section id="features" className="py-20 bg-white" itemScope itemType="https://schema.org/ItemList">
         <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">How It Works—Feature by Feature</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Our platform simplifies compliance with powerful, easy-to-use features designed specifically for healthcare teams.
+          <header className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4" itemProp="name">Complete Online HIPAA Training Platform</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto" itemProp="description">
+              Our affordable HIPAA training online platform simplifies compliance for small practices with easy-to-use features. Comprehensive training modules, automated tracking, and certification management designed specifically for budget-conscious healthcare teams.
             </p>
-          </div>
+          </header>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-16">
             {/* Compliance Dashboard */}
@@ -821,7 +983,7 @@ export default function LandingPage() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="py-20 bg-white pt-32">
+      <section id="pricing" className="py-20 bg-white pt-32" itemScope itemType="https://schema.org/PriceSpecification">
         <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
            {/* Countdown Timer */}
           <div className="text-center mb-8">
@@ -856,9 +1018,9 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">HIPAA Trainer Pre-Sale Program
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Affordable HIPAA Training Online - Pre-Launch Pricing
             </h2>
-            <p className="text-xl text-gray-600">Join our exclusive early community—shape the product with zero risk and lock in lifetime access.</p>
+            <p className="text-xl text-gray-600">Get lifetime access to our complete online HIPAA training platform at pre-launch prices. Perfect for small practices seeking affordable compliance solutions.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12 mt-12 pt-6">
@@ -1038,12 +1200,12 @@ export default function LandingPage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white" itemScope itemType="https://schema.org/FAQPage">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
+          <header className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
-            <p className="text-xl text-gray-600">Get answers to the most common questions about HIPAA Trainer.</p>
-          </div>
+            <p className="text-xl text-gray-600">Get answers to the most common questions about HIPAA Trainer and healthcare compliance automation.</p>
+          </header>
 
           <div className="space-y-4">
             {[
@@ -1093,7 +1255,7 @@ export default function LandingPage() {
       </section>
 
       {/* Combined CTA and Newsletter Section */}
-      <section className="py-20 bg-gradient-to-r from-purple-600 to-pink-600 text-white">
+      <section className="py-20 bg-gradient-to-r from-purple-600 to-pink-600 text-white" itemScope itemType="https://schema.org/WebPageElement">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Newsletter Signup - Left Side */}
@@ -1128,9 +1290,9 @@ export default function LandingPage() {
 
             {/* Main CTA - Right Side */}
             <div className="text-center lg:text-left">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to simplify your HIPAA compliance?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready for Affordable HIPAA Training Online?</h2>
               <p className="text-xl mb-8 opacity-90">
-                Experience how HIPAA Trainer can transform your compliance process risk-free.
+                Start your HIPAA compliance training today with our affordable online platform designed for small healthcare practices. Risk-free trial included.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <button 

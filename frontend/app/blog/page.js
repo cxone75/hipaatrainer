@@ -90,40 +90,89 @@ export default function BlogPage() {
     }
   };
 
-  // Generate structured data for the blog
+  // Enhanced structured data for better SEO
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Blog",
-    "name": "HIPAA Compliance Blog",
-    "description": "Expert insights, best practices, and the latest updates in healthcare compliance and privacy protection.",
+    "name": "HIPAA Compliance Blog - Expert Healthcare Privacy Insights",
+    "description": "Comprehensive HIPAA compliance blog featuring expert insights, regulatory updates, best practices, and training resources for healthcare organizations ensuring patient privacy protection.",
     "url": "https://hipaatrainer.net/blog",
+    "inLanguage": "en-US",
+    "about": {
+      "@type": "Thing",
+      "name": "HIPAA Compliance"
+    },
+    "keywords": "HIPAA compliance, healthcare privacy, medical data security, patient privacy, healthcare regulations, HIPAA training, compliance best practices, healthcare security, PHI protection",
     "publisher": {
       "@type": "Organization",
       "name": "HIPAA Trainer",
-      "url": "https://hipaatrainer.net"
+      "url": "https://hipaatrainer.net",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://hipaatrainer.net/hipaatrainer-logo.png"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "url": "https://hipaatrainer.net/contact"
+      }
     },
-    "blogPost": blogPosts.map(post => ({
-      "@type": "BlogPosting",
-      "headline": post.title,
-      "description": post.excerpt,
-      "url": `https://hipaatrainer.net/blog/${post.slug}`,
-      "datePublished": post.created_at,
-      "dateModified": post.updated_at || post.created_at,
-      "author": {
-        "@type": "Person",
-        "name": post.author
+    "mainEntity": {
+      "@type": "ItemList",
+      "numberOfItems": blogPosts.length,
+      "itemListElement": blogPosts.map((post, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": {
+          "@type": "BlogPosting",
+          "headline": post.title,
+          "description": post.excerpt,
+          "url": `https://hipaatrainer.net/blog/${post.slug}`,
+          "datePublished": post.created_at,
+          "dateModified": post.updated_at || post.created_at,
+          "author": {
+            "@type": "Person",
+            "name": post.author
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "HIPAA Trainer",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://hipaatrainer.net/hipaatrainer-logo.png"
+            }
+          },
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": `https://hipaatrainer.net/blog/${post.slug}`
+          },
+          "articleSection": post.category,
+          "keywords": `HIPAA compliance, ${post.category.toLowerCase()}, healthcare privacy, medical security, patient data protection`,
+          "image": post.featured_image || "https://hipaatrainer.net/hipaatrainer-logo.png",
+          "wordCount": post.content ? post.content.split(' ').length : 0
+        }
+      }))
+    }
+  };
+
+  // Breadcrumb structured data
+  const breadcrumbStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://hipaatrainer.net"
       },
-      "publisher": {
-        "@type": "Organization",
-        "name": "HIPAA Trainer"
-      },
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": `https://hipaatrainer.net/blog/${post.slug}`
-      },
-      "articleSection": post.category,
-      "keywords": `HIPAA, compliance, healthcare, ${post.category.toLowerCase()}, privacy, security`
-    }))
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "HIPAA Compliance Blog",
+        "item": "https://hipaatrainer.net/blog"
+      }
+    ]
   };
 
   if (loading) {
@@ -160,36 +209,75 @@ export default function BlogPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Head>
-        <title>HIPAA Compliance Blog | Expert Insights & Best Practices - HIPAA Trainer</title>
-        <meta name="description" content="Stay updated with the latest HIPAA compliance insights, best practices, and regulatory updates. Expert guidance for healthcare organizations on privacy protection and security." />
-        <meta name="keywords" content="HIPAA compliance, healthcare privacy, HIPAA training, medical privacy, healthcare security, PHI protection, HIPAA blog, compliance updates" />
-        <meta name="author" content="HIPAA Trainer" />
-        <meta property="og:title" content="HIPAA Compliance Blog | Expert Insights & Best Practices" />
-        <meta property="og:description" content="Expert insights, best practices, and the latest updates in healthcare compliance and privacy protection." />
+        <title>HIPAA Compliance Blog | Expert Healthcare Privacy Insights & Training Resources - HIPAA Trainer</title>
+        <meta name="description" content="Comprehensive HIPAA compliance blog with expert insights, regulatory updates, best practices, and training resources for healthcare organizations. Stay compliant with the latest privacy protection strategies and security guidelines." />
+        <meta name="keywords" content="HIPAA compliance blog, healthcare privacy insights, medical data security, patient privacy protection, HIPAA training resources, healthcare regulations, compliance best practices, PHI security, healthcare audits, HIPAA certification, medical compliance updates" />
+        <meta name="author" content="HIPAA Trainer Team" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="googlebot" content="index, follow" />
+        
+        {/* Open Graph Meta Tags */}
+        <meta property="og:title" content="HIPAA Compliance Blog | Expert Healthcare Privacy Insights - HIPAA Trainer" />
+        <meta property="og:description" content="Expert insights, regulatory updates, and best practices for healthcare compliance. Comprehensive resources for HIPAA training and privacy protection." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://hipaatrainer.net/blog" />
         <meta property="og:site_name" content="HIPAA Trainer" />
+        <meta property="og:image" content="https://hipaatrainer.net/hipaatrainer-logo.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="HIPAA Trainer Blog - Healthcare Compliance Insights" />
+        <meta property="og:locale" content="en_US" />
+        
+        {/* Twitter Card Meta Tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="HIPAA Compliance Blog | Expert Insights & Best Practices" />
-        <meta name="twitter:description" content="Expert insights, best practices, and the latest updates in healthcare compliance and privacy protection." />
+        <meta name="twitter:site" content="@hipaatrainer" />
+        <meta name="twitter:creator" content="@hipaatrainer" />
+        <meta name="twitter:title" content="HIPAA Compliance Blog | Expert Healthcare Privacy Insights" />
+        <meta name="twitter:description" content="Expert insights, regulatory updates, and best practices for healthcare compliance and privacy protection." />
+        <meta name="twitter:image" content="https://hipaatrainer.net/hipaatrainer-logo.png" />
+        <meta name="twitter:image:alt" content="HIPAA Trainer Blog" />
+        
+        {/* Additional SEO Meta Tags */}
+        <meta name="theme-color" content="#7c3aed" />
+        <meta name="msapplication-TileColor" content="#7c3aed" />
+        <meta name="application-name" content="HIPAA Trainer Blog" />
+        <meta name="apple-mobile-web-app-title" content="HIPAA Trainer Blog" />
+        <meta httpEquiv="Content-Language" content="en-US" />
+        <meta name="format-detection" content="telephone=no" />
+        
+        {/* Canonical and Alternate URLs */}
         <link rel="canonical" href="https://hipaatrainer.net/blog" />
+        <link rel="alternate" type="application/rss+xml" title="HIPAA Trainer Blog RSS Feed" href="https://hipaatrainer.net/blog/rss.xml" />
+        
+        {/* Structured Data */}
         <script 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+        <script 
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
         />
       </Head>
 
       <LandingHeader />
 
-      {/* Hero Section */}
+      {/* SEO-Optimized Hero Section */}
       <header className="bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            HIPAA Compliance Blog
+            HIPAA Compliance Blog: Expert Healthcare Privacy Insights
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Expert insights, best practices, and the latest updates in healthcare compliance and privacy protection.
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-6">
+            Comprehensive healthcare compliance insights, regulatory updates, and HIPAA training resources. 
+            Expert guidance for healthcare organizations ensuring patient privacy protection and data security.
           </p>
+          <div className="flex flex-wrap justify-center gap-2 text-sm text-gray-500">
+            <span className="bg-white px-3 py-1 rounded-full">Healthcare Compliance</span>
+            <span className="bg-white px-3 py-1 rounded-full">HIPAA Training</span>
+            <span className="bg-white px-3 py-1 rounded-full">Privacy Protection</span>
+            <span className="bg-white px-3 py-1 rounded-full">Security Best Practices</span>
+          </div>
         </div>
       </header>
 
@@ -243,22 +331,53 @@ export default function BlogPage() {
           </section>
         )}
 
+        {/* Blog Statistics */}
+        <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            <div>
+              <div className="text-2xl font-bold text-purple-600">{blogPosts.length}</div>
+              <div className="text-sm text-gray-600">Expert Articles</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-purple-600">{categories.length - 1}</div>
+              <div className="text-sm text-gray-600">Topic Categories</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-purple-600">{featuredPosts.length}</div>
+              <div className="text-sm text-gray-600">Featured Insights</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-purple-600">Updated Weekly</div>
+              <div className="text-sm text-gray-600">Fresh Content</div>
+            </div>
+          </div>
+        </div>
+
         {/* Category Filter */}
-        <nav className="flex flex-wrap gap-2 mb-8" aria-label="Blog categories">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                selectedCategory === category
-                  ? 'bg-purple-600 text-white'
-                  : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-200'
-              }`}
-              aria-pressed={selectedCategory === category}
-            >
-              {category}
-            </button>
-          ))}
+        <nav className="mb-8" aria-label="Blog categories">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Browse by Topic</h2>
+          <div className="flex flex-wrap gap-2">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  selectedCategory === category
+                    ? 'bg-purple-600 text-white'
+                    : 'bg-white text-gray-700 hover:bg-purple-50 border border-gray-200'
+                }`}
+                aria-pressed={selectedCategory === category}
+                title={`View ${category === 'All' ? 'all' : category} articles`}
+              >
+                {category}
+                {category !== 'All' && (
+                  <span className="ml-2 text-xs opacity-75">
+                    ({blogPosts.filter(post => post.category === category).length})
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
         </nav>
 
         {/* All Posts Grid */}
@@ -311,30 +430,38 @@ export default function BlogPage() {
 
         {/* Newsletter Signup */}
         <aside className="mt-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl p-8 text-white text-center">
-          <h3 className="text-2xl font-bold mb-4">Stay Updated on HIPAA Compliance</h3>
-          <p className="text-lg mb-6 opacity-90">
-            Get the latest insights, best practices, and regulatory updates delivered to your inbox.
+          <h3 className="text-2xl font-bold mb-4">Stay Ahead in HIPAA Compliance</h3>
+          <p className="text-lg mb-2 opacity-90">
+            Join 10,000+ healthcare professionals receiving expert insights
           </p>
-          <form onSubmit={handleNewsletterSubscription} className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-            <label htmlFor="newsletter-email" className="sr-only">Email address</label>
+          <p className="text-base mb-6 opacity-80">
+            Weekly regulatory updates, compliance tips, and exclusive training resources delivered to your inbox.
+          </p>
+          <form onSubmit={handleNewsletterSubscription} className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto mb-4">
+            <label htmlFor="newsletter-email" className="sr-only">Email address for HIPAA compliance updates</label>
             <input
               id="newsletter-email"
               type="email"
-              placeholder="Enter your email"
+              placeholder="Your email address"
               value={newsletterEmail}
               onChange={(e) => setNewsletterEmail(e.target.value)}
               className="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"
               disabled={isSubmitting}
               required
+              aria-describedby="newsletter-description"
             />
             <button 
               type="submit" 
               disabled={isSubmitting}
               className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              aria-label="Subscribe to HIPAA compliance newsletter"
             >
-              {isSubmitting ? 'Subscribing...' : 'Subscribe'}
+              {isSubmitting ? 'Subscribing...' : 'Get Updates'}
             </button>
           </form>
+          <p id="newsletter-description" className="text-xs opacity-75">
+            Free newsletter • No spam • Unsubscribe anytime • Privacy-first approach
+          </p>
           {subscriptionMessage && (
             <p className={`mt-4 text-sm ${subscriptionMessage.includes('Successfully') ? 'text-green-200' : 'text-red-200'}`} role="status" aria-live="polite">
               {subscriptionMessage}
